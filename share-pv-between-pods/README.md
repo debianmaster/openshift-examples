@@ -13,8 +13,13 @@ systemctl start nfs-server
 systemctl start nfs-lock
 systemctl start nfs-idmap
 chown -R nfsnobody:nfsnobody /nfsshare
-cat
-/nfsshare/nfs-storge/pv01 *(rw,root_squash)
-/nfsshare/nfs-storge/pv02 *(rw,root_squash)
-/nfsshare/nfs-storge/pv03 *(rw,root_squash)
+cat <<EOF 
+/nfsshare/pv01 *(rw,root_squash)
+/nfsshare/pv02 *(rw,root_squash)
+/nfsshare/pv03 *(rw,root_squash)
+EOF > /etc/exports
+systemctl restart nfs-server
+```
+
+
 
