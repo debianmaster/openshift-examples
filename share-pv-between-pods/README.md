@@ -10,14 +10,13 @@ systemctl enable nfs-lock
 systemctl enable nfs-idmap
 systemctl start rpcbind
 systemctl start nfs-server
-systemctl start nfs-lock
-systemctl start nfs-idmap
 chown -R nfsnobody:nfsnobody /nfsshare
 cat <<EOF 
 /nfsshare/pv01 *(rw,root_squash)
 /nfsshare/pv02 *(rw,root_squash)
 /nfsshare/pv03 *(rw,root_squash)
-EOF > /etc/exports
+EOF 
+> /etc/exports
 systemctl restart nfs-server
 showmount -e
 ```
