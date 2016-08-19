@@ -19,6 +19,7 @@ cat <<EOF
 /nfsshare/pv03 *(rw,root_squash)
 EOF > /etc/exports
 systemctl restart nfs-server
+showmount -e
 ```
 
 
