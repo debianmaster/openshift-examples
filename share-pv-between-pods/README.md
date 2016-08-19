@@ -1,8 +1,8 @@
 
-> This example deals with creating a persistant volume and sharing the volume with one or more PODs
-> Some points to keep in mind
-> 1) persistant volume (pv) in openshift is using nfs storage in this example
-> 2) volumeName attribute  in  PVC ensures that, pvc always binds to a specific  PV
+> This example deals with creating a persistant volume and sharing the volume with one or more PODs  
+> Some points to keep in mind  
+> 1) persistant volume (pv) in openshift is using nfs storage in this example   
+> 2) volumeName attribute  in  PVC ensures that, pvc always binds to a specific  PV   
 
 ### Setup nfs server (Skip if you have already)
 ```sh
