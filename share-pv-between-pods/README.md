@@ -1,8 +1,7 @@
 ### Setup nfs server
 ```sh
 yum install nfs-utils
-chkconfig nfs on 
-systemctl enable nfs
+
 mkdir /nfsshare && mkdir /nfsshare/pv01 && mkdir /nfsshare/pv02 && mkdir /nfsshare/pv03
 systemctl enable rpcbind
 systemctl enable nfs-server
