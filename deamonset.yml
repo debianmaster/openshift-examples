@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1 
+kind: DaemonSet
+metadata:
+  name: welcome 
+spec:
+  template:
+    metadata:
+      name: welcome 
+      labels:
+        daemon: welcome
+    spec:
+      containers:
+      - name: c
+        image: veermuchandi/welcome
+        ports:
+        - containerPort: 8080
+          hostPort: 8080
+          name: serverport

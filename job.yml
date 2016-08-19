@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Job
+metadata:
+  name: pi
+spec:
+  selector:         
+    matchLabels:
+      app: pi
+  parallelism: 1    
+  completions: 1    
+  template:         
+    metadata:
+      name: pi
+      labels:
+        app: pi
+    spec:
+      containers:
+      - name: pi
+        image: perl
+        command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+      restartPolicy: Never
