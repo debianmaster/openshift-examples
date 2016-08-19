@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pv-pod1 
+  labels:
+    app: pv-pod1
+spec:
+  containers:
+    - name: key-value-store
+      image: redis
+      volumeMounts:
+      - mountPath: "/var/www/html"
+        name: mypd
+      ports:
+        - containerPort: 6379
+      volumes:
+      - name: mypd
+        persistentVolumeClaim:
+          claimName: claim1
+  volumes:
+   - name: mypd
+     persistentVolumeClaim:
+      claimName: claim1
