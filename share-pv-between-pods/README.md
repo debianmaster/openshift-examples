@@ -2,6 +2,20 @@
 ```sh
 oc create -f pv.yml
 oc create -f pvc.yml
+```
+
+### Use PVC inside pods
+> Im using same pvc "claim1"  in both pods
+
+```sh
+oc create -f pv-pod1.yml
+oc create -f pv-pod2.yml
+```
+
+> If i ssh into one pod and change contents of /var/www/html, it should effect other pod  /var/www/html
+
+
+
 
 
 
