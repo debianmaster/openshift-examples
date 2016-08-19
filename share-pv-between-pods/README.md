@@ -1,3 +1,11 @@
+### Creating persistant volumes & persistant volume claims
+```sh
+oc create -f pv.yml
+oc create -f pvc.yml
+
+
+
+
 ### Setup nfs server
 ```sh
 yum install -y nfs-utils
