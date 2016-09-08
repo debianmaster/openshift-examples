@@ -76,13 +76,14 @@ spec:
               memory: 180Mi
           terminationMessagePath: /dev/termination-log
           imagePullPolicy: Always
+          ##############  This section added for Health check  #####
           livenessProbe:
-            # an http probe
             httpGet:
               path: /healthz
               port: 8080
               initialDelaySeconds: 15
               timeoutSeconds: 1
+          ####################   end health check config   ###########
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
