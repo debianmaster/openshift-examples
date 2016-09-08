@@ -9,7 +9,7 @@ livenessProbe:
     initialDelaySeconds: 15
     timeoutSeconds: 1
 ```
-> Full config    
+> Full Deployment config    
 
 ```yml
 apiVersion: v1
