@@ -81,8 +81,11 @@ spec:
             httpGet:
               path: /healthz
               port: 8080
-              initialDelaySeconds: 15
-              timeoutSeconds: 1
+              scheme: HTTP
+            timeoutSeconds: 1
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 1
           ####################   end health check config   ###########
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
