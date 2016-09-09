@@ -9,14 +9,14 @@ spec:
   clusterIP: 172.30.151.152
   portalIP: 172.30.151.152
   ports:
-  - nodePort: 30080
+  - nodePort: 30080  ##added this
     port: 27017
     protocol: TCP
     targetPort: 27017
   selector:
     name: mongodb
   sessionAffinity: None
-  type: NodePort
+  type: NodePort  ##changed this
 status:
   loadBalancer: {}
 ```
