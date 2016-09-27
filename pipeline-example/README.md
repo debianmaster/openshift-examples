@@ -14,7 +14,9 @@ oc new-app jenkins-ephemeral
 oc new-app jenkins-pipeline-example
 ```
 
-### Make your build config openshift pipeline friendly
+###  create a new buildconfig for pipelines 
+>  sample-pipeline is already created for you as part of jenkins-pipeline-example app creation, there is a a small bug edit as follows    
+
 ```sh
 oc edit bc sample-pipeline
 ```
