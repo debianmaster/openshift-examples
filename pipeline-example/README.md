@@ -9,7 +9,7 @@ oc cluster up
 oc new-project example-project
 oc new-app jenkins-ephemeral
 ```
-### example projects
+### create an example project from template
 ```sh
 oc new-app jenkins-pipeline-example
 ```
