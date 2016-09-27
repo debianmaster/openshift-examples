@@ -18,7 +18,8 @@ oc new-app jenkins-pipeline-example
 ```sh
 oc edit bc sample-pipeline
 ```
-> Change strategy as follows
+> Change strategy as follows   
+
 ```yml
 strategy:
     jenkinsPipelineStrategy:
