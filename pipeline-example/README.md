@@ -39,3 +39,5 @@ strategy:
 ```sh
 oc start-build sample-pipeline
 ```
+>  More detailed story here
+https://github.com/openshift/origin/tree/master/examples/jenkins/pipeline
