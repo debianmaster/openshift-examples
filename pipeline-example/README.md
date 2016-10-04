@@ -41,3 +41,31 @@ oc start-build sample-pipeline
 ```
 >  More detailed story here
 https://github.com/openshift/origin/tree/master/examples/jenkins/pipeline
+
+>  just my notes, ignore
+
+```yml
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  name: sample-pipeline
+  namespace: myproject
+  labels:
+    app: jenkins-pipeline-example
+    name: sample-pipeline
+    template: application-template-sample-pipeline
+  annotations:
+    pipeline.alpha.openshift.io/uses: '[{"name": "frontend", "namespace": "", "kind": "DeploymentConfig"}]'
+spec:
+  runPolicy: Serial
+  source:
+    type: None
+  strategy:
+    type: JenkinsPipeline
+    jenkinsPipelineStrategy:
+      jenkinsfile: "node {\nstage 'build'\nopenshiftBuild(buildConfig: 'nodejs-welcome', showBuildLogs: 'true')\nstage 'deploy'\nopenshiftDeploy(deploymentConfig: 'nodejs-welcome')\n}"
+  output:
+  resources:
+  postCommit:
+
+```
