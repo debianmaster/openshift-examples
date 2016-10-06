@@ -24,7 +24,7 @@
 
 
 ### Give cluster read permissions 
-oc adm policy add-cluster-role-to-user cluster-reader system:serviceaccounts:cloudforms:cfsa
+oc adm policy add-cluster-role-to-user cluster-reader system:serviceaccount:cloudforms:cfsa
 
 ### Get service token
 
