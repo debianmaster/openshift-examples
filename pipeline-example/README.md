@@ -42,7 +42,10 @@ oc start-build sample-pipeline
 >  More detailed story here
 https://github.com/openshift/origin/tree/master/examples/jenkins/pipeline
 
->  just my notes, ignore
+
+
+
+###  just my notes, ignore notes below
 
 ```yml
 apiVersion: v1
