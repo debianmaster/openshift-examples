@@ -20,7 +20,8 @@ oc process -f metrics.yaml -v \
      | oc create -n openshift-infra -f -
 ```
 
-> Change master Config  master-config.yaml
+> Change master Config  master-config.yaml    
+/var/lib/origin/openshift.local.config/master/master-config.yaml
 
 ```sh
 assetConfig:
