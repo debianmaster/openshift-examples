@@ -38,6 +38,6 @@ Endpoints
 10.0.0.249 / 8443  / token  (change based on your env)
 
 Hawkular
-provide hawkular skydns
+provide hawkular skydns  i.e.   hawkular-metrics.openshift-infra.svc.cluster.local
 
 ### Wait for some time for results to show up
