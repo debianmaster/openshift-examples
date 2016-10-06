@@ -22,3 +22,22 @@
 `oc patch route cfme4 -p '{"spec":{"tls":{"termination":"passthrough"},"port":{"targetPort":"443-tcp"}}}`
 
 
+
+### Give cluster read permissions 
+oc adm policy add-cluster-role-to-user cluster-reader system:serviceaccounts:cloudforms:cfsa
+
+### Get service token
+
+oc sa  get-token cfsa
+
+### Setup CloudForm with OCP
+
+Visit https://cfme4-cloudforms.10.0.0.249.xip.io/ems_container/new
+
+Endpoints
+10.0.0.249 / 8443  / token 
+
+Hawkular
+provide hawkular skydns
+
+### Wait for some time for results to show up
