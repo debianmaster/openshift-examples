@@ -21,6 +21,4 @@
 `oc expose service cfme4`
 `oc patch route cfme4 -p '{"spec":{"tls":{"termination":"passthrough"},"port":{"targetPort":"443-tcp"}}}`
 
-### Follow the Cloudforms instructions on how to connect CF to OSCP
 
-Managing Providers - Red Hat Customer Portal
