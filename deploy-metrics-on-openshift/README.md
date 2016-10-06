@@ -28,6 +28,8 @@ assetConfig:
     ...
     metricsPublicURL: "https://hawkular-metrics.example.com/hawkular/metrics"
 ```
+> Restart Master service
+
 
 ### Cleanup 
 ```sh
