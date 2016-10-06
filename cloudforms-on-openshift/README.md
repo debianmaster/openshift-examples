@@ -30,14 +30,14 @@
 `oc sa  get-token cfsa`
 
 ### Setup CloudForm with OCP
-Hit  https://cfme4-cloudforms.10.0.0.249.xip.io/
-username/password:    admin/smartvm
-Hit https://cfme4-cloudforms.10.0.0.249.xip.io/ems_container/new
+Hit  https://cfme4-cloudforms.10.0.0.249.xip.io/     
+username/password:    admin/smartvm     
+Hit https://cfme4-cloudforms.10.0.0.249.xip.io/ems_container/new     
 
-Endpoints
+Endpoints    
 10.0.0.249 / 8443  / token  (change based on your env)
+  
+Hawkular    
+provide hawkular skydns   i.e.   hawkular-metrics.openshift-infra.svc.cluster.local  
 
-Hawkular
-provide hawkular skydns  i.e.   hawkular-metrics.openshift-infra.svc.cluster.local
-
-### Wait for some time for results to show up
+### Wait for some time for results to show up  
