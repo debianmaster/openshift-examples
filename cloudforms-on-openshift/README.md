@@ -18,7 +18,7 @@
 
 ### Expose the Service as a router with pass through TLS
 
-`oc expose service cfme4`
+`oc expose service cfme4`      
 `oc patch route cfme4 -p '{"spec":{"tls":{"termination":"passthrough"},"port":{"targetPort":"443-tcp"}}}'`
 
 
