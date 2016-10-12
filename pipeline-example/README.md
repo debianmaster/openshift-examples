@@ -52,7 +52,6 @@ apiVersion: v1
 kind: BuildConfig
 metadata:
   name: sample-pipeline
-  namespace: myproject
   labels:
     app: jenkins-pipeline-example
     name: sample-pipeline
