@@ -18,12 +18,12 @@
 
 ### Expose the Service as a router with pass through TLS
 
-`oc expose service cfme4`
+`oc expose service cfme4`      
 `oc patch route cfme4 -p '{"spec":{"tls":{"termination":"passthrough"},"port":{"targetPort":"443-tcp"}}}'`
 
 
 ### Give cluster read permissions 
-`oc adm policy add-cluster-role-to-user cluster-reader system:serviceaccount:cloudforms:cfsa`
+`oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:cloudforms:cfsa`
 
 ### Get service token
 
