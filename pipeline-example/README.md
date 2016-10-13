@@ -65,7 +65,7 @@ spec:
   strategy:
     type: JenkinsPipeline
     jenkinsPipelineStrategy:
-      jenkinsfile: "node {\nstage 'build'\nopenshiftBuild(buildConfig: 'nodejs-welcome', showBuildLogs: 'true')\nstage 'deploy'\nopenshiftDeploy(deploymentConfig: 'nodejs-welcome')\n}"
+      jenkinsfile: "node {\nstage 'build'\nopenshiftBuild(buildConfig: 'myphp', showBuildLogs: 'true')\nstage 'deploy'\nopenshiftDeploy(deploymentConfig: 'myphp')\n}"
   output:
   resources:
   postCommit:
