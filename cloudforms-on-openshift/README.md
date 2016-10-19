@@ -8,7 +8,7 @@
 `oc create serviceaccount cfsa -n cloudforms`
 
 ### Enable cloudforms to run as root
-`oadm policy add-scc-to-user privileged system:serviceaccount:cloudforms:cfsa`
+`oc adm policy add-scc-to-user privileged system:serviceaccount:cloudforms:cfsa`
 
 ### Create deployment
 `oc new-app registry.access.redhat.com/cloudforms/cfme4`
