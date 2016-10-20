@@ -2,8 +2,8 @@
 
 ```sh
 export OCP_DOMAIN=example.com
-wget https://github.com/openshift/origin-metrics/blob/master/metrics-deployer-setup.yaml
-wget https://github.com/openshift/origin-metrics/blob/master/metrics.yaml
+wget https://raw.githubusercontent.com/openshift/origin-metrics/master/metrics-deployer-setup.yaml
+wget https://raw.githubusercontent.com/openshift/origin-metrics/master/metrics.yaml
 
 oc create -f metrics-deployer-setup.yaml -n openshift-infra
 oc adm policy add-role-to-user edit \
