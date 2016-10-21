@@ -53,3 +53,20 @@ oc start-build sample-pipeline
 https://github.com/openshift/origin/tree/master/examples/jenkins/pipeline
 
 
+### Other info (please ignore)
+```sh
+node {
+  stage 'buildIndev'
+  openshiftBuild(namespace: 'dev', buildConfig: 'welcome', showBuildLogs: 'true')
+  
+  stage 'deployIndev'
+  openshiftDeploy(namespace: 'dev', deploymentConfig: 'welcome')
+  openshiftScale(namespace: 'dev', deploymentConfig: 'welcome',replicaCount: '2')
+  
+  stage 'deployInQA'
+  openshiftTag(namespace: 'dev', sourceStream: 'welcome',  sourceTag: 'latest', destinationStream: 'welcome', destinationTag: 'promoteToQA', destinationNamespace: 'dev')
+  
+  openshiftDeploy(namespace: 'qa', deploymentConfig: 'welcome', )
+  openshiftScale(namespace: 'qa', deploymentConfig: 'welcome',replicaCount: '3')
+}
+```
