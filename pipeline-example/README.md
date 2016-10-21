@@ -70,3 +70,11 @@ node {
   openshiftScale(namespace: 'qa', deploymentConfig: 'welcome',replicaCount: '3')
 }
 ```
+
+```sh
+oc policy add-role-to-user edit system:serviceaccount:ci-cd:jenkins -n dev
+oc policy add-role-to-user edit system:serviceaccount:cicd:jenkins -n testing
+oc policy add-role-to-group system:image-puller system:serviceaccounts:testing -n development
+oc create deploymentconfig myapp --image=<<RegistryServiceIP>>:5000/development/myapp:promoteToQA
+```
+
