@@ -73,8 +73,8 @@ node {
 
 ```sh
 oc policy add-role-to-user edit system:serviceaccount:ci-cd:jenkins -n dev
-oc policy add-role-to-user edit system:serviceaccount:ci-cd:jenkins -n testing
-oc policy add-role-to-group system:image-puller system:serviceaccounts:qa -n development
-oc create deploymentconfig myapp --image=<<RegistryServiceIP>>:5000/dev/myapp:promoteToQA
+oc policy add-role-to-user edit system:serviceaccount:ci-cd:jenkins -n qa
+oc policy add-role-to-group system:image-puller system:serviceaccounts:qa -n dev
+oc create deploymentconfig myapp --image=<<RegistryServiceIP>>:5000/dev/myapp:promoteToQA -n qa
 ```
 
