@@ -8,7 +8,7 @@
 `oc create serviceaccount cfsa -n cloudforms`
 
 ### Enable cloudforms to run as root
-`oadm policy add-scc-to-user privileged system:serviceaccount:cloudforms:cfsa`
+`oc adm policy add-scc-to-user privileged system:serviceaccount:cloudforms:cfsa`
 
 ### Create deployment
 `oc new-app registry.access.redhat.com/cloudforms/cfme4`
@@ -35,7 +35,7 @@ username/password:    admin/smartvm
 Hit https://cfme4-cloudforms.10.0.0.249.xip.io/ems_container/new     
 
 Endpoints    
-10.0.0.249 / 8443  / token  (change based on your env)
+kubernetes.default.svc.cluster.local    port 443  and token
   
 Hawkular    
 provide hawkular skydns   i.e.   hawkular-metrics.openshift-infra.svc.cluster.local  

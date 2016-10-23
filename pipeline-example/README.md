@@ -1,5 +1,6 @@
 
-## pre-req
+## Pre-Req 
+> (skip this if you have openshift running already) 
 ```sh
 oc cluster up
 ```
@@ -9,44 +10,13 @@ oc cluster up
 oc new-project example-project
 oc new-app jenkins-ephemeral
 ```
-### create an example project from template
+### create an example for which you want to setup pipeline
 ```sh
-oc new-app jenkins-pipeline-example
+oc new-app https://github.com/debianmaster/nodejs-welcome.git --name=welcome
 ```
 
 ###  create a new buildconfig for pipelines 
->  sample-pipeline is already created for you as part of jenkins-pipeline-example app creation, there is a a small bug edit as follows    
-
-```sh
-oc edit bc sample-pipeline
-```
-> Change strategy as follows   
-
-```yml
-strategy:
-    jenkinsPipelineStrategy:
-      jenkinsfile: |-
-        node {
-        stage 'build'
-        openshiftBuild(buildConfig: 'ruby-sample-build', showBuildLogs: 'true')
-        stage 'deploy'
-        openshiftDeploy(deploymentConfig: 'frontend')
-        }
-    type: JenkinsPipeline
-```
-
-### Kick off the build and enjoy
-```sh
-oc start-build sample-pipeline
-```
->  More detailed story here
-https://github.com/openshift/origin/tree/master/examples/jenkins/pipeline
-
-
-
-
-###  just my notes, ignore notes below
-
+> Create a file sample-pipeline.yml
 ```yml
 apiVersion: v1
 kind: BuildConfig
@@ -65,9 +35,46 @@ spec:
   strategy:
     type: JenkinsPipeline
     jenkinsPipelineStrategy:
-      jenkinsfile: "node {\nstage 'build'\nopenshiftBuild(buildConfig: 'myphp', showBuildLogs: 'true')\nstage 'deploy'\nopenshiftDeploy(deploymentConfig: 'myphp')\n}"
+      jenkinsfile: "node {\nstage 'build'\nopenshiftBuild(buildConfig: 'welcome', showBuildLogs: 'true')\nstage 'deploy'\nopenshiftDeploy(deploymentConfig: 'welcome')\n}"
   output:
   resources:
   postCommit:
-
 ```
+```sh
+oc create -f sample-pipeline.yml -n example-project
+```
+
+### Kick off the build and enjoy
+```sh
+oc start-build sample-pipeline
+```
+
+>  More detailed story here
+https://github.com/openshift/origin/tree/master/examples/jenkins/pipeline
+
+
+### Other info (please ignore)
+```sh
+node {
+  stage 'buildIndev'
+  openshiftBuild(namespace: 'dev', buildConfig: 'welcome', showBuildLogs: 'true')
+  
+  stage 'deployIndev'
+  openshiftDeploy(namespace: 'dev', deploymentConfig: 'welcome')
+  openshiftScale(namespace: 'dev', deploymentConfig: 'welcome',replicaCount: '2')
+  
+  stage 'deployInQA'
+  openshiftTag(namespace: 'dev', sourceStream: 'welcome',  sourceTag: 'latest', destinationStream: 'welcome', destinationTag: 'promoteToQA', destinationNamespace: 'dev')
+  
+  openshiftDeploy(namespace: 'qa', deploymentConfig: 'welcome', )
+  openshiftScale(namespace: 'qa', deploymentConfig: 'welcome',replicaCount: '3')
+}
+```
+
+```sh
+oc policy add-role-to-user edit system:serviceaccount:ci-cd:jenkins -n dev
+oc policy add-role-to-user edit system:serviceaccount:ci-cd:jenkins -n qa
+oc policy add-role-to-group system:image-puller system:serviceaccounts:qa -n dev
+oc create deploymentconfig myapp --image=<<RegistryServiceIP>>:5000/dev/myapp:promoteToQA -n qa
+```
+
