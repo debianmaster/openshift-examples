@@ -14,34 +14,9 @@ oc new-app https://github.com/debianmaster/nodejs-welcome.git --name=welcome -n 
 ```
 
 ###  create a new buildconfig for pipelines 
-> Create a file sample-pipeline.yml
-```yml
-apiVersion: v1
-kind: BuildConfig
-metadata:
-  name: sample-pipeline
-  labels:
-    app: jenkins-pipeline-example
-    name: sample-pipeline
-    template: application-template-sample-pipeline
-  annotations:
-    pipeline.alpha.openshift.io/uses: '[{"name": "frontend", "namespace": "", "kind": "DeploymentConfig"}]'
-spec:
-  runPolicy: Serial
-  source:
-    type: None
-  strategy:
-    type: JenkinsPipeline
-    jenkinsPipelineStrategy:
-      jenkinsfilePath: Jenkinsfile
-  output:
-  resources:
-  postCommit:
-```
-
 
 ```sh
-oc create -f sample-pipeline.yml -n ci-cd
+oc create -f https://raw.githubusercontent.com/debianmaster/openshift-examples/master/pipeline-example/sample-pipeline -n ci-cd
 ```
 
 
