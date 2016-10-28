@@ -59,9 +59,6 @@ node {
   stage 'deployIndev'
   openshiftDeploy(namespace: 'dev', deploymentConfig: 'welcome')
   openshiftScale(namespace: 'dev', deploymentConfig: 'welcome',replicaCount: '2')
-  
-  stage 'deployInQA'
-  openshiftTag(namespace: 'dev', sourceStream: 'welcome',  sourceTag: 'latest', destinationStream: 'welcome', destinationTag: 'promoteToQA', destinationNamespace: 'dev')
  
 }
 ```
@@ -69,9 +66,7 @@ node {
 
 ```sh
 oc policy add-role-to-user edit system:serviceaccount:ci-cd:jenkins -n dev
-oc policy add-role-to-user edit system:serviceaccount:ci-cd:jenkins -n qa
 oc policy add-role-to-group system:image-puller system:serviceaccounts:ci-cd -n dev
-oc policy add-role-to-group system:image-puller system:serviceaccounts:ci-cd -n qa
 ```
 
 
