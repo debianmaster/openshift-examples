@@ -15,7 +15,7 @@ spec:
   strategy:
     type: JenkinsPipeline
     jenkinsPipelineStrategy:
-      jenkinsfilePath: /pipeline-example/Jenkinsfile
+      jenkinsfilePath: pipeline-example/Jenkinsfile
   output:
   resources:
   postCommit:
