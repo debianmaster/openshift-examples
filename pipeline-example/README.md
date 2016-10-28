@@ -1,9 +1,5 @@
+> This only works on OCP 3.3.0.35 or later
 
-## Pre-Req 
-> (skip this if you have openshift running already) 
-```sh
-oc cluster up
-```
 
 ### setup project and jenkins
 ```sh
@@ -37,7 +33,7 @@ spec:
   strategy:
     type: JenkinsPipeline
     jenkinsPipelineStrategy:
-      jenkinsfile: "node {}"
+      jenkinsfilePath: Jenkinsfile
   output:
   resources:
   postCommit:
@@ -46,21 +42,6 @@ spec:
 
 ```sh
 oc create -f sample-pipeline.yml -n ci-cd
-```
-
-### Update Jenkinds pipeline
-
-
-```sh
-node {
-  stage 'buildIndev'
-  openshiftBuild(namespace: 'dev', buildConfig: 'welcome', showBuildLogs: 'true')
-  
-  stage 'deployIndev'
-  openshiftDeploy(namespace: 'dev', deploymentConfig: 'welcome')
-  openshiftScale(namespace: 'dev', deploymentConfig: 'welcome',replicaCount: '2')
- 
-}
 ```
 
 
