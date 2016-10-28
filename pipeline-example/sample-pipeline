@@ -13,7 +13,7 @@ spec:
   strategy:
     type: JenkinsPipeline
     jenkinsPipelineStrategy:
-      jenkinsfilePath: https://github.com/debianmaster/openshift-examples/tree/master/pipeline-example/Jenkinsfile
+      jenkinsfilePath: Jenkinsfile
   output:
   resources:
   postCommit:
