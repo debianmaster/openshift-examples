@@ -45,7 +45,7 @@ spec:
 
 
 ```sh
-oc create -f sample-pipeline.yml -n dev
+oc create -f sample-pipeline.yml -n ci-cd
 ```
 
 ### Update Jenkinds pipeline
