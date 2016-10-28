@@ -9,7 +9,9 @@ metadata:
 spec:
   runPolicy: Serial
   source:
-    type: None
+    type: "Git"
+    git:
+      uri: "https://github.com/debianmaster/openshift-examples"
   strategy:
     type: JenkinsPipeline
     jenkinsPipelineStrategy:
