@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  name: sample-pipeline
+  labels:
+    app: jenkins-pipeline-example
+    name: sample-pipeline
+    template: application-template-sample-pipeline
+spec:
+  runPolicy: Serial
+  source:
+    type: None
+  strategy:
+    type: JenkinsPipeline
+    jenkinsPipelineStrategy:
+      jenkinsfilePath: Jenkinsfile
+  output:
+  resources:
+  postCommit:
