@@ -1,0 +1,9 @@
+node {
+  stage 'buildIndev'
+  openshiftBuild(namespace: 'dev', buildConfig: 'welcome', showBuildLogs: 'true')
+  
+  stage 'deployIndev'
+  openshiftDeploy(namespace: 'dev', deploymentConfig: 'welcome')
+  openshiftScale(namespace: 'dev', deploymentConfig: 'welcome',replicaCount: '2')
+ 
+}
