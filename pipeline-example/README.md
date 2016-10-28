@@ -7,12 +7,14 @@ oc cluster up
 
 ### setup project and jenkins
 ```sh
-oc new-project example-project
-oc new-app jenkins-ephemeral
+oc new-project dev
+oc new-project qa
+oc new-project ci-cd
+oc new-app jenkins-ephemeral -n ci-cd
 ```
 ### create an example for which you want to setup pipeline
 ```sh
-oc new-app https://github.com/debianmaster/nodejs-welcome.git --name=welcome
+oc new-app https://github.com/debianmaster/nodejs-welcome.git --name=welcome -n dev
 ```
 
 ###  create a new buildconfig for pipelines 
@@ -35,25 +37,20 @@ spec:
   strategy:
     type: JenkinsPipeline
     jenkinsPipelineStrategy:
-      jenkinsfile: "node {\nstage 'build'\nopenshiftBuild(buildConfig: 'welcome', showBuildLogs: 'true')\nstage 'deploy'\nopenshiftDeploy(deploymentConfig: 'welcome')\n}"
+      jenkinsfile: "node {}"
   output:
   resources:
   postCommit:
 ```
+
+
 ```sh
-oc create -f sample-pipeline.yml -n example-project
+oc create -f sample-pipeline.yml -n dev
 ```
 
-### Kick off the build and enjoy
-```sh
-oc start-build sample-pipeline
-```
-
->  More detailed story here
-https://github.com/openshift/origin/tree/master/examples/jenkins/pipeline
+### Update Jenkinds pipeline
 
 
-### Other info (please ignore)
 ```sh
 node {
   stage 'buildIndev'
@@ -65,16 +62,26 @@ node {
   
   stage 'deployInQA'
   openshiftTag(namespace: 'dev', sourceStream: 'welcome',  sourceTag: 'latest', destinationStream: 'welcome', destinationTag: 'promoteToQA', destinationNamespace: 'dev')
-  
-  openshiftDeploy(namespace: 'qa', deploymentConfig: 'welcome', )
-  openshiftScale(namespace: 'qa', deploymentConfig: 'welcome',replicaCount: '3')
+ 
 }
 ```
+
 
 ```sh
 oc policy add-role-to-user edit system:serviceaccount:ci-cd:jenkins -n dev
 oc policy add-role-to-user edit system:serviceaccount:ci-cd:jenkins -n qa
-oc policy add-role-to-group system:image-puller system:serviceaccounts:qa -n dev
-oc create deploymentconfig myapp --image=<<RegistryServiceIP>>:5000/dev/myapp:promoteToQA -n qa
+oc policy add-role-to-group system:image-puller system:serviceaccounts:ci-cd -n dev
+oc policy add-role-to-group system:image-puller system:serviceaccounts:ci-cd -n qa
 ```
+
+
+### Kick off the build and enjoy
+```sh
+oc start-build sample-pipeline -n ci-cd
+```
+
+>  More detailed story here
+https://github.com/openshift/origin/tree/master/examples/jenkins/pipeline
+https://jenkins.io/doc/pipeline/steps/openshift-pipeline/#code-openshiftscale-code-scale-openshift-deployment
+
 
