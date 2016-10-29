@@ -1,3 +1,8 @@
+```sh
+oc expose rc mysql-1 --type=NodePort --target-port=3306 --port=3306
+```
+
+
 ```yml
 apiVersion: v1
 kind: Service
