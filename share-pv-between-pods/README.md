@@ -112,7 +112,7 @@ spec:
    - "ReadWriteOnce"
  nfs:
    path: "/nfsshare/pv$k"
-   server: "35.162.86.236"
+   server: "35.161.240.37"
  persistentVolumeReclaimPolicy: "Recycle"
 EOF
 oc create -f pv.yaml
