@@ -34,6 +34,11 @@ oc create deploymentconfig welcome --image=172.30.178.114:5000/dev/welcome:promo
 oc start-build sample-pipeline -n ci-cd
 ```
 
+
+### Cleanup
+```sh
+oc delete project dev qa ci-cd
+```
 >  More detailed story here
 https://github.com/openshift/origin/tree/master/examples/jenkins/pipeline
 https://jenkins.io/doc/pipeline/steps/openshift-pipeline/#code-openshiftscale-code-scale-openshift-deployment
