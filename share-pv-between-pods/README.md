@@ -44,4 +44,27 @@ oc create -f pv-pod2.yml
 > If i ssh into one pod and change contents of /var/www/html, it should effect other pod  /var/www/html
 
 
+### Ignore notes below
 
+```sh
+for k in {4..50}
+do
+cat <<EOF>> pv.yaml
+apiVersion: "v1"
+kind: "PersistentVolume"
+metadata:
+ name: "pv$k"
+spec:
+ capacity:
+   storage: "1Gi"
+ accessModes:
+   - "ReadWriteMany"
+   - "ReadWriteOnce"
+ nfs:
+   path: "/nfsshare/pv$k"
+   server: "35.162.86.236"
+ persistentVolumeReclaimPolicy: "Recycle"
+EOF
+oc create -f pv.yaml
+done
+```
