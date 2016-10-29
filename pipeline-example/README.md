@@ -26,6 +26,8 @@ oc policy add-role-to-group system:image-puller system:serviceaccounts:ci-cd -n 
 oc policy add-role-to-user edit system:serviceaccount:ci-cd:jenkins -n qa
 oc policy add-role-to-group system:image-puller system:serviceaccounts:ci-cd -n qa
 oc create deploymentconfig welcome --image=172.30.178.114:5000/dev/welcome:promoteToQA -n qa
+oc expose dc welcome --port=8080 -n qa
+oc expose svc welcome  -n qa
 ```
 
 
