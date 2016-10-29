@@ -23,6 +23,9 @@ oc create -f https://raw.githubusercontent.com/debianmaster/openshift-examples/m
 ```sh
 oc policy add-role-to-user edit system:serviceaccount:ci-cd:jenkins -n dev
 oc policy add-role-to-group system:image-puller system:serviceaccounts:ci-cd -n dev
+oc policy add-role-to-user edit system:serviceaccount:ci-cd:jenkins -n qa
+oc policy add-role-to-group system:image-puller system:serviceaccounts:ci-cd -n qa
+oc create deploymentconfig welcome --image=172.30.178.114:5000/dev/myapp:promoteToQA -n qa
 ```
 
 
