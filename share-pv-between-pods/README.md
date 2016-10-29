@@ -23,6 +23,8 @@ cat <<EOF>> /etc/exports
 /nfsshare/pv03 *(rw,root_squash)
 EOF
 
+setsebool -P virt_sandbox_use_nfs 1 #on all nodes
+setsebool -P virt_use_nfs 1  #on all nodes
 systemctl restart nfs-server
 showmount -e
 ```
