@@ -46,6 +46,8 @@ oc create -f pv-pod2.yml
 
 ### Ignore notes below
 ```sh
+for k in {4..50}; do mkdir -p /nfsshare/pv$k; done
+systemctl restart nfs-server
 for k in {4..50}; do echo  '/nfsshare/pv'${k}' *(rw,root_squash)'; done
 ```
 ```sh
