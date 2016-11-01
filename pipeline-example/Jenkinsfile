@@ -8,6 +8,6 @@ node {
   openshiftTag(namespace: 'dev', sourceStream: 'welcome',  sourceTag: 'latest', destinationStream: 'welcome', destinationTag: 'promoteToQA', destinationNamespace: 'dev')
 
   stage 'deployInQA'
-  openshiftDeploy(namespace: 'dev', deploymentConfig: 'welcome',destinationNamespace:'qa' )
-  openshiftScale(namespace: 'qa', deploymentConfig: 'welcome',replicaCount: '3',destinationNamespace:'qa')
+  openshiftDeploy(namespace: 'qa', deploymentConfig: 'welcome')
+  openshiftScale(namespace: 'qa', deploymentConfig: 'welcome',replicaCount: '3')
 }
