@@ -110,3 +110,10 @@ EOF
 oc create -f pv.yaml
 done
 ```
+
+```sh
+firewall-cmd --permanent --add-service=nfs
+firewall-cmd --permanent --add-service=mountd
+firewall-cmd --permanent --add-service=rpc-bind
+firewall-cmd --reload
+```
