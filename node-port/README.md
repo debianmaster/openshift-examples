@@ -7,21 +7,20 @@ oc expose rc mysql-1 --type=NodePort --target-port=3306 --port=3306
 apiVersion: v1
 kind: Service
 metadata:
+  creationTimestamp: null
   labels:
-    template: mongodb-ephemeral-template
-  name: mongodb
+    docker-registry: default
+  name: docker-registry2
 spec:
-  clusterIP: 172.30.151.152
-  portalIP: 172.30.151.152
   ports:
-  - nodePort: 30080  ##added this
-    port: 27017
+  - name: 5000-tcp
+    port: 5000
     protocol: TCP
-    targetPort: 27017
+    targetPort: 5000
   selector:
-    name: mongodb
+    docker-registry: default
   sessionAffinity: None
-  type: NodePort  ##changed this
+  type: NodePort
 status:
   loadBalancer: {}
 ```
