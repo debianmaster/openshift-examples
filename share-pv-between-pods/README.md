@@ -17,48 +17,10 @@ systemctl start rpcbind
 systemctl start nfs-server
 chown -R nfsnobody:nfsnobody /nfsshare
 
-cat <<EOF>> /etc/exports
-/nfsshare/pv4 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv5 *(rw,root_squash)
-/nfsshare/pv6 *(rw,root_squash)
-/nfsshare/pv15 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv16 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv17 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv18 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv19 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv20 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv21 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv22 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv23 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv24 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv25 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv26 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv27 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv28 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv29 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv30 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv31 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv32 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv33 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv34 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv35 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv36 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv37 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv38 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv39 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv40 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv41 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv42 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv43 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv44 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv45 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv46 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv47 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv48 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv49 *(rw,root_squash,no_wdelay,sync)
-/nfsshare/pv50 *(rw,root_squash,no_wdelay,sync)
-EOF
-
+```
+```sh
+for k in {4..50}; do mkdir -p /nfsshare/pv$k; done
+for k in {4..50}; do echo  '/nfsshare/pv'${k}' *(rw,root_squash,no_wdelay,sync)'; done
 setsebool -P virt_sandbox_use_nfs 1 #on all nodes
 setsebool -P virt_use_nfs 1  #on all nodes
 systemctl restart nfs-server
@@ -85,8 +47,8 @@ oc create -f pv-pod2.yml
 ### Ignore notes below
 ```sh
 for k in {4..50}; do mkdir -p /nfsshare/pv$k; done
-systemctl restart nfs-server
 for k in {4..50}; do echo  '/nfsshare/pv'${k}' *(rw,root_squash)'; done
+systemctl restart nfs-server
 ```
 ```sh
 for k in {4..50}
