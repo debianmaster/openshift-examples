@@ -5,9 +5,9 @@ node {
   stage 'deployIndev'
   openshiftDeploy(namespace: 'dev', deploymentConfig: 'welcome')
   openshiftScale(namespace: 'dev', deploymentConfig: 'welcome',replicaCount: '2')
-  openshiftTag(namespace: 'dev', sourceStream: 'welcome',  sourceTag: 'latest', destinationStream: 'welcome', destinationTag: 'promoteToQA', destinationNamespace: 'qa')
+  openshiftTag(namespace: 'dev', sourceStream: 'welcome',  sourceTag: 'latest', destinationStream: 'welcome', destinationTag: 'promoteToQA', destinationNamespace: 'dev')
 
   stage 'deployInQA'
-  openshiftDeploy(namespace: 'qa', deploymentConfig: 'welcome')
+  openshiftDeploy(namespace: 'dev', deploymentConfig: 'welcome')  //not complete
   openshiftScale(namespace: 'qa', deploymentConfig: 'welcome',replicaCount: '3')
 }
