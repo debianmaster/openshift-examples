@@ -1,13 +1,15 @@
 node {
-  stage 'buildIndev'
-  openshiftBuild(namespace: 'demo', buildConfig: 'welcome', showBuildLogs: 'true')
+  stage 'build in development'
+  openshiftBuild(namespace: 'dev', buildConfig: 'welcome', showBuildLogs: 'true')
   
-  stage 'deployIndev'
-  openshiftDeploy(namespace: 'demo', deploymentConfig: 'welcome')
-  openshiftScale(namespace: 'demo', deploymentConfig: 'welcome',replicaCount: '5')
-  //openshiftTag(namespace: 'dev', sourceStream: 'welcome',  sourceTag: 'latest', destinationStream: 'welcome', destinationTag: 'promoteToQA', destinationNamespace: 'dev')
+  stage 'deploy in development'
+  openshiftDeploy(namespace: 'dev', deploymentConfig: 'welcome')
+  openshiftTag(namespace: 'dev', sourceStream: 'welcome',  sourceTag: 'latest', destinationStream: 'welcome', destinationTag: 'promoteToQA', destinationNamespace: 'dev')
 
-  //stage 'deployInQA'
-  //openshiftDeploy(namespace: 'dev', deploymentConfig: 'welcome')  //not complete
-  //openshiftScale(namespace: 'qa', deploymentConfig: 'welcome',replicaCount: '3')
+  stage 'deploy in QA'
+  openshiftDeploy(namespace: 'qa', deploymentConfig: 'welcome')
+
+  stage 'scale dev and QA'
+  openshiftScale(namespace: 'dev', deploymentConfig: 'welcome',replicaCount: '2')
+  openshiftScale(namespace: 'qa', deploymentConfig: 'welcome',replicaCount: '3')
 }
