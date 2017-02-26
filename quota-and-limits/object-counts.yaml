@@ -7,5 +7,5 @@ spec:
     configmaps: "10" 
     persistentvolumeclaims: "4" 
     replicationcontrollers: "20" 
-    secrets: "10" 
+    secrets: "100" 
     services: "10" 
