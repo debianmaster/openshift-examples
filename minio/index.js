@@ -2,7 +2,7 @@ var Minio = require('minio')
 var Fs = require('fs')
 
 var s3Client = new Minio.Client({
-  endPoint: 'http://minio-ocp-myproject.10.0.0.249.xip.io/',
+  endPoint: 'http://172.17.0.2:9000',
   accessKey: 'DPO3DZYQZH56IAYX1GHX',
   secretKey: '4d+mrYsg8qdJPFBFpBbtly9oL7IQZsKsyx14Nvc8'
 })
