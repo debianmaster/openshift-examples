@@ -9,6 +9,6 @@ oc new-app minio-ocp
 Client:
 ```sh
 # create a bucket called my-bucketname , update   accesskey and secret   
-oc new-app https://github.com/debianmaster/openshift-examples --context-dir=/minio --name=ex-app
+oc new-app https://github.com/debianmaster/openshift-examples --context-dir=/minio --name=ex-app -e accessKey='' -e secretKey=''
  ````
 
