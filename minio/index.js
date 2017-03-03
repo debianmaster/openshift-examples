@@ -1,5 +1,7 @@
-var Minio = require('minio')
-var Fs = require('fs')
+var Minio = require('minio');
+var Fs = require('fs');
+
+console.log("using following auth",process.env.accessKey,process.env.secretKey);
 
 var s3Client = new Minio.Client({
   endPoint: 'minio-ocp',
