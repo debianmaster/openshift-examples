@@ -16,14 +16,4 @@ s3Client.fPutObject('my-bucketname', 'my-objectname', file, 'application/octet-s
     return console.log(e)
   }
   console.log("Success")
-})
-
-// Put a file in bucket my-bucketname with content-type detected automatically.
-// In this case it is `text/plain`.
-var file = 'my-testfile.txt'
-s3Client.fPutObject('my-bucketname', 'my-objectname', file, function(e) {
-  if (e) {
-    return console.log(e)
-  }
-  console.log("Success")
-})
+});
