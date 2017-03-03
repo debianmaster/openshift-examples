@@ -4,6 +4,7 @@ var Fs = require('fs')
 var s3Client = new Minio.Client({
   endPoint: 'minio-ocp',
   port: 9000,
+  secure: false,
   accessKey: 'DPO3DZYQZH56IAYX1GHX',
   secretKey: '4d+mrYsg8qdJPFBFpBbtly9oL7IQZsKsyx14Nvc8'
 })
