@@ -12,15 +12,15 @@ oc volume dc/prometheus --add --name=prom-k8s -m /etc/prometheus -t configmap --
 
 ### Add prometheus as Datasource & Dashboard in grafna  
 ##### Data source
-Grafana menu -> Data Sources -> Add Data source -> fill following values  
+`Grafana menu -> Data Sources -> Add Data source -> fill following values` 
 ![Data Source](./add-ds.png?raw=true "Data Source")
 
 Caution:  when putting prometheus URL always use public url with no trailing "/"  ex:-   
 http://prometheus-openshift-infra.10.0.0.249.xip.io
 
 ##### Create Dashboard
-Grafana menu -> Dashboards -> import       
-Import grafana-dashboard.json  
+`Grafana menu -> Dashboards -> import`       
+`Import grafana-dashboard.json`
 
 
 
