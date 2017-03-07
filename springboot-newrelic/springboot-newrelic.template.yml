@@ -130,7 +130,7 @@ objects:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: cpp:${SPRINGBOOT_NEWRELIC_UPSTREAM_IMAGE_TAG}
+          name: ${SPRINGBOOT_NEWRELIC_UPSTREAM_IMAGE}:${SPRINGBOOT_NEWRELIC_UPSTREAM_IMAGE_TAG}
     output:
       to:
         kind: ImageStreamTag
