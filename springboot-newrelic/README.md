@@ -7,6 +7,10 @@ oc create -f https://raw.githubusercontent.com/debianmaster/openshift-examples/m
 ```
 Use template for building app,  please trigger builds if they are not triggered by default.
 
+
+### OR
+
+
 ### oc Commands
 
 ```sh
