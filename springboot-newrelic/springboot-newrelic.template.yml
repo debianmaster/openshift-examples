@@ -8,6 +8,16 @@ metadata:
     tags: quickstart,java,springboot
     iconClass: ''
 objects:
+- kind: ImageStream
+  apiVersion: v1
+  metadata:
+    name: springboot-newrelic-s2i
+    creationTimestamp: 
+    labels:
+      build: springboot-newrelic-s2i
+  spec: {}
+  status:
+    dockerImageRepository: ''
 - kind: BuildConfig
   apiVersion: v1
   metadata:
@@ -41,16 +51,6 @@ objects:
     nodeSelector: 
   status:
     lastVersion: 0
-- kind: ImageStream
-  apiVersion: v1
-  metadata:
-    name: springboot-newrelic-s2i
-    creationTimestamp: 
-    labels:
-      build: springboot-newrelic-s2i
-  spec: {}
-  status:
-    dockerImageRepository: ''
 - kind: ImageStream
   apiVersion: v1
   metadata:
