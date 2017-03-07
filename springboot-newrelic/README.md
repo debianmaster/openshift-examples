@@ -1,9 +1,12 @@
+>   This is a Openshift s2i template for springboot application with newrelice agent
 
 Two ways to use this example
 
 ### Template
 ```sh
 oc create -f https://raw.githubusercontent.com/debianmaster/openshift-examples/master/springboot-newrelic/springboot-newrelic.template.yml
+# Select template and create application 
+oc start-build  springboot-newrelic-s2i  #if not started automatically
 ```
 Use template for building app,  please trigger builds if they are not triggered by default.
 
