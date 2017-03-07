@@ -3,6 +3,8 @@
 > Assuming you already have a openshift cluster, two ways to use this example
 > This example uses a  java-maven-newrelic base image,  NEWRELIC_LICENSE,NEWRELIC_APPNAME  needs to provided as part of base-image build process   
 
+You can build application in two ways....
+
 ### Template
 ```sh
 oc create -f https://raw.githubusercontent.com/debianmaster/openshift-examples/master/springboot-newrelic/springboot-newrelic.template.yml
