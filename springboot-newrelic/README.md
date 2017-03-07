@@ -1,6 +1,7 @@
->   This is a Openshift s2i template for springboot application with newrelice agent
+## This is a Openshift s2i template for springboot application with newrelic agent in the base image.
 
-Two ways to use this example
+> Assuming you already have a openshift cluster, two ways to use this example
+> This example uses a  java-maven-newrelic base image,  NEWRELIC_LICENSE,NEWRELIC_APPNAME  needs to provided as part of base-image build process   
 
 ### Template
 ```sh
