@@ -247,14 +247,14 @@ parameters:
   displayName: Generic Webhook Secret
   required: true
 - name: NEWRELIC_APPNAME
-  description: Newrelice application name
-  value: latest
-  displayName: Newrelice application name
+  description: Newrelic application name
+  value: ""
+  displayName: Newrelic application name
   required: true
 - name: NEWRELIC_LICENSE
-  description: Newrelice license key
-  value: latest
-  displayName: Newrelice license key
+  description: Newrelic license key
+  value: ""
+  displayName: Newrelic license key
   required: true
 labels:
   template: springboot-newrelice-s2i
