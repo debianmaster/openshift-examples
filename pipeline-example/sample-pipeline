@@ -8,10 +8,6 @@ metadata:
     template: application-template-sample-pipeline
 spec:
   runPolicy: Serial
-  source:
-    type: "Git"
-    git:
-      uri: "https://github.com/debianmaster/openshift-examples.git"
   strategy:
     type: JenkinsPipeline
     jenkinsPipelineStrategy:
