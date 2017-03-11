@@ -7,6 +7,7 @@ oc adm policy add-cluster-role-to-user cluster-reader -z default  #for the defau
 oc adm policy add-scc-to-user anyuid -z default   #damn!  allow containers with root USER will fix in future
 oc new-app grafana/grafana   #Deploy grafana
 oc volume dc/grafana --remove --name=grafana-volume-1  #Some strange fix to make grafana work
+oc volume dc/grafana --remove --name=grafana-volume-2  #Some strange fix to make grafana work
 oc new-app prom/prometheus     #deploy latest prometheus
 oc create -f https://raw.githubusercontent.com/debianmaster/openshift-examples/master/promethus/prom-configmap.yml     #mount this configmap at at /etc/prometheus/prometheus.yml  #Scrape rules for prometheus 
 oc volume dc/prometheus --add --name=prom-k8s -m /etc/prometheus -t configmap --configmap-name=prom-k8s  #set rules inside prom 
