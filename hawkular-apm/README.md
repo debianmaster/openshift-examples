@@ -13,5 +13,6 @@ oc import docker-compose -f docker-compose.yml
 ## wait for deployment
 oc expose svc js
 curl http://js-myproject.10.0.0.249.xip.io/hello
+curl -ivX POST -H 'Content-Type: application/json' 'http://js-myproject.10.0.0.249.xip.io/nodejs/createUser' -d '{"name": "admin"}'
 
 ```
