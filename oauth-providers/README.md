@@ -18,7 +18,7 @@
  Developer Settings -> Oauth Applications -> Register New application
  
  ```sh
- Homepage URL: https://127.0.0.1:8443
+ Homepage URL: https://127.0.0.1:8443   ##assuming your master URL
  Authorization callback URL:  https://127.0.0.1:8443/oauth2callback/git
  ```
  
