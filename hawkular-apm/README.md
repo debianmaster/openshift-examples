@@ -16,3 +16,20 @@ curl http://js-myproject.10.0.0.249.xip.io/hello
 curl -ivX POST -H 'Content-Type: application/json' 'http://js-myproject.10.0.0.249.xip.io/nodejs/createUser' -d '{"name": "admin"}'
 
 ```
+
+
+```yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: tracing-server
+spec:
+  ports:
+    - name: web
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+  selector:
+    name: hawkular-apm
+  type: ClusterIP
+```
