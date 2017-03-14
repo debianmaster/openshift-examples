@@ -1,4 +1,4 @@
-#### Git Auth provider
+### Git Auth provider
 > In master-config.yml    
 
 ```yml
@@ -24,3 +24,31 @@
  
  Note:  make sure  your identity provider name matches in callback url w.r.t identity provider name
  
+
+### Keycloak Provider or OpenId Provider
+> In master-config.yml  
+
+```yml
+  identityProviders:
+  - name: my_openid_connect 
+    challenge: true 
+    login: true 
+    mappingMethod: claim 
+    provider:
+      apiVersion: v1
+      kind: OpenIDIdentityProvider
+      clientID: chakra 
+      clientSecret: a9ab2ca2-xxxx-yyyy-cccc-b18499f93b8a 
+      claims:
+        id:
+        - sub 
+        preferredUsername:
+        - preferred_username
+        name:
+        - name
+        email:
+        - email
+      urls:
+        authorize: https://auth.cloud.expertsfactory.com/auth/realms/mymac/protocol/openid-connect/auth         
+        token: https://auth.cloud.expertsfactory.com/auth/realms/mymac/protocol/openid-connect/token
+```
