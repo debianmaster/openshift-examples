@@ -52,3 +52,9 @@
         authorize: https://auth.cloud.expertsfactory.com/auth/realms/mymac/protocol/openid-connect/auth         
         token: https://auth.cloud.expertsfactory.com/auth/realms/mymac/protocol/openid-connect/token
 ```
+> In Keycloak   
+Add new Realm (Ex:- chakra) ->  Select Realm  
+Realm Settings -> General tab -> Provide name   -> Save
+Realm Settings -> Clients -> Create -> Provide name for Client Id -> Client protocol = openid-connect  -> Save
+Realm Settings -> Clients -> select created client -> Access Type = Confidential ->  Valid Redirect =  /*
+
