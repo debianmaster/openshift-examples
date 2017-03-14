@@ -1,3 +1,7 @@
 ```sh
-oc adm create-bootstrap-project-template -o yaml
+oc adm create-bootstrap-project-template -o yaml > template.yaml
+oc create -f template.yaml -n default
+
+projectConfig:
+  projectRequestTemplate: "default/project-request"
 ```
