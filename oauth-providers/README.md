@@ -56,5 +56,6 @@
 Add new Realm (Ex:- chakra) ->  Select Realm  
 Realm Settings -> General tab -> Provide name   -> Save
 Realm Settings -> Clients -> Create -> Provide name for Client Id -> Client protocol = openid-connect  -> Save
-Realm Settings -> Clients -> select created client -> Access Type = Confidential ->  Valid Redirect =  /*
+Realm Settings -> Clients -> select created client -> Settings tab-> Access Type = Confidential ->  Valid Redirect =  `/*` -> Save  
+Realm Settings -> Clients -> select created client -> Credentials tab -> copy client secret.  
 
