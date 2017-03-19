@@ -1,0 +1,31 @@
+### Grafana Deployment
+
+```sh
+oc project openshift-infra   #choose a namespace
+oc adm policy add-cluster-role-to-user cluster-reader -z default  #for the default account give cluster wide read permission so prometheus can read metrics
+oc adm policy add-scc-to-user anyuid -z default   #damn!  allow containers with root USER will fix in future
+oc new-app grafana/grafana   #Deploy grafana
+oc volume dc/grafana --remove --name=grafana-volume-1  #Some strange fix to make grafana work
+oc volume dc/grafana --remove --name=grafana-volume-2  #Some strange fix to make grafana work
+```
+
+### Grafana Integration
+```sh
+oc adm policy add-cluster-role-to-user cluster-reader -z hawkular -n openshift-infra
+grafana-cli plugins install hawkular-datasource  #inside grafna pod & make this persistant 
+```
+
+Datasource
+
+Hawkular settings  ---
+Type: Hawkular
+URL https://hawkular-metrics.cloud.expertsfactory.com/hawkular/metrics
+Access: direct  (unchecked, unchecked)
+Tenant:   openshift-infra #or any project which you want to track #IMP
+Token:    oc sa get-token hawkular
+
+Dashboard
+ "pluginId": "hawkular-datasource",
+ Working sample: https://raw.githubusercontent.com/jotak/hawkular-dropwizard-sample/master/grafana/grafana-dropwizard-sample.json
+ 
+
