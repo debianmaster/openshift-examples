@@ -9,7 +9,7 @@ oc patch oauthclient/openshift-web-console -p '{"redirectURIs":["https://localho
 
 
 
-### 
+### On Web console
 ```sh
 git clone https://github.com/openshift/origin-web-console
 cd origin-web-console
