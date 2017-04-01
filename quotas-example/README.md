@@ -4,7 +4,8 @@ oc create clusterquota for-user \
      --hard pods=10 \
      --hard secrets=20 \
      --hard limits.memory=2Gi \
-     --hard limits.storage=1Gi
+     --hard limits.storage=1Gi \
+     --hard requests.storage=10Gi
 ```     
 
 ```yaml
