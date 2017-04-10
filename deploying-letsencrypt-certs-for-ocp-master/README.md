@@ -1,4 +1,7 @@
-> letsencrypt gives you following certs /keys   
+# This demo helps you deploy letsencrypt certs to your openshift-master web  console
+
+> letsencrypt gives you following certs /keys after successful domain verficiation
+
 ```sh
 cert1.pem  chain1.pem  fullchain1.pem  privkey1.pem
 ```
