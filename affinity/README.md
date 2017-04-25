@@ -2,7 +2,7 @@
 oc get nodes -o wide --show-labels=true
 oc get pods --show-labels=true
 ```
-
+> Paste this inside `spec`  or `annotations` 
 ```yaml
   affinity:
     podAffinity:
