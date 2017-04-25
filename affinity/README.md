@@ -1,17 +1,21 @@
 ```yaml
-    scheduler.alpha.kubernetes.io/affinity: |
-      {
-        "podAntiAffinity": {
-          "requiredDuringSchedulingIgnoredDuringExecution": [{
-            "labelSelector": {
-              "matchExpressions": [{
-                "key": "docker-registry",
-                "operator": "In",
-                "values":["default"]
-              }]
-            },
-            "topologyKey": "kubernetes.io/hostname"
-          }]
-        }
-      }
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: security
+            operator: In
+            values:
+            - S1
+        topologyKey: failure-domain.beta.kubernetes.io/zone
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: security
+            operator: In
+            values:
+            - S2
+        topologyKey: kubernetes.io/hostname
 ```      
