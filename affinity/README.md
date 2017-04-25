@@ -1,3 +1,7 @@
+```sh
+oc get nodes -o wide --show-labels=true
+```
+
 ```yaml
   affinity:
     podAffinity:
@@ -9,6 +13,10 @@
             values:
             - S1
         topologyKey: failure-domain.beta.kubernetes.io/zone
+```      
+
+```yaml
+  affinity:
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
       - labelSelector:
@@ -18,4 +26,4 @@
             values:
             - S2
         topologyKey: kubernetes.io/hostname
-```      
+```        
