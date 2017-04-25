@@ -1,5 +1,6 @@
 ```sh
 oc get nodes -o wide --show-labels=true
+oc get pods --show-labels=true
 ```
 
 ```yaml
