@@ -12,7 +12,7 @@ oc get nodes -o wide --show-labels=true
             operator: In
             values:
             - S1
-        topologyKey: failure-domain.beta.kubernetes.io/zone
+        topologyKey: kubernetes.io/hostname
 ```      
 
 ```yaml
