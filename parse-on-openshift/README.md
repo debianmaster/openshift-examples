@@ -1,14 +1,16 @@
+Env vars for Dashboard
+    
 PARSE_DASHBOARD_CONFIG=
 ```json
 {
   "apps": [
     {
       "serverURL": "https://parse-server-example-test.10.0.0.145.xip.io/parse",
-      "appId": "ruchi",
-      "masterKey": "ruchi_key",
-      "appName": "ruchi",
-      "javascriptKey": "ruchi_key",
-      "restKey": "ruchi_key",
+      "appId": "myappId",
+      "masterKey": "supersecret",
+      "appName": "myappId",
+      "javascriptKey": "supersecret",
+      "restKey": "supersecret",
       "production": true
     }
   ],
