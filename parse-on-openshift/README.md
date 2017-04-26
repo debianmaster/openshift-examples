@@ -27,3 +27,13 @@ PARSE_DASHBOARD_CONFIG=
 }
 ```
 PARSE_DASHBOARD_TRUST_PROXY=1
+
+
+> Deploy Dashboard
+oc new-build https://github.com/parse-community/parse-dashboard.git  --name=dash
+oc new-app dash 
+
+
+
+### notes:
+expose all routes on https
