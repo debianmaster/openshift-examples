@@ -10,8 +10,8 @@ oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:fissi
 oc create -f http://fission.io/fission-nodeport.yaml
 oc expose svc controller --port=8888
 oc expose svc router --port=8888
-export FISSION_ROUTER=http://router-fission.192.168.51.120.xip.io
-export FISSION_URL=http://controller-fission.192.168.51.120.xip.io
+export FISSION_ROUTER=$(oc get routes  | grep router-fission | awk '{print $2}')
+export FISSION_URL=$(oc get routes  | grep controller-fission | awk '{print $2}')
 curl http://fission.io/mac/fission > fission && chmod +x fission && sudo mv fission /usr/local/bin/
 fission env create --name nodejs --image fission/node-env
 curl https://raw.githubusercontent.com/fission/fission/master/examples/nodejs/hello.js > hello.js
