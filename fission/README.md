@@ -1,7 +1,6 @@
 ```sh
 git clone https://github.com/fission/fission.git
 cd fission
-oc create -f create -f http://fission.io/fission.yaml
 oc create -f http://fission.io/fission.yaml
 oc adm policy add-scc-to-user anyuid -z default -n fission
 oc adm policy add-scc-to-user anyuid -z default -n fission-function
