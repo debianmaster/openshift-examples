@@ -7,6 +7,9 @@ oc adm policy add-scc-to-user anyuid -z default -n fission-function
 oc adm policy add-scc-to-user privileged -z default -n fission
 oc adm policy add-scc-to-user privileged -z default -n fission-function
 oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:fission:default  -n fission
+oc create -f http://fission.io/fission-nodeport.yaml
+oc expose svc controller --port=8888
+oc expose svc router --port=8888
 export FISSION_ROUTER=http://router-fission.192.168.51.120.xip.io
 export FISSION_URL=http://controller-fission.192.168.51.120.xip.io
 curl http://fission.io/mac/fission > fission && chmod +x fission && sudo mv fission /usr/local/bin/
