@@ -1,4 +1,5 @@
 ```sh
+oc login -u system:admin  ##run as cluster admin 
 git clone https://github.com/fission/fission.git
 cd fission
 oc create -f http://fission.io/fission.yaml
