@@ -20,3 +20,12 @@ fission function create --name hello --env nodejs --code hello.js
 fission route create --method GET --url /hello --function hello
 curl http://$FISSION_ROUTER/hello
 ```
+
+### Pros
+1) Fast starts, Maintains pool of containers
+2) Scales up and down #need to verify more
+
+### Cons
+1) No available connectors to databases / social / message que etc
+
+
