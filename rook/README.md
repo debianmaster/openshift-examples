@@ -11,10 +11,10 @@ oc adm policy add-scc-to-user privileged -z default -n rook
 ```
 
 > Change following in rook-cluster.yaml    
-versionTag: v0.3.1-105-ga19b5f6
+`versionTag: master-latest` to `versionTag: v0.3.1-105-ga19b5f6`
 
-> Change following in rook-operator.yaml
-image: quay.io/rook/rookd:v0.3.1-105-ga19b5f6
+> Change following in rook-operator.yaml   
+`image: quay.io/rook/rookd:master-latest` to `image: quay.io/rook/rookd:v0.3.1-105-ga19b5f6`
 
 ```sh
 oc create -f demo/kubernetes/rook-operator.yaml
