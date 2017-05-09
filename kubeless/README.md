@@ -5,3 +5,16 @@ oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:kubel
 kubeless install
 oc adm policy add-scc-to-user anyuid -z default -n kubeless
 ```
+> Create test.py    
+
+```python
+def foobar(context):
+   print context.json
+   return context.json
+```  
+
+```sh
+kubeless function deploy get-python --runtime python27 --handler test.foobar --from-file test.py --trigger-http
+kubectl get functions -n default
+kubeless function call get-python --data '{"echo": "echo echo"}'
+```
