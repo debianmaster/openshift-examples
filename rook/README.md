@@ -33,3 +33,16 @@ oc edit scc restricted #as cluster-admin
 #add following to volumes section at the botton
 - cephFS
 ```
+
+> Cleanup
+```sh
+oc delete -f rook-operator.yaml
+oc delete -n rook cluster rook
+oc delete -n rook serviceaccount rook-api
+oc delete clusterrole rook-api
+oc delete clusterrolebinding rook-api
+oc delete thirdpartyresources cluster.rook.io pool.rook.io
+oc delete secret rook-rook-user
+oc delete namespace rook
+oc delete -n default serviceaccount rook-operator
+```
