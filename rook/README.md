@@ -24,3 +24,12 @@ oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:rook:
 oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:default:rook-operator
 rook filesystem create --name testFS
 ```
+
+
+> Other steps  
+
+```sh
+oc edit scc restricted #as cluster-admin
+#add following to volumes section at the botton
+- cephFS
+```
