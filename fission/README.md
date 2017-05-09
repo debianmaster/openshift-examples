@@ -8,11 +8,13 @@ oc adm policy add-scc-to-user anyuid -z default -n fission-function
 oc adm policy add-scc-to-user privileged -z default -n fission
 oc adm policy add-scc-to-user privileged -z default -n fission-function
 oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:fission:default  -n fission
+
+
 oc create -f http://fission.io/fission-nodeport.yaml
-oc expose svc controller --port=8888
-oc expose svc router --port=8888
-export FISSION_ROUTER=$(oc get routes  | grep router-fission | awk '{print $2}')
-export FISSION_URL=$(oc get routes  | grep controller-fission | awk '{print $2}')
+oc expose svc controller --port=8888 -n fission
+oc expose svc router --port=8888 -n fission
+export FISSION_ROUTER=$(oc get routes -n fission | grep router-fission | awk '{print $2}')
+export FISSION_URL=$(oc get routes -n fission | grep controller-fission | awk '{print $2}')
 curl http://fission.io/mac/fission > fission && chmod +x fission && sudo mv fission /usr/local/bin/
 fission env create --name nodejs --image fission/node-env
 curl https://raw.githubusercontent.com/fission/fission/master/examples/nodejs/hello.js > hello.js
