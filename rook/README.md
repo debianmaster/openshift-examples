@@ -1,6 +1,7 @@
 ### WIP
 
 ```sh
+yum install ceph-common -y
 git clone https://github.com/rook/rook.git
 cd rook
 git checkout  0554a83e3a3a0b3e176793d4ba4b7d14be97525d  #before kube1.6
@@ -53,3 +54,9 @@ oc delete secret rook-rook-user
 oc delete namespace rook
 oc delete -n default serviceaccount rook-operator
 ```
+
+> Bootstrap   
+```sh
+yum install git vim ceph-common docker -y
+
+
