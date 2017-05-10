@@ -22,7 +22,14 @@ sleep 10 #let operator pod get created.
 oc create -f demo/kubernetes/rook-cluster.yaml
 oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:rook:rook-api
 oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:default:rook-operator
+wget https://github.com/rook/rook/releases/download/v0.3.1/rook-v0.3.1-linux-amd64.tar.gz  ##linux binary
+tar -xvf rook-v0.3.1-linux-amd64.tar.gz
+mv rook /usr/bin/rook
+yum install ceph-common -y
+oc get pods -n #select api pod
+oc port-forward rook-api-3234056974-hqbqr 8124  
 rook filesystem create --name testFS
+
 ```
 
 
