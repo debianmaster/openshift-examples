@@ -30,6 +30,9 @@ yum install ceph-common -y
 oc get pods -n #select api pod
 oc port-forward rook-api-3234056974-hqbqr 8124  
 rook filesystem create --name testFS
+export MONS=$(oc -n rook get pod mon0 mon1 mon2 -o json|jq ".items[].status.podIP"|tr -d "\""|sed -e 's/$/:6790/'|paste -s -d, -)
+# update demo/kubernetes/rook-storageclass.yaml
+
 
 ```
 
