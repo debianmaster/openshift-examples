@@ -64,4 +64,8 @@ mv openshift-origin-client-tools-v3.6.0-alpha.1-46942ad-linux-64bit/oc /usr/bin/
 #--insecure-registry 172.30.0.0/16 to vi `/etc/sysconfig/docker OPTIONS`
 systemctl restart docker
 oc cluster up --public-hostname='34.209.8.118.nip.io' --routing-suffix='34.209.8.118.nip.io'
+wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 && mv jq-linux64 /usr/bin/jq && chmod +x /usr/bin/jq
+
+
+
 
