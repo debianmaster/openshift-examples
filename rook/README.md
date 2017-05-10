@@ -57,6 +57,11 @@ oc delete -n default serviceaccount rook-operator
 
 > Bootstrap   
 ```sh
-yum install git vim ceph-common docker -y
-
+yum install git vim ceph-common docker wget -y
+wget https://github.com/openshift/origin/releases/download/v3.6.0-alpha.1/openshift-origin-client-tools-v3.6.0-alpha.1-46942ad-linux-64bit.tar.gz
+tar -xvf openshift-origin-client-tools-v3.6.0-alpha.1-46942ad-linux-64bit.tar.gz
+mv openshift-origin-client-tools-v3.6.0-alpha.1-46942ad-linux-64bit/oc /usr/bin/oc
+#--insecure-registry 172.30.0.0/16 to vi `/etc/sysconfig/docker OPTIONS`
+systemctl restart docker
+oc cluster up --public-hostname='34.209.8.118.nip.io' --routing-suffix='34.209.8.118.nip.io'
 
