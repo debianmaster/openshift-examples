@@ -9,7 +9,8 @@
 
 ```sh
 $ sudo su
-# yum install docker
+# yum install docker wget -y
+# sed -i '/OPTIONS=.*/c\OPTIONS="--selinux-enabled --insecure-registry 172.30.0.0/16"' /etc/sysconfig/docker
 # systemctl restart docker
 # docker ps
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
