@@ -1,6 +1,7 @@
 
 ### Before you start 
-> I have a Centos machine on AWS with public ip 34.209.8.118
+> I have a Centos machine on AWS with public ip 34.209.8.118  and port 8443 is open to public
+> Replace 34.209.8.118 with your pubcli ip.  
 
 
 ### Quick start
