@@ -15,4 +15,11 @@ setenforce 0
 yum install -y docker kubelet kubeadm kubectl kubernetes-cni
 systemctl enable docker && systemctl start docker
 systemctl enable kubelet && systemctl start kubelet
+
+sudo cp /etc/kubernetes/admin.conf $HOME/
+sudo chown $(id -u):$(id -g) $HOME/admin.conf
+export KUBECONFIG=$HOME/admin.conf
+
+kubectl get nodes
+
 ```
