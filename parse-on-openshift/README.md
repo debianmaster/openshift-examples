@@ -1,6 +1,7 @@
 Env vars for Dashboard
 
 PARSE_DASHBOARD_ALLOW_INSECURE_HTTP=true 
+PARSE_DASHBOARD_TRUST_PROXY=1
 PARSE_DASHBOARD_CONFIG=
 ```json
 {
@@ -27,12 +28,17 @@ PARSE_DASHBOARD_CONFIG=
   ]
 }
 ```
-PARSE_DASHBOARD_TRUST_PROXY=1
-
 
 > Deploy Dashboard
-oc new-build https://github.com/parse-community/parse-dashboard.git  --name=dash
-oc new-app dash 
+```console
+oc new-app https://github.com/parse-community/parse-dashboard.git  --name=dash   
+oc adm policy add-scc-to-user anyuid -z default   
+oc adm policy add-scc-to-user privileged -z default   
+oc expose dc dash --port=4040
+oc expose svc dash
+```
+
+
 
 
 
