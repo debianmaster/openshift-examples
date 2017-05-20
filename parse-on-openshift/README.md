@@ -1,3 +1,4 @@
+oc create -f https://raw.githubusercontent.com/debianmaster/openshift-examples/master/parse-on-openshift/template.json   
 Env vars for Dashboard
 
 PARSE_DASHBOARD_ALLOW_INSECURE_HTTP=true 
