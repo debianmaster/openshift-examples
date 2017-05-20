@@ -1,5 +1,6 @@
 Env vars for Dashboard
-    
+
+PARSE_DASHBOARD_ALLOW_INSECURE_HTTP=true 
 PARSE_DASHBOARD_CONFIG=
 ```json
 {
