@@ -8,7 +8,7 @@
 
 
 ### Create a namespace and provide appropriate permissions
-```console
+```sh
 $ oc new-project parse
 $ oc adm policy add-scc-to-user anyuid -z default -n parse
 $ oc adm policy add-scc-to-user privileged -z default -n parse
@@ -16,7 +16,7 @@ $ oc adm policy add-scc-to-user privileged -z default -n parse
 
 
 ### Importing Parse server example template
-```console
+```sh
 $ oc create -f https://raw.githubusercontent.com/parse-community/parse-server-example/master/openshift.json
 $ oc new-app parse-server-example  -e APP_ID=myappid -e MASTER_KEY=supersecret
 $ oc patch route/parse-server-example -p '{"spec":{"tls": {"termination":"edge"}}}'
@@ -28,7 +28,7 @@ $ oc volume dc/mongodb --remove --name mongodb-data #incase you dont have persis
 
 
 ### Deploy Parse Dashboard
-```console
+```sh
 $ oc project parse
 $ oc new-app https://github.com/parse-community/parse-dashboard.git \
 -e PARSE_DASHBOARD_ALLOW_INSECURE_HTTP=true \
