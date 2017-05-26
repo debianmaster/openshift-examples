@@ -1,4 +1,4 @@
-```javascript
+
 'use strict';
 
 // You use the `ResourceVersion` when making the initial query.  So keep track
@@ -51,4 +51,4 @@ req.on('error', (err) => {
 
 req.end()
 
-```
+
