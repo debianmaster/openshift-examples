@@ -1,33 +1,38 @@
-```sh
-curl -L https://git.io/getIstio | sh -
-export PATH="$PATH:/Users/jjonagam/istio/istio-0.1.5/bin"
+#!/bin/bash
 
-oc project default
-oc adm policy add-scc-to-user anyuid  -z default
-oc adm policy add-scc-to-user privileged -z default
-oc patch scc/privileged --patch '{"allowedCapabilities":["NET_ADMIN"]}'
+. $(dirname ${BASH_SOURCE})/../util.sh
 
-kubectl apply -f install/kubernetes/istio.yaml
+desc 'Install Istio'
 
-oc adm policy add-cluster-role-to-user cluster-admin -z istio-manager-service-account
-oc adm policy add-cluster-role-to-user cluster-admin -z istio-ingress-service-account
-oc adm policy add-cluster-role-to-user cluster-admin  -z default
+run 'oc project default'
+run 'oc adm policy add-scc-to-user anyuid  -z default'
+run 'oc adm policy add-scc-to-user privileged -z default'
+run "oc patch scc/privileged --patch '{"allowedCapabilities":["NET_ADMIN"]}'"
 
-oc adm policy add-scc-to-user anyuid  -z istio-ingress-service-account
-oc adm policy add-scc-to-user privileged -z istio-ingress-service-account
+desc "Install Istio Service Mesh"
+run 'git clone https://github.com/istio/istio .'
+run 'oc apply -f install/kubernetes/istio.yaml'
 
+run 'oc adm policy add-cluster-role-to-user cluster-admin -z istio-manager-service-account'
+run 'oc adm policy add-cluster-role-to-user cluster-admin -z istio-ingress-service-account'
+run 'oc adm policy add-cluster-role-to-user cluster-admin  -z default'
 
-oc adm policy add-scc-to-user anyuid  -z istio-manager-service-account
-oc adm policy add-scc-to-user privileged -z istio-manager-service-account
-
-
-
-kubectl apply -f install/kubernetes/addons/prometheus.yaml
-kubectl apply -f install/kubernetes/addons/grafana.yaml
-kubectl apply -f install/kubernetes/addons/servicegraph.yaml
+run 'oc adm policy add-scc-to-user anyuid  -z istio-ingress-service-account'
+run 'oc adm policy add-scc-to-user privileged -z istio-ingress-service-account'
 
 
-kubectl apply -f <(istioctl kube-inject  -f samples/apps/bookinfo/bookinfo.yaml)
+run 'oc adm policy add-scc-to-user anyuid  -z istio-manager-service-account'
+run 'oc adm policy add-scc-to-user privileged -z istio-manager-service-account'
+
+
+desc 'Isntall addons'
+run 'oc apply -f install/kubernetes/addons/prometheus.yaml'
+run 'oc apply -f install/kubernetes/addons/grafana.yaml'
+run 'oc apply -f install/kubernetes/addons/servicegraph.yamli'
+
+
+desc 'Deploy sample app'
+run 'oc apply -f <(istioctl kube-inject  -f samples/apps/bookinfo/bookinfo.yaml)'
 
 
 oc new-project mycliproject-christianh814 --description="My CLI Project" --display-name="CLI Project"
