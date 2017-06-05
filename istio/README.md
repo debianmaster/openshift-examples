@@ -3,15 +3,15 @@
 `oc login -u system:admin`
 
 ## Install Istio
-`oc project default`
-`oc adm policy add-scc-to-user anyuid  -z default`
-`oc adm policy add-scc-to-user privileged -z default``
-`oc patch scc/privileged --patch `{\"allowedCapabilities\":[\"NET_ADMIN\"]}``
+`oc project default`  
+`oc adm policy add-scc-to-user anyuid  -z default`  
+`oc adm policy add-scc-to-user privileged -z default`  
+`oc patch scc/privileged --patch {\"allowedCapabilities\":[\"NET_ADMIN\"]}`  
 
 
 
 ## Install Istio Service Mesh
-`git clone https://github.com/istio/istio`
+`git clone https://github.com/istio/istio`  
 
 
 
