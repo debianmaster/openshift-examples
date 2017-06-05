@@ -20,7 +20,7 @@ backtotop
 
 desc 'Install Istio Service Mesh'
 run 'git clone https://github.com/istio/istio'
-run 'oc apply -f istio/install/kubernetes/istio.yaml'
+
 
 backtotop
 
@@ -35,6 +35,7 @@ run 'oc adm policy add-scc-to-user privileged -z istio-ingress-service-account'
 
 run 'oc adm policy add-scc-to-user anyuid  -z istio-manager-service-account'
 run 'oc adm policy add-scc-to-user privileged -z istio-manager-service-account'
+run 'oc apply -f istio/install/kubernetes/istio.yaml'
 
 backtotop
 
