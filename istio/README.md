@@ -51,4 +51,5 @@
 
 ## Test service mesh / using grafana pod (it can be another pod) 
 `export GRAFANA=$(oc get pods -l app=grafana -o jsonpath={.items[0].metadata.name})`  
-`oc exec $GRAFANA -- curl -o /dev/null -s -w "%{http_code}\n" http://istio-ingress/productpage`  
+`oc exec $GRAFANA -- curl -o /dev/null -s -w "%{http_code}\n" http://istio-ingress/productpage` 
+`open http://$(oc get routes servicegraph -o jsonpath={.spec.host})/dotviz` 
