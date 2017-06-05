@@ -10,8 +10,7 @@ oc project default
 
 oc adm policy add-scc-to-user anyuid  -z default
 oc adm policy add-scc-to-user privileged -z default
-
-
+oc patch scc/privileged --patch '{"allowedCapabilities":["NET_ADMIN"]}'
 
 kubectl apply -f install/kubernetes/istio.yaml
 
@@ -32,7 +31,6 @@ kubectl apply -f install/kubernetes/addons/prometheus.yaml
 kubectl apply -f install/kubernetes/addons/grafana.yaml
 kubectl apply -f install/kubernetes/addons/servicegraph.yaml
 
-# ADD SCC
 
 kubectl apply -f <(istioctl kube-inject  -f samples/apps/bookinfo/bookinfo.yaml)
 
