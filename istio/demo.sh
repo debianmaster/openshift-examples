@@ -46,18 +46,18 @@ run 'oc apply -f istio/install/kubernetes/addons/servicegraph.yaml'
 
 backtotop
 
-desc 'Deploy sample app'
-desc 'Install istioctl first'
-desc 'curl -L https://git.io/getIstio | sh -'
-desc 'export PATH="$PATH:/Users/jjonagam/istio/istio-0.1.5/bin"'
+desc 'Deploy sample app'  
+desc 'Install istioctl first'  
+desc 'curl -L https://git.io/getIstio | sh -'  
+desc 'export PATH="$PATH:/Users/jjonagam/istio/istio-0.1.5/bin"'  
 
 backtotop
-desc 'Deploy bookInfo app'
-run 'oc apply -f <(istioctl kube-inject  -f istio/samples/apps/bookinfo/bookinfo.yaml)'
-run 'oc expose svc servicegraph'
+desc 'Deploy bookInfo app'  
+run 'oc apply -f <(istioctl kube-inject  -f istio/samples/apps/bookinfo/bookinfo.yaml)'  
+run 'oc expose svc servicegraph'  
 
 backtotop
-desc 'Test service mesh / using grafana pod (it can be another pod)'
-run 'export GRAFANA=$(oc get pods -l app=grafana -o jsonpath={.items[0].metadata.name})'
-run 'oc exec $GRAFANA -- curl -o /dev/null -s -w "%{http_code}\n" http://istio-ingress/productpage'
-run 'open http://$(oc get routes servicegraph -o jsonpath={.spec.host})/dotviz'
+desc 'Test service mesh / using grafana pod (it can be another pod)'  
+run 'export GRAFANA=$(oc get pods -l app=grafana -o jsonpath={.items[0].metadata.name})'  
+run 'oc exec $GRAFANA -- curl -o /dev/null -s -w "%{http_code}\n" http://istio-ingress/productpage'  
+run 'open http://$(oc get routes servicegraph -o jsonpath={.spec.host})/dotviz'  
