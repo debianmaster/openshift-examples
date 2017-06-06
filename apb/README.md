@@ -8,6 +8,5 @@ brew uninstall ansible
 pip install ansible
 pip install docker-py
 sudo chown -R cjonagam:staff /persistedvolumes /docker_shared/origin
-
 sudo ./run_mac_local.sh
 ```
