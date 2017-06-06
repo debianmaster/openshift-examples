@@ -7,4 +7,5 @@ sudo ifconfig lo0 alias 192.168.37.1
 brew uninstall ansible
 pip install ansible
 pip install docker-py
+sudo ./run_mac_local.sh
 ```
