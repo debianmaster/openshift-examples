@@ -11,7 +11,9 @@
 
 
 ## Install Istio Service Mesh
-`git clone https://github.com/istio/istio`  
+`git clone https://github.com/istio/istio`
+`cd istio && git checkout 0.1.6`
+`cd ..`
 
 
 
