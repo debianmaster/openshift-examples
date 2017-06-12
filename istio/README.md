@@ -11,9 +11,9 @@
 
 
 ## Install Istio Service Mesh
-`git clone https://github.com/istio/istio`
-`cd istio && git checkout 0.1.6`   
-`cd ..`
+`git clone https://github.com/istio/istio`   
+`cd istio && git checkout 0.1.6`      
+`cd ..`    
 
 
 
@@ -46,7 +46,7 @@
 ## Deploy sample app
 ### Install istioctl first`  
 `curl -L https://git.io/getIstio | sh -`  
-`export PATH="$PATH:/Users/jjonagam/istio/istio-0.1.5/bin"`  
+`export PATH="$PATH:/Users/jjonagam/istio/istio-0.1.6/bin"`  
 
 
 ## Deploy bookInfo app
