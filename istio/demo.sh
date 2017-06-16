@@ -63,4 +63,24 @@ desc 'Test service mesh / using grafana pod (it can be another pod)'
 run 'open http://$(oc get routes servicegraph -o jsonpath={.spec.host})/dotviz' 
 run 'export GRAFANA=$(oc get pods -l app=grafana -o jsonpath={.items[0].metadata.name})'
 run 'oc exec $GRAFANA -- curl -o /dev/null -s -w "%{http_code}\n" http://istio-ingress/productpage'  
+
+backtotop
+desc 'Integrating services into istio'
+desc 'Lets look at apps.yaml'
+run 'open https://istio.io/docs/tasks/integrating-services-into-istio.html'
+run 'istioctl kube-inject -f ../apps.yaml'
+run "CLIENT=$(kubectl get pod -l app=service-one -o jsonpath='{.items[0].metadata.name}')"
+run "SERVER=$(kubectl get pod -l app=service-two -o jsonpath='{.items[0].metadata.name}')"
+run "kubectl exec -it ${CLIENT} -c app -- curl service-two:80 | grep x-request-id"
+
+backtotop
+run "kubectl logs ${CLIENT} proxy"
+run "kubectl logs ${SERVER} proxy"
+run "kubectl exec -it ${SERVER} -c app -- curl localhost:8080 | grep x-request-id"
+run "kubectl get deployment service-one -o yaml"
+
+
+
+
+
  
