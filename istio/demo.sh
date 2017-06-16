@@ -20,40 +20,42 @@ backtotop
 
 desc 'Install Istio Service Mesh'
 run 'git clone https://github.com/istio/istio'
+run 'cd istio'
+run 'git checkout 0.1.6'
 
 
 backtotop
 
 desc 'Apply necessary permissions '
 
-run 'oc adm policy add-cluster-role-to-user cluster-admin -z istio-manager-service-account'
+run 'oc adm policy add-cluster-role-to-user cluster-admin -z default'
+run 'oc adm policy add-cluster-role-to-user cluster-admin -z istio-pilot-service-account'
 run 'oc adm policy add-cluster-role-to-user cluster-admin -z istio-ingress-service-account'
-run 'oc adm policy add-cluster-role-to-user cluster-admin  -z default'
 
-run 'oc adm policy add-scc-to-user anyuid  -z istio-ingress-service-account'
+run 'oc adm policy add-scc-to-user anyuid -z istio-ingress-service-account'
 run 'oc adm policy add-scc-to-user privileged -z istio-ingress-service-account'
 
-run 'oc adm policy add-scc-to-user anyuid  -z istio-manager-service-account'
-run 'oc adm policy add-scc-to-user privileged -z istio-manager-service-account'
-run 'oc apply -f istio/install/kubernetes/istio.yaml'
+run 'oc adm policy add-scc-to-user anyuid -z istio-pilot-service-account'
+run 'oc adm policy add-scc-to-user privileged -z istio-pilot-service-account'
+run 'oc apply -f install/kubernetes/istio.yaml'
 
 backtotop
 
 desc 'Isntall addons'
-run 'oc apply -f istio/install/kubernetes/addons/prometheus.yaml'
-run 'oc apply -f istio/install/kubernetes/addons/grafana.yaml'
-run 'oc apply -f istio/install/kubernetes/addons/servicegraph.yaml'
+run 'oc apply -f install/kubernetes/addons/prometheus.yaml'
+run 'oc apply -f install/kubernetes/addons/grafana.yaml'
+run 'oc apply -f install/kubernetes/addons/servicegraph.yaml'
 
 backtotop
 
 desc 'Deploy sample app'  
 desc 'Install istioctl first'  
 desc 'curl -L https://git.io/getIstio | sh -'  
-desc 'export PATH="$PATH:/Users/jjonagam/istio/istio-0.1.5/bin"'  
+desc 'export PATH="$PATH:/Users/jjonagam/istio/istio-0.1.6/bin"'  
 
 backtotop
 desc 'Deploy bookInfo app'  
-run 'oc apply -f <(istioctl kube-inject  -f istio/samples/apps/bookinfo/bookinfo.yaml)'  
+run 'oc apply -f <(istioctl kube-inject  -f samples/apps/bookinfo/bookinfo.yaml)'  
 run 'oc expose svc servicegraph'  
 
 backtotop
