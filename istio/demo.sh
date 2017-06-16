@@ -60,6 +60,7 @@ run 'oc expose svc servicegraph'
 
 backtotop
 desc 'Test service mesh / using grafana pod (it can be another pod)'  
-run 'export GRAFANA=$(oc get pods -l app=grafana -o jsonpath={.items[0].metadata.name})'  
+run 'open http://$(oc get routes servicegraph -o jsonpath={.spec.host})/dotviz' 
+run 'export GRAFANA=$(oc get pods -l app=grafana -o jsonpath={.items[0].metadata.name})'
 run 'oc exec $GRAFANA -- curl -o /dev/null -s -w "%{http_code}\n" http://istio-ingress/productpage'  
-run 'open http://$(oc get routes servicegraph -o jsonpath={.spec.host})/dotviz'  
+ 
