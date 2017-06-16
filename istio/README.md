@@ -32,14 +32,14 @@
 `oc adm policy add-scc-to-user anyuid  -z istio-pilot-service-account`  
 `oc adm policy add-scc-to-user privileged -z istio-pilot-service-account`  
 
-`oc apply -f istio/install/kubernetes/istio.yaml`  
+`oc apply -f install/kubernetes/istio.yaml`  
 
 
 
 ## Isntall addons 
-`oc apply -f istio/install/kubernetes/addons/prometheus.yaml`  
-`oc apply -f istio/install/kubernetes/addons/grafana.yaml`  
-`oc apply -f istio/install/kubernetes/addons/servicegraph.yaml`  
+`oc apply -f install/kubernetes/addons/prometheus.yaml`  
+`oc apply -f install/kubernetes/addons/grafana.yaml`  
+`oc apply -f install/kubernetes/addons/servicegraph.yaml`  
 
 
 
@@ -50,7 +50,7 @@
 
 
 ## Deploy bookInfo app
-`oc apply -f <(istioctl kube-inject  -f istio/samples/apps/bookinfo/bookinfo.yaml)`  
+`oc apply -f <(istioctl kube-inject  -f samples/apps/bookinfo/bookinfo.yaml)`  
 `oc expose svc servicegraph`  
 
 
