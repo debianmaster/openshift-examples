@@ -1,3 +1,4 @@
 ```sh
-oc rsync ./ store-8-kp5j1:/opt/app-root/src --exclude=["node_modules/*",".git/*"]
+export POD=$(oc get pods -l app=store -o jsonpath={.items[0].metadata.name})
+oc rsync ./ $POD:/opt/app-root/src --exclude=["node_modules/*",".git/*"]
 ```
