@@ -1,7 +1,8 @@
 
 > Taken from  https://github.com/ibotty/openshift-letsencrypt  
+> This is a TL;DR version of automating provisioning of certs from letsencrypt.
 
-### generate account-key
+### Generate dehydrate account-key
 ```sh
 $ oc new-project letsencrypt
 $ git clone https://github.com/lukas2511/dehydrated.git
