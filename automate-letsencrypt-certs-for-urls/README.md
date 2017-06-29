@@ -1,4 +1,4 @@
-### WIP
+
 > Taken from  https://github.com/ibotty/openshift-letsencrypt  
 
 ### generate account-key
