@@ -8,10 +8,13 @@ $ oc new-project letsencrypt
 $ git clone https://github.com/lukas2511/dehydrated.git
 $ cd dehydrated
 $ ./dehydrated --register --accept-terms
+
 $ ls accounts/
 aHR0cHM6Ly9hYL2RpcmVjdG9yeQo
+
 $ ls accounts/aHR0cHM6Ly9hYL2RpcmVjdG9yeQo/
 account_key.pem		registration_info.json
+
 $ oc secrets new letsencrypt-creds account-key=accounts/aHR0cHM6Ly9hYL2RpcmVjdG9yeQo/account_key.pem
 ```
 
