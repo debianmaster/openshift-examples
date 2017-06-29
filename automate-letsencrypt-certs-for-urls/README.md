@@ -1,5 +1,5 @@
 
-> Taken from  https://github.com/ibotty/openshift-letsencrypt  
+> Taken from  https://github.com/ibotty/openshift-letsencrypt  and all credit of this work goes to @ibotty
 > This is a TL;DR version of automating provisioning of certs from letsencrypt.
 
 ### Generate dehydrate account-key
