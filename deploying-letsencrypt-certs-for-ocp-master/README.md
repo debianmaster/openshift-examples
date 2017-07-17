@@ -1,4 +1,4 @@
-# This demo helps you deploy letsencrypt certs to your openshift-master web  console
+# Not working
 
 > letsencrypt gives you following certs /keys after successful domain verficiation
 
