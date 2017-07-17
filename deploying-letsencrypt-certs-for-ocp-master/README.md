@@ -14,3 +14,10 @@ oc secrets new router-certs tls.crt=fullchain1.pem tls.key=privkey1.pem --type='
 oc deploy dc/router --latest -n default
 ```
 
+
+### To obtain certs
+```sh
+https://community.letsencrypt.org/t/installing-postfix-with-lets-encrypt-certificate-using-certbot-rhel7/20445
+certonly
+certbot certonly --standalone --webroot -w /var/www/html/ck.osecloud.com -d ck.osecloud.com  --email myemail@gmail.com
+```
