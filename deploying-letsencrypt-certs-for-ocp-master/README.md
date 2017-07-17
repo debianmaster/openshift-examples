@@ -19,5 +19,6 @@ oc deploy dc/router --latest -n default
 ```sh
 https://community.letsencrypt.org/t/installing-postfix-with-lets-encrypt-certificate-using-certbot-rhel7/20445
 certonly
+certbot certonly --standalone -d ck.osecloud.com  --email myemail@gmail.com or 
 certbot certonly --standalone --webroot -w /var/www/html/ck.osecloud.com -d ck.osecloud.com  --email myemail@gmail.com
 ```
