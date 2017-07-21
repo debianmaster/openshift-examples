@@ -1,3 +1,11 @@
+```sh
+oc new-project
+oc adm policy add-scc-to-user privileged -z default
+oc adm policy add-scc-to-user anyuid  -z default
+```
+
+### import this yaml
+
 ```yml
 ---
 apiVersion: v1
