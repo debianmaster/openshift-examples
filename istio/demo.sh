@@ -11,7 +11,7 @@ backtotop
 
 desc 'Install Istio'
 
-run 'oc project default'
+#run 'oc project default'
 run 'oc adm policy add-scc-to-user anyuid  -z default'
 run 'oc adm policy add-scc-to-user privileged -z default'
 run "oc patch scc/privileged --patch '{\"allowedCapabilities\":[\"NET_ADMIN\"]}'"
