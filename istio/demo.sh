@@ -12,9 +12,9 @@ backtotop
 desc 'Install Istio'
 
 #run 'oc project default'
-run 'oc adm policy add-scc-to-user anyuid  -z default'
-run 'oc adm policy add-scc-to-user privileged -z default'
-run "oc patch scc/privileged --patch '{\"allowedCapabilities\":[\"NET_ADMIN\"]}'"
+run 'oc adm policy add-scc-to-user anyuid  -z default && \
+     oc adm policy add-scc-to-user privileged -z default'
+run  "oc patch scc/privileged --patch '{\"allowedCapabilities\":[\"NET_ADMIN\"]}'"
 
 backtotop
 
@@ -28,16 +28,14 @@ backtotop
 
 desc 'Apply necessary permissions '
 
-run 'oc adm policy add-cluster-role-to-user cluster-admin -z default'
-run 'oc adm policy add-cluster-role-to-user cluster-admin -z istio-pilot-service-account'
-run 'oc adm policy add-cluster-role-to-user cluster-admin -z istio-ingress-service-account'
-
-run 'oc adm policy add-scc-to-user anyuid -z istio-ingress-service-account'
-run 'oc adm policy add-scc-to-user privileged -z istio-ingress-service-account'
-
-run 'oc adm policy add-scc-to-user anyuid -z istio-pilot-service-account'
-run 'oc adm policy add-scc-to-user privileged -z istio-pilot-service-account'
-run 'oc apply -f install/kubernetes/istio.yaml'
+run 'oc adm policy add-cluster-role-to-user cluster-admin -z default && \
+     oc adm policy add-cluster-role-to-user cluster-admin -z istio-pilot-service-account && \
+     oc adm policy add-cluster-role-to-user cluster-admin -z istio-ingress-service-account && \
+     oc adm policy add-scc-to-user anyuid -z istio-ingress-service-account && \
+     oc adm policy add-scc-to-user privileged -z istio-ingress-service-account && \
+     oc adm policy add-scc-to-user anyuid -z istio-pilot-service-account && \
+     oc adm policy add-scc-to-user privileged -z istio-pilot-service-account'
+run  'oc apply -f install/kubernetes/istio.yaml'
 
 backtotop
 
