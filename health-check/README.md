@@ -9,6 +9,11 @@ livenessProbe:
     initialDelaySeconds: 15
     timeoutSeconds: 1
 ```
+> Apply with patch command
+```
+kubectl patch deployment welcome --type='json' -p='[{"op": "add","path": "/spec/template/spec/containers/0/livenessProbe","value":{"httpGet":{"path":"/healthz","port":"liveness-port"}}}]'
+```
+
 > Full Deployment config    
 
 ```yml
