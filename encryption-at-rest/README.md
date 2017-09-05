@@ -4,7 +4,7 @@
 > Start api server with `--experimental-encryption-provider-config`  flag
 
 ## Setp 2
-> Import following object info k8s as cluster-admin.    this will encrypt all configmaps going forward
+> flag should point to a file with follwoing content.    this will encrypt all configmaps going forward
 
 ```yaml
 kind: EncryptionConfig
