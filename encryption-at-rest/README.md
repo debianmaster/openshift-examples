@@ -21,5 +21,5 @@ resources:
  
  ## Step 3
  > Restart api server
- 
+ > Now all the configmaps are ecnrypted in etcd and decrypted automatically when requested via API
  
