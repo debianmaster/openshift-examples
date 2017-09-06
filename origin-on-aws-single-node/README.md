@@ -16,7 +16,7 @@ systemctl restart docker
 
 docker ps
 
-wget https://github.com/openshift/origin/releases/download/v3.6.0-rc.0/openshift-origin-client-tools-v3.6.0-rc.0-98b3d56-linux-64bit.tar.gz
+wget https://github.com/openshift/origin/releases/download/v3.6.0/openshift-origin-client-tools-v3.6.0-c4dd4cf-linux-64bit.tar.gz
 
 tar -xvf openshift-origin-client-tools-v3.6.0-rc.0-98b3d56-linux-64bit.tar.gz
 mv  openshift-origin-client-tools-v3.6.0-rc.0-98b3d56-linux-64bit/oc /usr/bin/oc
