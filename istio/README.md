@@ -24,13 +24,16 @@
 
 `oc adm policy add-cluster-role-to-user cluster-admin -z istio-pilot-service-account`    
 `oc adm policy add-cluster-role-to-user cluster-admin -z istio-ingress-service-account`    
-   
+`oc adm policy add-cluster-role-to-user cluster-admin -z istio-egress-service-account`    
+
 
 `oc adm policy add-scc-to-user anyuid  -z istio-ingress-service-account`  
-`oc adm policy add-scc-to-user privileged -z istio-ingress-service-account`    
+`oc adm policy add-scc-to-user privileged -z istio-ingress-service-account` 
+`oc adm policy add-scc-to-user privileged -z istio-egress-service-account` 
 
 `oc adm policy add-scc-to-user anyuid  -z istio-pilot-service-account`  
-`oc adm policy add-scc-to-user privileged -z istio-pilot-service-account`  
+`oc adm policy add-scc-to-user privileged -z istio-pilot-service-account` 
+`oc adm policy add-scc-to-user privileged -z istio-egress-service-account` 
 
 `oc apply -f install/kubernetes/istio.yaml`  
 
