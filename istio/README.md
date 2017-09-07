@@ -56,7 +56,7 @@
 
 
 ## Deploy bookInfo app
-`source istio.VERSION`   #if you want stable versions in master
+`source istio.VERSION`   #if you want stable versions in master   
 `oc apply -f <(istioctl kube-inject --hub $PILOT_HUB --tag $PILOT_TAG -f samples/apps/bookinfo/bookinfo.yaml  -n myproject)`  
 `oc expose svc servicegraph`  
 
