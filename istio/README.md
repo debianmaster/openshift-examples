@@ -1,9 +1,10 @@
 
 ## Run as cluster administrator
+`oc cluster up`  #openshift 3.7
 `oc login -u system:admin`
 
 ## Install Istio
-`oc project default`  
+`oc project myproject`  
 `oc adm policy add-scc-to-user anyuid  -z default`  
 `oc adm policy add-scc-to-user privileged -z default`  
 `oc patch scc/privileged --patch {\"allowedCapabilities\":[\"NET_ADMIN\"]}`  
@@ -12,7 +13,7 @@
 
 ## Install Istio Service Mesh
 `git clone https://github.com/istio/istio`   
-`cd istio && git checkout 0.1.6`      
+`cd istio && git 3b31d818a1804e8d85e3396ed0f844c0893e2469`      
 `cd ..`    
 
 
@@ -50,13 +51,12 @@
 
 
 ## Deploy sample app
-### Install istioctl first`  
-`curl -L https://git.io/getIstio | sh -`  
-`export PATH="$PATH:/Users/jjonagam/istio/istio-0.1.6/bin"`  
+### Install istioctl first and add to path  
+`https://github.com/istio/istio/releases/tag/0.2.1`  
 
 
 ## Deploy bookInfo app
-`oc apply -f <(istioctl kube-inject  -f samples/apps/bookinfo/bookinfo.yaml)`  
+`oc apply -f <(istioctl kube-inject --hub $PILOT_HUB --tag $PILOT_TAG -f samples/apps/bookinfo/bookinfo.yaml  -n myproject)`  
 `oc expose svc servicegraph`  
 
 
