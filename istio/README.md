@@ -1,6 +1,6 @@
 
 ## Run as cluster administrator
-`oc cluster up`  #openshift 3.7
+`oc cluster up`  #openshift 3.7     
 `oc login -u system:admin`
 
 ## Install Istio
