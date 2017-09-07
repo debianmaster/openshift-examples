@@ -65,3 +65,40 @@
 `export GRAFANA=$(oc get pods -l app=grafana -o jsonpath={.items[0].metadata.name})`  
 `oc exec $GRAFANA -- curl -o /dev/null -s -w "%{http_code}\n" http://istio-ingress/productpage`   
 `open http://$(oc get routes servicegraph -o jsonpath={.spec.host})/dotviz` 
+
+
+## Extra hacks
+### Multin-namespace support
+> By adding following two objects to any namespace you can make istio support it
+
+```yaml
+kind: "Service"
+apiVersion: "v1"
+metadata:
+ name: "istio-pilot"
+spec:
+ type: ExternalName
+ externalName: istio-pilot.myproject.svc.cluster.local
+selector: {}
+```
+
+```yaml
+apiVersion: v1
+data:
+  mesh: |-
+    apiVersion: v1
+    data:
+      mesh: |-
+        mixerAddress: istio-mixer.myproject.svc.cluster.local:9091
+        discoveryAddress: istio-pilot.myproject.svc.cluster.local:8080
+        ingressService: istio-ingress.myproject.svc.cluster.local
+        statsdUdpAddress: istio-mixer.myproject.svc.cluster.local:9125
+        zipkinAddress: zipkin.myproject.svc.cluster.local:9411
+    kind: ConfigMap
+    metadata:
+      annotations:
+      name: istio
+kind: ConfigMap
+metadata:
+  name: istio
+```
