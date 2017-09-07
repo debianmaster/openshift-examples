@@ -26,9 +26,7 @@ oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:kube-
 
 ### Deploy Jenkins
 ```
-helm install --name my-release stable/jenkins --set rbac.install=true
-oc expose svc my-release-jenkins  --port=8080
-oc get routes
+helm install stable/redis
 ```
 
 
