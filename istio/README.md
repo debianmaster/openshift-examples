@@ -7,14 +7,12 @@
 `oc project myproject`  
 `oc adm policy add-scc-to-user anyuid  -z default`  
 `oc adm policy add-scc-to-user privileged -z default`  
-`oc patch scc/privileged --patch {\"allowedCapabilities\":[\"NET_ADMIN\"]}`  
 
 
 
 ## Install Istio Service Mesh
 `git clone https://github.com/istio/istio`   
 `cd istio && git checkout 3b31d818a1804e8d85e3396ed0f844c0893e2469`      
-`cd ..`    
 
 
 
