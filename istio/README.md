@@ -37,7 +37,10 @@
 `oc adm policy add-scc-to-user privileged -z istio-pilot-service-account` 
 
 
-`oc apply -f install/kubernetes/istio.yaml`  
+```sh
+oc create -f install/kubernetes/istio-rbac-beta.yaml
+oc apply -f install/kubernetes/istio.yaml
+```  
 
 
 
