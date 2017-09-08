@@ -7,7 +7,7 @@
 `oc project myproject`  
 `oc adm policy add-scc-to-user anyuid  -z default`  
 `oc adm policy add-scc-to-user privileged -z default`  
-
+`oc patch scc/privileged --patch {\"allowedCapabilities\":[\"CAP_NET_ADMIN\"]}`
 
 
 ## Install Istio Service Mesh
