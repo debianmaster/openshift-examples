@@ -43,7 +43,7 @@ oc apply -f install/kubernetes/istio.yaml
 
 
 
-## Isntall addons 
+## Install addons 
 `oc apply -f install/kubernetes/addons/prometheus.yaml`  
 `oc apply -f install/kubernetes/addons/grafana.yaml`  
 `oc apply -f install/kubernetes/addons/servicegraph.yaml`  
@@ -53,6 +53,17 @@ oc apply -f install/kubernetes/istio.yaml
 ## Deploy sample app
 ### Install istioctl first and add to path  
 `https://github.com/istio/istio/releases/tag/0.2.1`  
+
+### For instance on linux
+```
+curl -LO https://github.com/istio/istio/releases/download/0.2.1/istio-0.2.1-linux.tar.gz
+tar zxvf istio-0.2.1-linux.tar.gz
+sudo mv istio-0.2.1/bin/istioctl /usr/bin
+sudo chmod u+x /usr/bin/istioctl
+```
+
+
+
 
 
 ## Deploy bookInfo app
