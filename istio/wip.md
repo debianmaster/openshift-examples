@@ -81,4 +81,19 @@ kubectl run --image=debianmaster/store-recommendations recommendations
 kubectl expose deployment recommendations --port=8080
 ```
 
- 
+ ```yaml
+ apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: productpage1-ingress
+  annotations:
+    kubernetes.io/ingress.class: istio
+spec:
+  rules:
+  - host: productpage.istio-ingress.myproject.svc.cluster.local
+    http:
+      paths:
+      - backend:
+          serviceName: productpage
+          servicePort: 8090
+```
