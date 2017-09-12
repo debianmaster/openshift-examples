@@ -24,7 +24,7 @@ oc get pods -n kube-system
 oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:kube-system:default
 ```
 
-### Deploy Jenkins
+### Deploy Redis
 ```
 helm install stable/redis
 ```
