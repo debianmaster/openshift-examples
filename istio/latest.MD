@@ -8,4 +8,6 @@
   513  kubectl apply -f install/kubernetes/addons/prometheus.yaml
   514  kubectl apply -f install/kubernetes/addons/grafana.yaml
   515  kubectl apply -f install/kubernetes/addons/servicegraph.yaml
+  oc adm policy add-scc-to-user anyuid -z default -n istio-system
+  oc adm policy add-scc-to-user anyuid -z default -n demo
   ```
