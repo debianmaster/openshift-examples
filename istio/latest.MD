@@ -11,3 +11,7 @@
   oc adm policy add-scc-to-user anyuid -z default -n istio-system
   oc adm policy add-scc-to-user anyuid -z default -n demo
   ```
+  
+  ```console
+  There is no write permission for server directory /opt/ibm/wlp/output/defaultServer
+  ```
