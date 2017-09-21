@@ -97,18 +97,11 @@ selector: {}
 apiVersion: v1
 data:
   mesh: |-
-    apiVersion: v1
-    data:
-      mesh: |-
-        mixerAddress: istio-mixer.myproject.svc.cluster.local:9091
-        discoveryAddress: istio-pilot.myproject.svc.cluster.local:8080
-        ingressService: istio-ingress.myproject.svc.cluster.local
-        statsdUdpAddress: istio-mixer.myproject.svc.cluster.local:9125
-        zipkinAddress: zipkin.myproject.svc.cluster.local:9411
-    kind: ConfigMap
-    metadata:
-      annotations:
-      name: istio
+    mixerAddress: istio-mixer.myproject.svc.cluster.local:9091
+    discoveryAddress: istio-pilot.myproject.svc.cluster.local:8080
+    ingressService: istio-ingress.myproject.svc.cluster.local
+    statsdUdpAddress: istio-mixer.myproject.svc.cluster.local:9125
+    zipkinAddress: zipkin.myproject.svc.cluster.local:9411
 kind: ConfigMap
 metadata:
   name: istio
