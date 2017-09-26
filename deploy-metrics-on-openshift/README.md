@@ -1,5 +1,12 @@
-### Deploy metrics on openshift origin
 
+
+ansible-playbook <OPENSHIFT_ANSIBLE_DIR>/byo/openshift-cluster/openshift-metrics.yml \
+   -e openshift_metrics_install_metrics=True \
+   -e openshift_metrics_hawkular_hostname=hawkular-metrics.example.com
+   
+   
+
+### Deploy metrics on openshift origin
 ```sh
 export OCP_DOMAIN=example.com
 wget https://raw.githubusercontent.com/openshift/origin-metrics/master/metrics-deployer-setup.yaml
