@@ -1,0 +1,18 @@
+apiVersion: config.istio.io/v1alpha2
+kind: memquota
+metadata:
+  name: handler
+  namespace: istio-config-default
+spec:
+  quotas:
+  - name: requestcount.quota.istio-config-default
+    maxAmount: 5000
+    validDuration: 1s
+    overrides:
+    - dimensions:
+        destination: ratings
+        source: reviews
+        sourceVersion: v2
+      maxAmount: 1
+      validDuration: 1s
+
