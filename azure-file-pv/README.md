@@ -39,4 +39,10 @@ spec:
  ```
  
  ### Notes:
+ Azure file
+ https://docs.microsoft.com/en-us/azure/storage/files/storage-how-to-create-file-share#Create file share through the Portal  
  
+ Azure Storage account keys
+ https://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key
+ 
+ Note that key is already base64 encoded, so you need to furhter base64 encode it when creating secret via yaml file
