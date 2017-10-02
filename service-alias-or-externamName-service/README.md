@@ -18,3 +18,4 @@ spec:
 ```
 oc apply -f service-alias.yaml -n store
 ```
+> Now when you refer `inventory`  in store namespace request will be sent to `inventory.fflmnt.svc.cluster.local`  or any external service you wish
