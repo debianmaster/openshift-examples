@@ -12,11 +12,13 @@ desc 'Permissions'
 run 'oc adm policy add-scc-to-user anyuid  -z default -n istio-system && \
      oc adm policy add-scc-to-user anyuid -z istio-ingress-service-account -n istio-system && \
      oc adm policy add-scc-to-user anyuid -z istio-egress-service-account -n istio-system && \
+     oc adm policy add-scc-to-user privileged -z istio-ingress-service-account -n istio-system && \
      oc adm policy add-scc-to-user anyuid -z default && \
      oc adm policy add-scc-to-user privileged  -z default'
 
 backtotop
 desc 'install istio'
+run 'oc ~/istio'
 run 'oc apply -f install/kubernetes/istio.yaml'  
 
 backtotop
@@ -26,9 +28,6 @@ run 'oc apply -f install/kubernetes/addons/prometheus.yaml && \
      oc apply -f install/kubernetes/addons/servicegraph.yaml'
 
 backtotop
-desc 'Install sample app'
-run 'open https://istio.io/docs/guides/bookinfo.html'
-run 'oc apply -f <(istioctl kube-inject -f samples/bookinfo/kube/bookinfo.yaml)'
-run 'oc get services'
-run 'oc expose svc productpage'
-run 'oc expose svc grafana -n istio-system'
+desc 'Disable openshift router & Use Istio-Ingress'
+run 'oc scale dc router --replicas=0 -n default'
+run 'oc patch deployment istio-ingress -n istio-system --type=json -p=\'[{"op": "replace", "path": "/spec/template/spec/containers/0/ports", "value":[{"containerPort":"80","hostPort":80,"protocol":"TCP"},{"containerPort":"443","hostPort":443,"protocol":"TCP"}]}]\''
