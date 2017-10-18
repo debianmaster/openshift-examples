@@ -1,8 +1,17 @@
 
 
-### Step 1:  Create Azure file     
+### Step 0:  Create Azure file     
 > Storage Accounts -> select storage account -> Select files Block ->  New File share -> Provide name and Quota
 Let's say you created share-1
+
+### Step 1:  Install packages all nodes
+```sh
+# Install samba-client, samba-common, and cifs-utils on all nodes:
+$ sudo yum install samba-client samba-common cifs-utils
+Enable SELinux booleans on all nodes:
+$ /usr/sbin/setsebool -P virt_use_samba on
+$ /usr/sbin/setsebool -P virt_sandbox_use_samba on
+```
 
 ### Step 2:  Create Azure storage secret
 > 
