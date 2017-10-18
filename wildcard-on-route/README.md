@@ -15,9 +15,12 @@ kind: Route
 metadata:
   name: mynginx-route
 spec:
-  host: wildcard.myapp-namespace.127.0.0.1.nip.io
+  host: wildcard.nginx-test.127.0.0.1.nip.io
   to:
     kind: Service
-    name: istio-ingress
+    name: nginx
   wildcardPolicy: Subdomain
 ```
+
+### What happens?
+If 
