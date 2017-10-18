@@ -33,13 +33,13 @@
             "value": "ssh-rsa AAAAB3NFAKEFAKEFAKEFAKEF0+S16SjadZMPmNsMW0lFvF/ruYbcjEFAKEFAKEFAKEFAKEFAKEFAKEm9IsyAKyedxhqu3ceDw5aITq60vOzABPqKDjct7IyB+UQCUQ7xJ9K4nKa/Q18Hl75cbPpeMLcD3cP4NhfcWBN/P55JX5/+PGn9qtIYYw1XO2PYUt9LOvuZ9YJvVZszjlXuwdnv+51gCd9RmZpy7sCLkLgtRshoa2BxBEEJJUAtudKx2NHIONxSsn/KCy3BbLE85Mw/N9Gvu9fbgQgFMfriNtiGAAAv7Akzy8P"
         },
         "keyVaultResourceGroup": {
-            "value": "ocprg"
+            "value": "ocp-rg"
         },
         "keyVaultName": {
-            "value": "ocpkv"
+            "value": "ocp-kv"
         },
         "keyVaultSecret": {
-            "value": "ocpkvsecret"
+            "value": "ocp-kv-secret"
         },
         "enableAzure": {
             "value": "false"
