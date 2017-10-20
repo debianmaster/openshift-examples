@@ -18,6 +18,12 @@ metadata:
   annotations:
     storageclass.beta.kubernetes.io/is-default-class: "true"
 ```
+OR
+
+```sh
+oc patch storageclass generic -p '{"metadata":{"annotations":{"storageclass.beta.kubernetes.io/is-default-class":"false"}}}'
+oc patch storageclass glusterfs-storage -p '{"metadata":{"annotations":{"storageclass.beta.kubernetes.io/is-default-class":"true"}}}'
+```
 
 ### Verify
 ```sh
