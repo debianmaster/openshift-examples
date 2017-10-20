@@ -1,7 +1,8 @@
 
 ### Install packages 
 ```sh
-ansible all -m "shell" -a "sudo yum install -y glusterfs-fuse -y"
+ansible nodes -m "shell" -a "sudo fdisk -l | grep 'Disk /dev/s'"
+ansible nodes -m "shell" -a "sudo yum install -y glusterfs-fuse -y"
 ```
 
 ### Modify inventory file
