@@ -4,7 +4,7 @@
 
 backtotop
 desc 'Requesting routing'
-run ''
+run 'cd ~/istio'
 
 backtotop
 desc 'Clear any existing route rules'

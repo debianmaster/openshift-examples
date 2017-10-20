@@ -2,7 +2,7 @@ apiVersion: config.istio.io/v1alpha2
 kind: quota
 metadata:
   name: requestcount
-  namespace: istio-config-default
+  namespace: istio-system
 spec:
   dimensions:
     source: source.labels["app"] | source.service | "unknown"
@@ -14,7 +14,7 @@ apiVersion: config.istio.io/v1alpha2
 kind: rule
 metadata:
   name: quota
-  namespace: istio-config-default
+  namespace: istio-system
 spec:
   actions:
   - handler: handler.memquota

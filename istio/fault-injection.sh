@@ -4,7 +4,7 @@
 
 backtotop
 desc 'Fault injection'
-run ''
+run 'cd ~/istio'
 
 backtotop
 

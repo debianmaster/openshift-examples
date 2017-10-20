@@ -4,7 +4,7 @@
 
 backtotop
 desc 'Timeouts'
-run ''
+run 'cd ~/istio'
 
 backtotop
 desc 'Clear any existing route rules'

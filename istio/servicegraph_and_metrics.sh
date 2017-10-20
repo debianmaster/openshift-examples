@@ -4,7 +4,7 @@
 
 backtotop
 desc 'Service graph & Metrics'
-run ''
+run 'cd ~/istio'
 
 backtotop
 

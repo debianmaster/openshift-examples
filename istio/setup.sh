@@ -3,8 +3,10 @@
 . $(dirname ${BASH_SOURCE})/util.sh
 backtotop
 
+#run "oc patch deployment istio-ingress -n istio-system --type=json -p='[{\"op\": \"replace\", \"path\": \"/spec/template/spec/containers/0/ports\", \"value\":[{\"containerPort\":\"80\",\"hostPort\":\"80\",\"protocol\":\"TCP\"},{\"containerPort\":\"443\",\"hostPort\":\"443\",\"protocol\":\"TCP\"}]}]'"
+
 desc 'Run as cluster administrator'
-run 'oc login -u system:admin'
+#run 'oc login -u system:admin'
 
 backtotop
 desc 'Install Istio'
@@ -18,7 +20,7 @@ run 'oc adm policy add-scc-to-user anyuid  -z default -n istio-system && \
 
 backtotop
 desc 'install istio'
-run 'oc ~/istio'
+run 'cd ~/istio'
 run 'oc apply -f install/kubernetes/istio.yaml'  
 
 backtotop
@@ -29,5 +31,4 @@ run 'oc apply -f install/kubernetes/addons/prometheus.yaml && \
 
 backtotop
 desc 'Disable openshift router & Use Istio-Ingress'
-run 'oc scale dc router --replicas=0 -n default'
-run 'oc patch deployment istio-ingress -n istio-system --type=json -p=\'[{"op": "replace", "path": "/spec/template/spec/containers/0/ports", "value":[{"containerPort":"80","hostPort":80,"protocol":"TCP"},{"containerPort":"443","hostPort":443,"protocol":"TCP"}]}]\''
+#run 'oc scale dc router --replicas=0 -n default'
