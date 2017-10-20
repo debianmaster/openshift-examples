@@ -1,0 +1,60 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "baseUrl": {
+            "value": "https://gallery.azure.com/artifact/20151001/redhat.openshift-container-platformocp.1.0.3/Artifacts"
+        },
+        "location": {
+            "value": "westus"
+        },
+        "openshiftClusterPrefix": {
+            "value": "ocpcluster"
+        },
+        "adminUsername": {
+            "value": "cjonagam"
+        },
+        "clusterSize": {
+            "value": "small"
+        },
+        "openshiftPassword": {
+            "value": null
+        },
+        "rhsmUsername": {
+            "value": "cjonagam"
+        },
+        "rhsmPassword": {
+            "value": null
+        },
+        "rhsmPoolId": {
+            "value": "FAKEPOOLID8ae0bd30773"
+        },
+        "sshPublicKey": {
+            "value": "ssh-rsa AAAAB3NFAKEFAKEFAKEFAKEF0+S16SjadZMPmNsMW0lFvF/ruYbcjEFAKEFAKEFAKEFAKEFAKEFAKEm9IsyAKyedxhqu3ceDw5aITq60vOzABPqKDjct7IyB+UQCUQ7xJ9K4nKa/Q18Hl75cbPpeMLcD3cP4NhfcWBN/P55JX5/+PGn9qtIYYw1XO2PYUt9LOvuZ9YJvVZszjlXuwdnv+51gCd9RmZpy7sCLkLgtRshoa2BxBEEJJUAtudKx2NHIONxSsn/KCy3BbLE85Mw/N9Gvu9fbgQgFMfriNtiGAAAv7Akzy8P"
+        },
+        "keyVaultResourceGroup": {
+            "value": "ocp-rg"
+        },
+        "keyVaultName": {
+            "value": "ocp-kv"
+        },
+        "keyVaultSecret": {
+            "value": "ocp-kv-secret"
+        },
+        "enableAzure": {
+            "value": "false"
+        },
+        "aadClientId": {
+            "value": "changeme"
+        },
+        "aadClientSecret": {
+            "value": null
+        },
+        "defaultSubDomainType": {
+            "value": "custom"
+        },
+        "defaultSubDomain": {
+            "value": "xfc.io"
+        }
+    }
+}
