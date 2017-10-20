@@ -1,6 +1,7 @@
 
 ### Install packages 
 ```sh
+oc get nodes --show-labels
 ansible nodes -m "shell" -a "sudo fdisk -l | grep 'Disk /dev/s'"
 ansible nodes -m "shell" -a "sudo yum install -y glusterfs-fuse -y"
 ```
