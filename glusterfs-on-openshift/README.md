@@ -1,9 +1,8 @@
-## Work in Progress -- do not use.
 
 ### Install packages 
 ```sh
 ansible all -m "shell" -a "sudo yum install -y glusterfs-fuse -y"
-``
+```
 
 ### Modify inventory file
 ```yaml
@@ -26,6 +25,6 @@ ocp-node-2  glusterfs_devices='[ "/dev/sdd"]'
 ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
 ```
 
-Gotchas:-
+### Gotchas:-
 > If you like to use infra or master vm make sure you have right labels on them, For Ex:-  make sure you have label `type=app` on the nodes where you want to install gluster
 ```ocp-node-0 openshift_node_labels="{'type': 'app', 'zone': 'default'}" openshift_hostname=ocp-node-0```
