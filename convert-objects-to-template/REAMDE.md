@@ -2,7 +2,7 @@
 
 ```sh
 oc project <yourproject>
-oc export bc,dc,svc,route,is  --as-template=myapp  > myapp-template.yaml
+oc export bc,dc,svc,route,is,secret  --as-template=myapp  > myapp-template.yaml
 ```
 > Import template
 
