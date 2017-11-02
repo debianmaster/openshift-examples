@@ -1,0 +1,14 @@
+openshift.withCluster( 'insecure://example.com:8443','9IdiwnhViJR1PcAYaYxXfTttNAiEVs7Xg8-lI0vTKtA') {
+   echo "Hello from ${openshift.cluster()}'s default project: ${openshift.project()}"
+   openshift.withProject( 'qa' ){
+     def bc = openshift.newApp( 'https://github.com/debianmaster/nodejs-welcome' ).narrow('bc')
+   }
+   // And even scope operations to other clusters within the same script
+}
+openshift.withCluster() {
+   echo "Hello from ${openshift.cluster()}'s default project: ${openshift.project()}"
+   openshift.withProject( 'qa' ){
+        def bc = openshift.newApp( 'https://github.com/debianmaster/nodejs-welcome' ).narrow('bc')
+   }
+   // And even scope operations to other clusters within the same script
+}
