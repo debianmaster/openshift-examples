@@ -14,6 +14,7 @@ glusterfs
 [OSEv3:vars]
 openshift_storage_glusterfs_namespace=glusterfs
 openshift_storage_glusterfs_name=storage
+openshift_storage_glusterfs_wipe=True
 
 [glusterfs]
 ocp-node-0  glusterfs_devices='[ "/dev/sdd"]'
