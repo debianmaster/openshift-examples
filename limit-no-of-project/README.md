@@ -1,3 +1,10 @@
+### If inventory
+```
+#openshift_master_admission_plugin_config={"ProjectRequestLimit":{"configuration":{"apiVersion":"v1","kind":"ProjectRequestLimitConfig","limits":[{"selector":{"admin":"true"}},{"maxProjects":"1"}]}},"PodNodeConstraints":{"configuration":{"apiVersion":"v1","kind":"PodNodeConstraintsConfig"}}}
+```
+
+
+### Edit master
 ```yaml
 admissionConfig:
   pluginConfig:
