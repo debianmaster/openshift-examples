@@ -1,3 +1,6 @@
+> In master-config.yaml   
+
+
 ```yaml
   identityProviders:
   - name: "my_ldap_provider"
