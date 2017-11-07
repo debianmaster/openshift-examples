@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: storage-consumption
+spec:
+  hard:
+    persistentvolumeclaims: "10" 
+    requests.storage: "50Gi" 
+    gold.storageclass.storage.k8s.io/requests.storage: "10Gi" 
+    silver.storageclass.storage.k8s.io/requests.storage: "20Gi" 
+    silver.storageclass.storage.k8s.io/persistentvolumeclaims: "5" 
+    bronze.storageclass.storage.k8s.io/requests.storage: "0" 
+    bronze.storageclass.storage.k8s.io/persistentvolumeclaims: "0" 
