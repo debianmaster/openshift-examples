@@ -89,12 +89,6 @@ items:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 3
-          resources:
-            limits:
-              memory: 8096Mi
-            requests:
-              cpu: "1"
-              memory: 2Gi
           securityContext:
             privileged: true
           terminationMessagePath: /dev/termination-log
@@ -191,12 +185,6 @@ items:
             tcpSocket:
               port: 80
             timeoutSeconds: 3
-          resources:
-            limits:
-              memory: 8Gi
-            requests:
-              cpu: 500m
-              memory: 512Mi
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           volumeMounts:
@@ -292,12 +280,6 @@ items:
             tcpSocket:
               port: 11211
             timeoutSeconds: 1
-          resources:
-            limits:
-              memory: 256Mi
-            requests:
-              cpu: 200m
-              memory: 64Mi
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
         dnsPolicy: ClusterFirst
@@ -391,12 +373,6 @@ items:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 1
-          resources:
-            limits:
-              memory: 8Gi
-            requests:
-              cpu: 500m
-              memory: 4Gi
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           volumeMounts:
@@ -1423,12 +1399,6 @@ items:
               tcpSocket:
                 port: 80
               timeoutSeconds: 3
-            resources:
-              limits:
-                memory: ${APPLICATION_MEM_LIMIT}
-              requests:
-                cpu: ${APPLICATION_CPU_REQ}
-                memory: ${APPLICATION_MEM_REQ}
             volumeMounts:
             - mountPath: /persistent
               name: ${NAME}-server
@@ -1507,12 +1477,6 @@ items:
               initialDelaySeconds: 480
               timeoutSeconds: 3
             name: manageiq
-            resources:
-              limits:
-                memory: ${APPLICATION_MEM_LIMIT}
-              requests:
-                cpu: ${APPLICATION_CPU_REQ}
-                memory: ${APPLICATION_MEM_REQ}
             volumeMounts:
             - mountPath: /persistent
               name: ${NAME}-server
@@ -1582,12 +1546,6 @@ items:
               tcpSocket:
                 port: 11211
               timeoutSeconds: 1
-            resources:
-              limits:
-                memory: ${MEMCACHED_MEM_LIMIT}
-              requests:
-                cpu: ${MEMCACHED_CPU_REQ}
-                memory: ${MEMCACHED_MEM_REQ}
             volumeMounts: []
           volumes: []
       triggers:
@@ -1659,12 +1617,6 @@ items:
                   -c 'SELECT 1'
               initialDelaySeconds: 15
               timeoutSeconds: 1
-            resources:
-              limits:
-                memory: ${POSTGRESQL_MEM_LIMIT}
-              requests:
-                cpu: ${POSTGRESQL_CPU_REQ}
-                memory: ${POSTGRESQL_MEM_REQ}
             volumeMounts:
             - mountPath: /var/lib/pgsql/data
               name: miq-pgdb-volume
@@ -1764,12 +1716,6 @@ items:
                 scheme: HTTPS
               initialDelaySeconds: 200
               timeoutSeconds: 3
-            resources:
-              limits:
-                memory: ${ANSIBLE_MEM_LIMIT}
-              requests:
-                cpu: ${ANSIBLE_CPU_REQ}
-                memory: ${ANSIBLE_MEM_REQ}
             securityContext:
               privileged: true
           serviceAccount: miq-privileged
@@ -1858,12 +1804,6 @@ items:
               tcpSocket:
                 port: 80
               timeoutSeconds: 3
-            resources:
-              limits:
-                memory: ${HTTPD_MEM_LIMIT}
-              requests:
-                cpu: ${HTTPD_CPU_REQ}
-                memory: ${HTTPD_MEM_REQ}
             volumeMounts:
             - mountPath: ${HTTPD_CONFIG_DIR}
               name: httpd-config
@@ -2228,12 +2168,6 @@ items:
             tcpSocket:
               port: 80
             timeoutSeconds: 3
-          resources:
-            limits:
-              memory: 16Gi
-            requests:
-              cpu: "1"
-              memory: 6Gi
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           volumeMounts:
@@ -2327,12 +2261,6 @@ items:
             successThreshold: 1
             timeoutSeconds: 3
           name: manageiq
-          resources:
-            limits:
-              memory: 16Gi
-            requests:
-              cpu: "1"
-              memory: 6Gi
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           volumeMounts:
