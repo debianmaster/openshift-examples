@@ -1,0 +1,2663 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      description: Defines how to deploy the Ansible appliance
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    generation: 1
+    labels:
+      app: manageiq
+      template: manageiq
+    name: ansible
+  spec:
+    replicas: 0
+    selector:
+      app: manageiq
+      name: ansible
+    strategy:
+      activeDeadlineSeconds: 21600
+      recreateParams:
+        timeoutSeconds: 600
+      resources: {}
+      type: Recreate
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: manageiq
+          name: ansible
+        name: ansible
+      spec:
+        containers:
+        - env:
+          - name: ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: admin-password
+                name: ansible-secrets
+          - name: RABBITMQ_USER_NAME
+            value: ansible
+          - name: RABBITMQ_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: rabbit-password
+                name: ansible-secrets
+          - name: ANSIBLE_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                key: secret-key
+                name: ansible-secrets
+          - name: DATABASE_SERVICE_NAME
+            value: postgresql
+          - name: POSTGRESQL_USER
+            value: root
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: pg-password
+                name: manageiq-secrets
+          - name: POSTGRESQL_DATABASE
+            value: awx
+          image: docker.io/manageiq/embedded-ansible:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 480
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 443
+            timeoutSeconds: 3
+          name: ansible
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          - containerPort: 443
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 443
+              scheme: HTTPS
+            initialDelaySeconds: 200
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
+          resources:
+            limits:
+              memory: 8096Mi
+            requests:
+              cpu: "1"
+              memory: 2Gi
+          securityContext:
+            privileged: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: miq-privileged
+        serviceAccountName: miq-privileged
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - type: ConfigChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      description: Defines how to deploy httpd
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    generation: 1
+    labels:
+      app: manageiq
+      template: manageiq
+    name: httpd
+  spec:
+    replicas: 0
+    selector:
+      name: httpd
+    strategy:
+      activeDeadlineSeconds: 21600
+      recreateParams:
+        timeoutSeconds: 1200
+      resources: {}
+      type: Recreate
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: manageiq
+          name: httpd
+        name: httpd
+      spec:
+        containers:
+        - env:
+          - name: HTTPD_AUTH_TYPE
+            valueFrom:
+              configMapKeyRef:
+                key: auth-type
+                name: httpd-auth-configs
+          - name: HTTPD_AUTH_KERBEROS_REALMS
+            valueFrom:
+              configMapKeyRef:
+                key: auth-kerberos-realms
+                name: httpd-auth-configs
+          image: docker.io/manageiq/httpd:latest
+          imagePullPolicy: Always
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                - /usr/bin/save-container-environment
+          livenessProbe:
+            exec:
+              command:
+              - pidof
+              - httpd
+            failureThreshold: 3
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
+          name: httpd
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          - containerPort: 8080
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 80
+            timeoutSeconds: 3
+          resources:
+            limits:
+              memory: 8Gi
+            requests:
+              cpu: 500m
+              memory: 512Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/httpd/conf.d
+            name: httpd-config
+          - mountPath: /etc/httpd/auth-conf.d
+            name: httpd-auth-config
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: miq-httpd
+        serviceAccountName: miq-httpd
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: httpd-configs
+          name: httpd-config
+        - configMap:
+            defaultMode: 420
+            name: httpd-auth-configs
+          name: httpd-auth-config
+    test: false
+    triggers:
+    - type: ConfigChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      description: Defines how to deploy memcached
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    generation: 1
+    labels:
+      app: manageiq
+      template: manageiq
+    name: memcached
+  spec:
+    replicas: 0
+    selector:
+      name: memcached
+    strategy:
+      activeDeadlineSeconds: 21600
+      recreateParams:
+        timeoutSeconds: 600
+      resources: {}
+      type: Recreate
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: manageiq
+          name: memcached
+        name: memcached
+      spec:
+        containers:
+        - env:
+          - name: MEMCACHED_MAX_MEMORY
+            value: "64"
+          - name: MEMCACHED_MAX_CONNECTIONS
+            value: "1024"
+          - name: MEMCACHED_SLAB_PAGE_SIZE
+            value: 1m
+          image: docker.io/manageiq/memcached:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 11211
+            timeoutSeconds: 1
+          name: memcached
+          ports:
+          - containerPort: 11211
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 11211
+            timeoutSeconds: 1
+          resources:
+            limits:
+              memory: 256Mi
+            requests:
+              cpu: 200m
+              memory: 64Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - type: ConfigChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      description: Defines how to deploy the database
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    generation: 1
+    labels:
+      app: manageiq
+      template: manageiq
+    name: postgresql
+  spec:
+    replicas: 0
+    selector:
+      name: postgresql
+    strategy:
+      activeDeadlineSeconds: 21600
+      recreateParams:
+        timeoutSeconds: 600
+      resources: {}
+      type: Recreate
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: manageiq
+          name: postgresql
+        name: postgresql
+      spec:
+        containers:
+        - env:
+          - name: POSTGRESQL_USER
+            value: root
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: pg-password
+                name: manageiq-secrets
+          - name: POSTGRESQL_DATABASE
+            value: vmdb_production
+          - name: POSTGRESQL_MAX_CONNECTIONS
+            value: "1000"
+          - name: POSTGRESQL_SHARED_BUFFERS
+            value: 1GB
+          - name: POSTGRESQL_CONFIG_DIR
+            value: /var/lib/pgsql/conf.d
+          image: docker.io/manageiq/postgresql:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 5432
+            timeoutSeconds: 1
+          name: postgresql
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+              - /bin/sh
+              - -i
+              - -c
+              - psql -h 127.0.0.1 -U ${POSTGRESQL_USER} -q -d ${POSTGRESQL_DATABASE}
+                -c 'SELECT 1'
+            failureThreshold: 3
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              memory: 8Gi
+            requests:
+              cpu: 500m
+              memory: 4Gi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/pgsql/data
+            name: miq-pgdb-volume
+          - mountPath: /var/lib/pgsql/conf.d
+            name: miq-pg-configs
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: miq-pgdb-volume
+          persistentVolumeClaim:
+            claimName: manageiq-postgresql
+        - configMap:
+            defaultMode: 420
+            name: postgresql-configs
+          name: miq-pg-configs
+    test: false
+    triggers:
+    - type: ConfigChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: Exposes and load balances Ansible pods
+      openshift.io/generated-by: OpenShiftNewApp
+      service.alpha.openshift.io/dependencies: '[{"name":"postgresql","namespace":"","kind":"Service"}]'
+    creationTimestamp: null
+    labels:
+      app: manageiq
+      template: manageiq
+    name: ansible
+  spec:
+    ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 443
+    selector:
+      name: ansible
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: Exposes the httpd server
+      openshift.io/generated-by: OpenShiftNewApp
+      service.alpha.openshift.io/dependencies: '[{"name":"manageiq","namespace":"","kind":"Service"}]'
+    creationTimestamp: null
+    labels:
+      app: manageiq
+      template: manageiq
+    name: httpd
+  spec:
+    ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+    selector:
+      name: httpd
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: Exposes the httpd server dbus api
+      openshift.io/generated-by: OpenShiftNewApp
+      service.alpha.openshift.io/dependencies: '[{"name":"manageiq","namespace":"","kind":"Service"}]'
+    creationTimestamp: null
+    labels:
+      app: manageiq
+      template: manageiq
+    name: httpd-dbus-api
+  spec:
+    ports:
+    - name: http-dbus-api
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      name: httpd
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: Exposes and load balances ManageIQ pods
+      openshift.io/generated-by: OpenShiftNewApp
+      service.alpha.openshift.io/dependencies: '[{"name":"postgresql","namespace":"","kind":"Service"},{"name":"memcached","namespace":"","kind":"Service"}]'
+    creationTimestamp: null
+    labels:
+      app: manageiq
+      template: manageiq
+    name: manageiq
+  spec:
+    clusterIP: None
+    ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+    selector:
+      name: manageiq
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: Headless service for ManageIQ backend pods
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: manageiq
+      template: manageiq
+    name: manageiq-backend
+  spec:
+    clusterIP: None
+    selector:
+      name: manageiq-backend
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: Exposes the memcached server
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: manageiq
+      template: manageiq
+    name: memcached
+  spec:
+    ports:
+    - name: memcached
+      port: 11211
+      protocol: TCP
+      targetPort: 11211
+    selector:
+      name: memcached
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: Exposes the database server
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: manageiq
+      template: manageiq
+    name: postgresql
+  spec:
+    ports:
+    - name: postgresql
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+    selector:
+      name: postgresql
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Route
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+      openshift.io/host.generated: "true"
+    creationTimestamp: null
+    labels:
+      app: manageiq
+      template: manageiq
+    name: httpd
+  spec:
+    host: httpd-myproject.127.0.0.1.nip.io
+    port:
+      targetPort: http
+    tls:
+      insecureEdgeTerminationPolicy: Redirect
+      termination: edge
+    to:
+      kind: Service
+      name: httpd
+      weight: 100
+    wildcardPolicy: None
+  status:
+    ingress:
+    - conditions:
+      - lastTransitionTime: 2017-11-08T02:27:07Z
+        status: "True"
+        type: Admitted
+      host: httpd-myproject.127.0.0.1.nip.io
+      routerName: router
+      wildcardPolicy: None
+- apiVersion: v1
+  kind: Route
+  metadata:
+    annotations:
+      openshift.io/host.generated: "true"
+    creationTimestamp: null
+    name: manageiq
+  spec:
+    host: manageiq-myproject.127.0.0.1.nip.io
+    port:
+      targetPort: http
+    to:
+      kind: Service
+      name: manageiq
+      weight: 100
+    wildcardPolicy: None
+  status:
+    ingress:
+    - conditions:
+      - lastTransitionTime: 2017-11-08T02:48:26Z
+        status: "True"
+        type: Admitted
+      host: manageiq-myproject.127.0.0.1.nip.io
+      routerName: router
+      wildcardPolicy: None
+- allowHostDirVolumePlugin: false
+  allowHostIPC: false
+  allowHostNetwork: false
+  allowHostPID: false
+  allowHostPorts: false
+  allowPrivilegedContainer: false
+  allowedCapabilities: []
+  apiVersion: v1
+  defaultAddCapabilities: []
+  fsGroup:
+    type: RunAsAny
+  groups:
+  - system:cluster-admins
+  kind: SecurityContextConstraints
+  metadata:
+    annotations:
+      kubernetes.io/description: anyuid provides all features of the restricted SCC
+        but allows users to run with any UID and any GID.
+    creationTimestamp: null
+    name: anyuid
+  priority: 10
+  readOnlyRootFilesystem: false
+  requiredDropCapabilities:
+  - MKNOD
+  - SYS_CHROOT
+  runAsUser:
+    type: RunAsAny
+  seLinuxContext:
+    type: MustRunAs
+  supplementalGroups:
+    type: RunAsAny
+  users:
+  - system:serviceaccount:myproject:miq-anyuid
+  - system:serviceaccount:myproject:miq-orchestrator
+  volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - persistentVolumeClaim
+  - projected
+  - secret
+- allowHostDirVolumePlugin: true
+  allowHostIPC: true
+  allowHostNetwork: true
+  allowHostPID: true
+  allowHostPorts: true
+  allowPrivilegedContainer: false
+  allowedCapabilities: []
+  apiVersion: v1
+  defaultAddCapabilities: []
+  fsGroup:
+    type: MustRunAs
+  kind: SecurityContextConstraints
+  metadata:
+    annotations:
+      kubernetes.io/description: 'hostaccess allows access to all host namespaces
+        but still requires pods to be run with a UID and SELinux context that are
+        allocated to the namespace. WARNING: this SCC allows host access to namespaces,
+        file systems, and PIDS.  It should only be used by trusted pods.  Grant with
+        caution.'
+    creationTimestamp: null
+    name: hostaccess
+  priority: null
+  readOnlyRootFilesystem: false
+  requiredDropCapabilities: []
+  runAsUser:
+    type: MustRunAsRange
+  seLinuxContext:
+    type: MustRunAs
+  supplementalGroups:
+    type: RunAsAny
+  volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - hostPath
+  - persistentVolumeClaim
+  - projected
+  - secret
+- allowHostDirVolumePlugin: true
+  allowHostIPC: false
+  allowHostNetwork: false
+  allowHostPID: false
+  allowHostPorts: false
+  allowPrivilegedContainer: false
+  allowedCapabilities: []
+  apiVersion: v1
+  defaultAddCapabilities: []
+  fsGroup:
+    type: RunAsAny
+  kind: SecurityContextConstraints
+  metadata:
+    annotations:
+      kubernetes.io/description: 'hostmount-anyuid provides all the features of the
+        restricted SCC but allows host mounts and any UID by a pod.  This is primarily
+        used by the persistent volume recycler. WARNING: this SCC allows host file
+        system access as any UID, including UID 0.  Grant with caution.'
+    creationTimestamp: null
+    name: hostmount-anyuid
+  priority: null
+  readOnlyRootFilesystem: false
+  requiredDropCapabilities: []
+  runAsUser:
+    type: RunAsAny
+  seLinuxContext:
+    type: MustRunAs
+  supplementalGroups:
+    type: RunAsAny
+  users:
+  - system:serviceaccount:openshift-infra:pv-recycler-controller
+  volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - hostPath
+  - nfs
+  - persistentVolumeClaim
+  - projected
+  - secret
+- allowHostDirVolumePlugin: false
+  allowHostIPC: false
+  allowHostNetwork: true
+  allowHostPID: false
+  allowHostPorts: true
+  allowPrivilegedContainer: false
+  allowedCapabilities: []
+  apiVersion: v1
+  defaultAddCapabilities: []
+  fsGroup:
+    type: MustRunAs
+  kind: SecurityContextConstraints
+  metadata:
+    annotations:
+      kubernetes.io/description: hostnetwork allows using host networking and host
+        ports but still requires pods to be run with a UID and SELinux context that
+        are allocated to the namespace.
+    creationTimestamp: null
+    name: hostnetwork
+  priority: null
+  readOnlyRootFilesystem: false
+  requiredDropCapabilities:
+  - KILL
+  - MKNOD
+  - SYS_CHROOT
+  - SETUID
+  - SETGID
+  runAsUser:
+    type: MustRunAsRange
+  seLinuxContext:
+    type: MustRunAs
+  supplementalGroups:
+    type: MustRunAs
+  volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - persistentVolumeClaim
+  - projected
+  - secret
+- allowHostDirVolumePlugin: false
+  allowHostIPC: false
+  allowHostNetwork: false
+  allowHostPID: false
+  allowHostPorts: false
+  allowPrivilegedContainer: false
+  allowedCapabilities: []
+  apiVersion: v1
+  defaultAddCapabilities:
+  - SYS_ADMIN
+  fsGroup:
+    type: RunAsAny
+  groups:
+  - system:cluster-admins
+  kind: SecurityContextConstraints
+  metadata:
+    annotations:
+      kubernetes.io/description: miq-sysadmin provides all features of the anyuid
+        SCC but allows users to have SYS_ADMIN capabilities. This is the required
+        scc for Pods requiring to run with systemd and the message bus.
+    creationTimestamp: null
+    name: miq-sysadmin
+  priority: 10
+  readOnlyRootFilesystem: false
+  requiredDropCapabilities:
+  - MKNOD
+  - SYS_CHROOT
+  runAsUser:
+    type: RunAsAny
+  seLinuxContext:
+    type: MustRunAs
+  supplementalGroups:
+    type: RunAsAny
+  users:
+  - system:serviceaccount:myproject:miq-httpd
+  volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - persistentVolumeClaim
+  - secret
+- allowHostDirVolumePlugin: false
+  allowHostIPC: false
+  allowHostNetwork: false
+  allowHostPID: false
+  allowHostPorts: false
+  allowPrivilegedContainer: false
+  allowedCapabilities: []
+  apiVersion: v1
+  defaultAddCapabilities: []
+  fsGroup:
+    type: RunAsAny
+  kind: SecurityContextConstraints
+  metadata:
+    annotations:
+      kubernetes.io/description: nonroot provides all features of the restricted SCC
+        but allows users to run with any non-root UID.  The user must specify the
+        UID or it must be specified on the by the manifest of the container runtime.
+    creationTimestamp: null
+    name: nonroot
+  priority: null
+  readOnlyRootFilesystem: false
+  requiredDropCapabilities: []
+  runAsUser:
+    type: MustRunAsNonRoot
+  seLinuxContext:
+    type: MustRunAs
+  supplementalGroups:
+    type: RunAsAny
+  volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - persistentVolumeClaim
+  - projected
+  - secret
+- allowHostDirVolumePlugin: true
+  allowHostIPC: true
+  allowHostNetwork: true
+  allowHostPID: true
+  allowHostPorts: true
+  allowPrivilegedContainer: true
+  allowedCapabilities:
+  - '*'
+  apiVersion: v1
+  defaultAddCapabilities: []
+  fsGroup:
+    type: RunAsAny
+  groups:
+  - system:cluster-admins
+  - system:nodes
+  kind: SecurityContextConstraints
+  metadata:
+    annotations:
+      kubernetes.io/description: 'privileged allows access to all privileged and host
+        features and the ability to run as any user, any group, any fsGroup, and with
+        any SELinux context.  WARNING: this is the most relaxed SCC and should be
+        used only for cluster administration. Grant with caution.'
+    creationTimestamp: null
+    name: privileged
+  priority: null
+  readOnlyRootFilesystem: false
+  requiredDropCapabilities: []
+  runAsUser:
+    type: RunAsAny
+  seLinuxContext:
+    type: RunAsAny
+  seccompProfiles:
+  - '*'
+  supplementalGroups:
+    type: RunAsAny
+  users:
+  - system:serviceaccount:openshift-infra:build-controller
+  - system:serviceaccount:default:pvinstaller
+  - system:serviceaccount:default:registry
+  - system:serviceaccount:default:router
+  - system:serviceaccount:myproject:miq-privileged
+  volumes:
+  - '*'
+- allowHostDirVolumePlugin: false
+  allowHostIPC: false
+  allowHostNetwork: false
+  allowHostPID: false
+  allowHostPorts: false
+  allowPrivilegedContainer: false
+  allowedCapabilities: []
+  apiVersion: v1
+  defaultAddCapabilities: []
+  fsGroup:
+    type: MustRunAs
+  groups:
+  - system:authenticated
+  kind: SecurityContextConstraints
+  metadata:
+    annotations:
+      kubernetes.io/description: restricted denies access to all host features and
+        requires pods to be run with a UID, and SELinux context that are allocated
+        to the namespace.  This is the most restrictive SCC and it is used by default
+        for authenticated users.
+    creationTimestamp: null
+    name: restricted
+  priority: null
+  readOnlyRootFilesystem: false
+  requiredDropCapabilities:
+  - KILL
+  - MKNOD
+  - SYS_CHROOT
+  - SETUID
+  - SETGID
+  runAsUser:
+    type: MustRunAsRange
+  seLinuxContext:
+    type: MustRunAs
+  supplementalGroups:
+    type: RunAsAny
+  volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - persistentVolumeClaim
+  - projected
+  - secret
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    creationTimestamp: null
+    name: builder
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    creationTimestamp: null
+    name: default
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    creationTimestamp: null
+    name: deployer
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: manageiq
+      template: manageiq
+    name: miq-anyuid
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: manageiq
+      template: manageiq
+    name: miq-httpd
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: manageiq
+      template: manageiq
+    name: miq-orchestrator
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: manageiq
+      template: manageiq
+    name: miq-privileged
+- apiVersion: v1
+  kind: Template
+  labels:
+    template: manageiq
+  metadata:
+    annotations:
+      description: ManageIQ appliance with persistent storage
+      iconClass: icon-rails
+      tags: instant-app,manageiq,miq
+    creationTimestamp: null
+    name: manageiq
+  objects:
+  - apiVersion: v1
+    kind: ServiceAccount
+    metadata:
+      name: miq-orchestrator
+  - apiVersion: v1
+    kind: ServiceAccount
+    metadata:
+      name: miq-anyuid
+  - apiVersion: v1
+    kind: ServiceAccount
+    metadata:
+      name: miq-privileged
+  - apiVersion: v1
+    kind: ServiceAccount
+    metadata:
+      name: miq-httpd
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: ${NAME}-secrets
+    stringData:
+      database-url: postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_SERVICE_NAME}/${DATABASE_NAME}?encoding=utf8&pool=5&wait_timeout=5
+      pg-password: ${DATABASE_PASSWORD}
+      v2-key: ${V2_KEY}
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: ${ANSIBLE_SERVICE_NAME}-secrets
+    stringData:
+      admin-password: ${ANSIBLE_ADMIN_PASSWORD}
+      rabbit-password: ${ANSIBLE_RABBITMQ_PASSWORD}
+      secret-key: ${ANSIBLE_SECRET_KEY}
+  - apiVersion: v1
+    data:
+      01_miq_overrides.conf: |
+        #------------------------------------------------------------------------------
+        # CONNECTIONS AND AUTHENTICATION
+        #------------------------------------------------------------------------------
+
+        tcp_keepalives_count = 9
+        tcp_keepalives_idle = 3
+        tcp_keepalives_interval = 75
+
+        #------------------------------------------------------------------------------
+        # RESOURCE USAGE (except WAL)
+        #------------------------------------------------------------------------------
+
+        shared_preload_libraries = 'pglogical,repmgr_funcs'
+        max_worker_processes = 10
+
+        #------------------------------------------------------------------------------
+        # WRITE AHEAD LOG
+        #------------------------------------------------------------------------------
+
+        wal_level = 'logical'
+        wal_log_hints = on
+        wal_buffers = 16MB
+        checkpoint_completion_target = 0.9
+
+        #------------------------------------------------------------------------------
+        # REPLICATION
+        #------------------------------------------------------------------------------
+
+        max_wal_senders = 10
+        wal_sender_timeout = 0
+        max_replication_slots = 10
+        hot_standby = on
+
+        #------------------------------------------------------------------------------
+        # ERROR REPORTING AND LOGGING
+        #------------------------------------------------------------------------------
+
+        log_filename = 'postgresql.log'
+        log_rotation_age = 0
+        log_min_duration_statement = 5000
+        log_connections = on
+        log_disconnections = on
+        log_line_prefix = '%t:%r:%c:%u@%d:[%p]:'
+        log_lock_waits = on
+
+        #------------------------------------------------------------------------------
+        # AUTOVACUUM PARAMETERS
+        #------------------------------------------------------------------------------
+
+        log_autovacuum_min_duration = 0
+        autovacuum_naptime = 5min
+        autovacuum_vacuum_threshold = 500
+        autovacuum_analyze_threshold = 500
+        autovacuum_vacuum_scale_factor = 0.05
+
+        #------------------------------------------------------------------------------
+        # LOCK MANAGEMENT
+        #------------------------------------------------------------------------------
+
+        deadlock_timeout = 5s
+
+        #------------------------------------------------------------------------------
+        # VERSION/PLATFORM COMPATIBILITY
+        #------------------------------------------------------------------------------
+
+        escape_string_warning = off
+        standard_conforming_strings = off
+    kind: ConfigMap
+    metadata:
+      name: ${DATABASE_SERVICE_NAME}-configs
+  - apiVersion: v1
+    data:
+      application.conf: |
+        # Timeout: The number of seconds before receives and sends time out.
+        Timeout 120
+
+        RewriteEngine On
+        Options SymLinksIfOwnerMatch
+
+        <VirtualHost *:80>
+          KeepAlive on
+          # Without ServerName mod_auth_mellon compares against http:// and not https:// from the IdP
+          ServerName https://%{REQUEST_HOST}
+
+          ProxyPreserveHost on
+          ProxyPass        /ws/ ws://${NAME}/ws/
+          ProxyPassReverse /ws/ ws://${NAME}/ws/
+
+          # For httpd, some ErrorDocuments must by served by the httpd pod
+          RewriteCond %{REQUEST_URI} !^/proxy_pages
+
+          # For SAML /saml2 is only served by mod_auth_mellon in the httpd pod
+          RewriteCond %{REQUEST_URI} !^/saml2
+          RewriteRule ^/ http://${NAME}%{REQUEST_URI} [P,QSA,L]
+          ProxyPassReverse / http://${NAME}/
+        </VirtualHost>
+      authentication.conf: |
+        # Load appropriate authentication configuration files
+        #
+        Include "conf.d/configuration-${HTTPD_AUTH_TYPE}-auth"
+      configuration-active-directory-auth: |
+        Include "conf.d/external-auth-load-modules-conf"
+
+        <Location /dashboard/kerberos_authenticate>
+          AuthType                   Kerberos
+          AuthName                   "Kerberos Login"
+          KrbMethodNegotiate         On
+          KrbMethodK5Passwd          Off
+          KrbAuthRealms              ${HTTPD_AUTH_KERBEROS_REALMS}
+          Krb5KeyTab                 /etc/krb5.keytab
+          KrbServiceName             Any
+          Require                    pam-account httpd-auth
+
+          ErrorDocument 401 /proxy_pages/invalid_sso_credentials.js
+        </Location>
+
+        Include "conf.d/external-auth-login-form-conf"
+        Include "conf.d/external-auth-application-api-conf"
+        Include "conf.d/external-auth-lookup-user-details-conf"
+        Include "conf.d/external-auth-remote-user-conf"
+      configuration-external-auth: |
+        Include "conf.d/external-auth-load-modules-conf"
+
+        <Location /dashboard/kerberos_authenticate>
+          AuthType                   Kerberos
+          AuthName                   "Kerberos Login"
+          KrbMethodNegotiate         On
+          KrbMethodK5Passwd          Off
+          KrbAuthRealms              ${HTTPD_AUTH_KERBEROS_REALMS}
+          Krb5KeyTab                 /etc/http.keytab
+          KrbServiceName             Any
+          Require                    pam-account httpd-auth
+
+          ErrorDocument 401 /proxy_pages/invalid_sso_credentials.js
+        </Location>
+
+        Include "conf.d/external-auth-login-form-conf"
+        Include "conf.d/external-auth-application-api-conf"
+        Include "conf.d/external-auth-lookup-user-details-conf"
+        Include "conf.d/external-auth-remote-user-conf"
+      configuration-internal-auth: |
+        # Internal authentication
+        #
+      configuration-saml-auth: |
+        LoadModule auth_mellon_module modules/mod_auth_mellon.so
+
+        <Location />
+          MellonEnable               "info"
+
+          MellonIdPMetadataFile      "/etc/httpd/saml2/idp-metadata.xml"
+
+          MellonSPPrivateKeyFile     "/etc/httpd/saml2/sp-key.key"
+          MellonSPCertFile           "/etc/httpd/saml2/sp-cert.cert"
+          MellonSPMetadataFile       "/etc/httpd/saml2/sp-metadata.xml"
+
+          MellonVariable             "sp-cookie"
+          MellonSecureCookie         On
+          MellonCookiePath           "/"
+
+          MellonIdP                  "IDP"
+
+          MellonEndpointPath         "/saml2"
+
+          MellonUser                 username
+          MellonMergeEnvVars         On
+
+          MellonSetEnvNoPrefix       "REMOTE_USER"            username
+          MellonSetEnvNoPrefix       "REMOTE_USER_EMAIL"      email
+          MellonSetEnvNoPrefix       "REMOTE_USER_FIRSTNAME"  firstname
+          MellonSetEnvNoPrefix       "REMOTE_USER_LASTNAME"   lastname
+          MellonSetEnvNoPrefix       "REMOTE_USER_FULLNAME"   fullname
+          MellonSetEnvNoPrefix       "REMOTE_USER_GROUPS"     groups
+        </Location>
+
+        <Location /saml_login>
+          AuthType                   "Mellon"
+          MellonEnable               "auth"
+          Require                    valid-user
+        </Location>
+
+        Include "conf.d/external-auth-remote-user-conf"
+      external-auth-application-api-conf: |
+        <LocationMatch ^/api>
+          SetEnvIf Authorization     '^Basic +YWRtaW46' let_admin_in
+          SetEnvIf X-Auth-Token      '^.+$'             let_api_token_in
+          SetEnvIf X-MIQ-Token       '^.+$'             let_sys_token_in
+
+          AuthType                   Basic
+          AuthName                   "External Authentication (httpd) for API"
+          AuthBasicProvider          PAM
+
+          AuthPAMService             httpd-auth
+          Require                    valid-user
+          Order                      Allow,Deny
+          Allow from                 env=let_admin_in
+          Allow from                 env=let_api_token_in
+          Allow from                 env=let_sys_token_in
+          Satisfy                    Any
+        </LocationMatch>
+      external-auth-load-modules-conf: |
+        LoadModule authnz_pam_module            modules/mod_authnz_pam.so
+        LoadModule intercept_form_submit_module modules/mod_intercept_form_submit.so
+        LoadModule lookup_identity_module       modules/mod_lookup_identity.so
+        LoadModule auth_kerb_module             modules/mod_auth_kerb.so
+      external-auth-login-form-conf: |
+        <Location /dashboard/external_authenticate>
+          InterceptFormPAMService    httpd-auth
+          InterceptFormLogin         user_name
+          InterceptFormPassword      user_password
+          InterceptFormLoginSkip     admin
+          InterceptFormClearRemoteUserForSkipped on
+        </Location>
+      external-auth-lookup-user-details-conf: |
+        <LocationMatch ^/dashboard/external_authenticate$|^/dashboard/kerberos_authenticate$|^/api>
+          LookupUserAttr mail        REMOTE_USER_EMAIL
+          LookupUserAttr givenname   REMOTE_USER_FIRSTNAME
+          LookupUserAttr sn          REMOTE_USER_LASTNAME
+          LookupUserAttr displayname REMOTE_USER_FULLNAME
+          LookupUserAttr domainname  REMOTE_USER_DOMAIN
+
+          LookupUserGroups           REMOTE_USER_GROUPS ":"
+          LookupDbusTimeout          5000
+        </LocationMatch>
+      external-auth-remote-user-conf: |
+        RequestHeader unset X_REMOTE_USER
+
+        RequestHeader set X_REMOTE_USER           %{REMOTE_USER}e           env=REMOTE_USER
+        RequestHeader set X_EXTERNAL_AUTH_ERROR   %{EXTERNAL_AUTH_ERROR}e   env=EXTERNAL_AUTH_ERROR
+        RequestHeader set X_REMOTE_USER_EMAIL     %{REMOTE_USER_EMAIL}e     env=REMOTE_USER_EMAIL
+        RequestHeader set X_REMOTE_USER_FIRSTNAME %{REMOTE_USER_FIRSTNAME}e env=REMOTE_USER_FIRSTNAME
+        RequestHeader set X_REMOTE_USER_LASTNAME  %{REMOTE_USER_LASTNAME}e  env=REMOTE_USER_LASTNAME
+        RequestHeader set X_REMOTE_USER_FULLNAME  %{REMOTE_USER_FULLNAME}e  env=REMOTE_USER_FULLNAME
+        RequestHeader set X_REMOTE_USER_GROUPS    %{REMOTE_USER_GROUPS}e    env=REMOTE_USER_GROUPS
+        RequestHeader set X_REMOTE_USER_DOMAIN    %{REMOTE_USER_DOMAIN}e    env=REMOTE_USER_DOMAIN
+    kind: ConfigMap
+    metadata:
+      name: ${HTTPD_SERVICE_NAME}-configs
+  - apiVersion: v1
+    data:
+      auth-configuration.conf: |
+        # External Authentication Configuration File
+        #
+        # For details on usage please see https://github.com/ManageIQ/manageiq-pods/blob/master/README.md#configuring-external-authentication
+      auth-kerberos-realms: undefined
+      auth-type: internal
+    kind: ConfigMap
+    metadata:
+      name: ${HTTPD_SERVICE_NAME}-auth-configs
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        description: Exposes and load balances ManageIQ pods
+        service.alpha.openshift.io/dependencies: '[{"name":"${DATABASE_SERVICE_NAME}","namespace":"","kind":"Service"},{"name":"${MEMCACHED_SERVICE_NAME}","namespace":"","kind":"Service"}]'
+      name: ${NAME}
+    spec:
+      clusterIP: None
+      ports:
+      - name: http
+        port: 80
+        protocol: TCP
+        targetPort: 80
+      selector:
+        name: ${NAME}
+  - apiVersion: v1
+    kind: Route
+    metadata:
+      name: ${HTTPD_SERVICE_NAME}
+    spec:
+      host: ${APPLICATION_DOMAIN}
+      port:
+        targetPort: http
+      tls:
+        insecureEdgeTerminationPolicy: Redirect
+        termination: edge
+      to:
+        kind: Service
+        name: ${HTTPD_SERVICE_NAME}
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: ${NAME}-${DATABASE_SERVICE_NAME}
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: ${DATABASE_VOLUME_CAPACITY}
+  - apiVersion: apps/v1beta1
+    kind: StatefulSet
+    metadata:
+      annotations:
+        description: Defines how to deploy the ManageIQ appliance
+      name: ${NAME}
+    spec:
+      replicas: ${APPLICATION_REPLICA_COUNT}
+      serviceName: ${NAME}
+      template:
+        metadata:
+          labels:
+            name: ${NAME}
+          name: ${NAME}
+        spec:
+          containers:
+          - env:
+            - name: MY_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: APPLICATION_INIT_DELAY
+              value: ${APPLICATION_INIT_DELAY}
+            - name: DATABASE_REGION
+              value: ${DATABASE_REGION}
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  key: database-url
+                  name: ${NAME}-secrets
+            - name: V2_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: v2-key
+                  name: ${NAME}-secrets
+            - name: ANSIBLE_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: admin-password
+                  name: ${ANSIBLE_SERVICE_NAME}-secrets
+            image: ${APPLICATION_IMG_NAME}:${FRONTEND_APPLICATION_IMG_TAG}
+            lifecycle:
+              preStop:
+                exec:
+                  command:
+                  - /opt/manageiq/container-scripts/sync-pv-data
+            livenessProbe:
+              exec:
+                command:
+                - pidof
+                - MIQ Server
+              initialDelaySeconds: 480
+              timeoutSeconds: 3
+            name: manageiq
+            ports:
+            - containerPort: 80
+              protocol: TCP
+            readinessProbe:
+              initialDelaySeconds: 200
+              tcpSocket:
+                port: 80
+              timeoutSeconds: 3
+            resources:
+              limits:
+                memory: ${APPLICATION_MEM_LIMIT}
+              requests:
+                cpu: ${APPLICATION_CPU_REQ}
+                memory: ${APPLICATION_MEM_REQ}
+            volumeMounts:
+            - mountPath: /persistent
+              name: ${NAME}-server
+          serviceAccount: miq-orchestrator
+          serviceAccountName: miq-orchestrator
+          terminationGracePeriodSeconds: 90
+      volumeClaimTemplates:
+      - metadata:
+          annotations: null
+          name: ${NAME}-server
+        spec:
+          accessModes:
+          - ReadWriteOnce
+          resources:
+            requests:
+              storage: ${APPLICATION_VOLUME_CAPACITY}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        description: Headless service for ManageIQ backend pods
+      name: ${NAME}-backend
+    spec:
+      clusterIP: None
+      selector:
+        name: ${NAME}-backend
+  - apiVersion: apps/v1beta1
+    kind: StatefulSet
+    metadata:
+      annotations:
+        description: Defines how to deploy the ManageIQ appliance
+      name: ${NAME}-backend
+    spec:
+      replicas: 0
+      serviceName: ${NAME}-backend
+      template:
+        metadata:
+          labels:
+            name: ${NAME}-backend
+          name: ${NAME}-backend
+        spec:
+          containers:
+          - env:
+            - name: APPLICATION_INIT_DELAY
+              value: ${APPLICATION_INIT_DELAY}
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  key: database-url
+                  name: ${NAME}-secrets
+            - name: MIQ_SERVER_DEFAULT_ROLES
+              value: database_operations,event,reporting,scheduler,smartstate,ems_operations,ems_inventory,automate
+            - name: FRONTEND_SERVICE_NAME
+              value: ${NAME}
+            - name: V2_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: v2-key
+                  name: ${NAME}-secrets
+            - name: ANSIBLE_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: admin-password
+                  name: ${ANSIBLE_SERVICE_NAME}-secrets
+            image: ${APPLICATION_IMG_NAME}:${BACKEND_APPLICATION_IMG_TAG}
+            lifecycle:
+              preStop:
+                exec:
+                  command:
+                  - /opt/manageiq/container-scripts/sync-pv-data
+            livenessProbe:
+              exec:
+                command:
+                - pidof
+                - MIQ Server
+              initialDelaySeconds: 480
+              timeoutSeconds: 3
+            name: manageiq
+            resources:
+              limits:
+                memory: ${APPLICATION_MEM_LIMIT}
+              requests:
+                cpu: ${APPLICATION_CPU_REQ}
+                memory: ${APPLICATION_MEM_REQ}
+            volumeMounts:
+            - mountPath: /persistent
+              name: ${NAME}-server
+          serviceAccount: miq-orchestrator
+          serviceAccountName: miq-orchestrator
+          terminationGracePeriodSeconds: 90
+      volumeClaimTemplates:
+      - metadata:
+          annotations: null
+          name: ${NAME}-server
+        spec:
+          accessModes:
+          - ReadWriteOnce
+          resources:
+            requests:
+              storage: ${APPLICATION_VOLUME_CAPACITY}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        description: Exposes the memcached server
+      name: ${MEMCACHED_SERVICE_NAME}
+    spec:
+      ports:
+      - name: memcached
+        port: 11211
+        targetPort: 11211
+      selector:
+        name: ${MEMCACHED_SERVICE_NAME}
+  - apiVersion: v1
+    kind: DeploymentConfig
+    metadata:
+      annotations:
+        description: Defines how to deploy memcached
+      name: ${MEMCACHED_SERVICE_NAME}
+    spec:
+      replicas: 1
+      selector:
+        name: ${MEMCACHED_SERVICE_NAME}
+      strategy:
+        type: Recreate
+      template:
+        metadata:
+          labels:
+            name: ${MEMCACHED_SERVICE_NAME}
+          name: ${MEMCACHED_SERVICE_NAME}
+        spec:
+          containers:
+          - env:
+            - name: MEMCACHED_MAX_MEMORY
+              value: ${MEMCACHED_MAX_MEMORY}
+            - name: MEMCACHED_MAX_CONNECTIONS
+              value: ${MEMCACHED_MAX_CONNECTIONS}
+            - name: MEMCACHED_SLAB_PAGE_SIZE
+              value: ${MEMCACHED_SLAB_PAGE_SIZE}
+            image: ${MEMCACHED_IMG_NAME}:${MEMCACHED_IMG_TAG}
+            livenessProbe:
+              initialDelaySeconds: 30
+              tcpSocket:
+                port: 11211
+              timeoutSeconds: 1
+            name: memcached
+            ports:
+            - containerPort: 11211
+            readinessProbe:
+              initialDelaySeconds: 5
+              tcpSocket:
+                port: 11211
+              timeoutSeconds: 1
+            resources:
+              limits:
+                memory: ${MEMCACHED_MEM_LIMIT}
+              requests:
+                cpu: ${MEMCACHED_CPU_REQ}
+                memory: ${MEMCACHED_MEM_REQ}
+            volumeMounts: []
+          volumes: []
+      triggers:
+      - type: ConfigChange
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        description: Exposes the database server
+      name: ${DATABASE_SERVICE_NAME}
+    spec:
+      ports:
+      - name: postgresql
+        port: 5432
+        targetPort: 5432
+      selector:
+        name: ${DATABASE_SERVICE_NAME}
+  - apiVersion: v1
+    kind: DeploymentConfig
+    metadata:
+      annotations:
+        description: Defines how to deploy the database
+      name: ${DATABASE_SERVICE_NAME}
+    spec:
+      replicas: 1
+      selector:
+        name: ${DATABASE_SERVICE_NAME}
+      strategy:
+        type: Recreate
+      template:
+        metadata:
+          labels:
+            name: ${DATABASE_SERVICE_NAME}
+          name: ${DATABASE_SERVICE_NAME}
+        spec:
+          containers:
+          - env:
+            - name: POSTGRESQL_USER
+              value: ${DATABASE_USER}
+            - name: POSTGRESQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: pg-password
+                  name: ${NAME}-secrets
+            - name: POSTGRESQL_DATABASE
+              value: ${DATABASE_NAME}
+            - name: POSTGRESQL_MAX_CONNECTIONS
+              value: ${POSTGRESQL_MAX_CONNECTIONS}
+            - name: POSTGRESQL_SHARED_BUFFERS
+              value: ${POSTGRESQL_SHARED_BUFFERS}
+            - name: POSTGRESQL_CONFIG_DIR
+              value: ${POSTGRESQL_CONFIG_DIR}
+            image: ${POSTGRESQL_IMG_NAME}:${POSTGRESQL_IMG_TAG}
+            livenessProbe:
+              initialDelaySeconds: 60
+              tcpSocket:
+                port: 5432
+              timeoutSeconds: 1
+            name: postgresql
+            ports:
+            - containerPort: 5432
+            readinessProbe:
+              exec:
+                command:
+                - /bin/sh
+                - -i
+                - -c
+                - psql -h 127.0.0.1 -U ${POSTGRESQL_USER} -q -d ${POSTGRESQL_DATABASE}
+                  -c 'SELECT 1'
+              initialDelaySeconds: 15
+              timeoutSeconds: 1
+            resources:
+              limits:
+                memory: ${POSTGRESQL_MEM_LIMIT}
+              requests:
+                cpu: ${POSTGRESQL_CPU_REQ}
+                memory: ${POSTGRESQL_MEM_REQ}
+            volumeMounts:
+            - mountPath: /var/lib/pgsql/data
+              name: miq-pgdb-volume
+            - mountPath: ${POSTGRESQL_CONFIG_DIR}
+              name: miq-pg-configs
+          volumes:
+          - name: miq-pgdb-volume
+            persistentVolumeClaim:
+              claimName: ${NAME}-${DATABASE_SERVICE_NAME}
+          - configMap:
+              name: ${DATABASE_SERVICE_NAME}-configs
+            name: miq-pg-configs
+      triggers:
+      - type: ConfigChange
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        description: Exposes and load balances Ansible pods
+        service.alpha.openshift.io/dependencies: '[{"name":"${DATABASE_SERVICE_NAME}","namespace":"","kind":"Service"}]'
+      name: ${ANSIBLE_SERVICE_NAME}
+    spec:
+      ports:
+      - name: http
+        port: 80
+        protocol: TCP
+        targetPort: 80
+      - name: https
+        port: 443
+        protocol: TCP
+        targetPort: 443
+      selector:
+        name: ${ANSIBLE_SERVICE_NAME}
+  - apiVersion: v1
+    kind: DeploymentConfig
+    metadata:
+      annotations:
+        description: Defines how to deploy the Ansible appliance
+      name: ${ANSIBLE_SERVICE_NAME}
+    spec:
+      replicas: 0
+      serviceName: ${ANSIBLE_SERVICE_NAME}
+      strategy:
+        type: Recreate
+      template:
+        metadata:
+          labels:
+            name: ${ANSIBLE_SERVICE_NAME}
+          name: ${ANSIBLE_SERVICE_NAME}
+        spec:
+          containers:
+          - env:
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: admin-password
+                  name: ${ANSIBLE_SERVICE_NAME}-secrets
+            - name: RABBITMQ_USER_NAME
+              value: ${ANSIBLE_RABBITMQ_USER_NAME}
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: rabbit-password
+                  name: ${ANSIBLE_SERVICE_NAME}-secrets
+            - name: ANSIBLE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: secret-key
+                  name: ${ANSIBLE_SERVICE_NAME}-secrets
+            - name: DATABASE_SERVICE_NAME
+              value: ${DATABASE_SERVICE_NAME}
+            - name: POSTGRESQL_USER
+              value: ${DATABASE_USER}
+            - name: POSTGRESQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: pg-password
+                  name: ${NAME}-secrets
+            - name: POSTGRESQL_DATABASE
+              value: ${ANSIBLE_DATABASE_NAME}
+            image: ${ANSIBLE_IMG_NAME}:${ANSIBLE_IMG_TAG}
+            livenessProbe:
+              initialDelaySeconds: 480
+              tcpSocket:
+                port: 443
+              timeoutSeconds: 3
+            name: ansible
+            ports:
+            - containerPort: 80
+              protocol: TCP
+            - containerPort: 443
+              protocol: TCP
+            readinessProbe:
+              httpGet:
+                path: /
+                port: 443
+                scheme: HTTPS
+              initialDelaySeconds: 200
+              timeoutSeconds: 3
+            resources:
+              limits:
+                memory: ${ANSIBLE_MEM_LIMIT}
+              requests:
+                cpu: ${ANSIBLE_CPU_REQ}
+                memory: ${ANSIBLE_MEM_REQ}
+            securityContext:
+              privileged: true
+          serviceAccount: miq-privileged
+          serviceAccountName: miq-privileged
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        description: Exposes the httpd server
+        service.alpha.openshift.io/dependencies: '[{"name":"${NAME}","namespace":"","kind":"Service"}]'
+      name: ${HTTPD_SERVICE_NAME}
+    spec:
+      ports:
+      - name: http
+        port: 80
+        targetPort: 80
+      selector:
+        name: httpd
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        description: Exposes the httpd server dbus api
+        service.alpha.openshift.io/dependencies: '[{"name":"${NAME}","namespace":"","kind":"Service"}]'
+      name: ${HTTPD_DBUS_API_SERVICE_NAME}
+    spec:
+      ports:
+      - name: http-dbus-api
+        port: 8080
+        targetPort: 8080
+      selector:
+        name: httpd
+  - apiVersion: v1
+    kind: DeploymentConfig
+    metadata:
+      annotations:
+        description: Defines how to deploy httpd
+      name: ${HTTPD_SERVICE_NAME}
+    spec:
+      replicas: 1
+      selector:
+        name: ${HTTPD_SERVICE_NAME}
+      strategy:
+        recreateParams:
+          timeoutSeconds: 1200
+        type: Recreate
+      template:
+        metadata:
+          labels:
+            name: ${HTTPD_SERVICE_NAME}
+          name: ${HTTPD_SERVICE_NAME}
+        spec:
+          containers:
+          - env:
+            - name: HTTPD_AUTH_TYPE
+              valueFrom:
+                configMapKeyRef:
+                  key: auth-type
+                  name: ${HTTPD_SERVICE_NAME}-auth-configs
+            - name: HTTPD_AUTH_KERBEROS_REALMS
+              valueFrom:
+                configMapKeyRef:
+                  key: auth-kerberos-realms
+                  name: ${HTTPD_SERVICE_NAME}-auth-configs
+            image: ${HTTPD_IMG_NAME}:${HTTPD_IMG_TAG}
+            lifecycle:
+              postStart:
+                exec:
+                  command:
+                  - /usr/bin/save-container-environment
+            livenessProbe:
+              exec:
+                command:
+                - pidof
+                - httpd
+              initialDelaySeconds: 15
+              timeoutSeconds: 3
+            name: httpd
+            ports:
+            - containerPort: 80
+              protocol: TCP
+            - containerPort: 8080
+              protocol: TCP
+            readinessProbe:
+              initialDelaySeconds: 10
+              tcpSocket:
+                port: 80
+              timeoutSeconds: 3
+            resources:
+              limits:
+                memory: ${HTTPD_MEM_LIMIT}
+              requests:
+                cpu: ${HTTPD_CPU_REQ}
+                memory: ${HTTPD_MEM_REQ}
+            volumeMounts:
+            - mountPath: ${HTTPD_CONFIG_DIR}
+              name: httpd-config
+            - mountPath: ${HTTPD_AUTH_CONFIG_DIR}
+              name: httpd-auth-config
+          serviceAccount: miq-httpd
+          serviceAccountName: miq-httpd
+          volumes:
+          - configMap:
+              name: ${HTTPD_SERVICE_NAME}-configs
+            name: httpd-config
+          - configMap:
+              name: ${HTTPD_SERVICE_NAME}-auth-configs
+            name: httpd-auth-config
+      triggers:
+      - type: ConfigChange
+  parameters:
+  - description: The name assigned to all of the frontend objects defined in this
+      template.
+    displayName: Name
+    name: NAME
+    required: true
+    value: manageiq
+  - description: Encryption Key for ManageIQ Passwords
+    displayName: ManageIQ Encryption Key
+    from: '[a-zA-Z0-9]{43}'
+    generate: expression
+    name: V2_KEY
+    required: true
+  - description: The name of the OpenShift Service exposed for the PostgreSQL container.
+    displayName: PostgreSQL Service Name
+    name: DATABASE_SERVICE_NAME
+    required: true
+    value: postgresql
+  - description: PostgreSQL user that will access the database.
+    displayName: PostgreSQL User
+    name: DATABASE_USER
+    required: true
+    value: root
+  - description: Password for the PostgreSQL user.
+    displayName: PostgreSQL Password
+    from: '[a-zA-Z0-9]{8}'
+    generate: expression
+    name: DATABASE_PASSWORD
+    required: true
+  - description: Name of the PostgreSQL database accessed.
+    displayName: PostgreSQL Database Name
+    name: DATABASE_NAME
+    required: true
+    value: vmdb_production
+  - description: Database region that will be used for application.
+    displayName: Application Database Region
+    name: DATABASE_REGION
+    required: true
+    value: "0"
+  - description: The database to be used by the Ansible continer
+    displayName: Ansible PostgreSQL database name
+    name: ANSIBLE_DATABASE_NAME
+    required: true
+    value: awx
+  - description: The name of the OpenShift Service exposed for the Memcached container.
+    displayName: Memcached Service Name
+    name: MEMCACHED_SERVICE_NAME
+    required: true
+    value: memcached
+  - description: Memcached maximum memory for memcached object storage in MB.
+    displayName: Memcached Max Memory
+    name: MEMCACHED_MAX_MEMORY
+    value: "64"
+  - description: Memcached maximum number of connections allowed.
+    displayName: Memcached Max Connections
+    name: MEMCACHED_MAX_CONNECTIONS
+    value: "1024"
+  - description: Memcached size of each slab page.
+    displayName: Memcached Slab Page Size
+    name: MEMCACHED_SLAB_PAGE_SIZE
+    value: 1m
+  - description: Directory used to store PostgreSQL configuration overrides.
+    displayName: PostgreSQL Configuration Overrides
+    name: POSTGRESQL_CONFIG_DIR
+    value: /var/lib/pgsql/conf.d
+  - description: PostgreSQL maximum number of database connections allowed.
+    displayName: PostgreSQL Max Connections
+    name: POSTGRESQL_MAX_CONNECTIONS
+    value: "1000"
+  - description: Amount of memory dedicated for PostgreSQL shared memory buffers.
+    displayName: PostgreSQL Shared Buffer Amount
+    name: POSTGRESQL_SHARED_BUFFERS
+    value: 1GB
+  - description: The name of the OpenShift Service exposed for the Ansible container.
+    displayName: Ansible Service Name
+    name: ANSIBLE_SERVICE_NAME
+    value: ansible
+  - description: The password for the Ansible container admin user
+    displayName: Ansible admin User password
+    from: '[a-zA-Z0-9]{32}'
+    generate: expression
+    name: ANSIBLE_ADMIN_PASSWORD
+    required: true
+  - description: Encryption key for the Ansible container
+    displayName: Ansible Secret Key
+    from: '[a-f0-9]{32}'
+    generate: expression
+    name: ANSIBLE_SECRET_KEY
+    required: true
+  - description: Username for the Ansible RabbitMQ Server
+    displayName: RabbitMQ Username
+    name: ANSIBLE_RABBITMQ_USER_NAME
+    required: true
+    value: ansible
+  - description: Password for the Ansible RabbitMQ Server
+    displayName: RabbitMQ Server Password
+    from: '[a-zA-Z0-9]{32}'
+    generate: expression
+    name: ANSIBLE_RABBITMQ_PASSWORD
+    required: true
+  - description: Minimum amount of CPU time the Application container will need (expressed
+      in millicores).
+    displayName: Application Min CPU Requested
+    name: APPLICATION_CPU_REQ
+    required: true
+    value: 1000m
+  - description: Minimum amount of CPU time the PostgreSQL container will need (expressed
+      in millicores).
+    displayName: PostgreSQL Min CPU Requested
+    name: POSTGRESQL_CPU_REQ
+    required: true
+    value: 500m
+  - description: Minimum amount of CPU time the Memcached container will need (expressed
+      in millicores).
+    displayName: Memcached Min CPU Requested
+    name: MEMCACHED_CPU_REQ
+    required: true
+    value: 200m
+  - description: Minimum amount of CPU time the Ansible container will need (expressed
+      in millicores).
+    displayName: Ansible Min CPU Requested
+    name: ANSIBLE_CPU_REQ
+    required: true
+    value: 1000m
+  - description: Minimum amount of memory the Application container will need.
+    displayName: Application Min RAM Requested
+    name: APPLICATION_MEM_REQ
+    required: true
+    value: 6144Mi
+  - description: Minimum amount of memory the PostgreSQL container will need.
+    displayName: PostgreSQL Min RAM Requested
+    name: POSTGRESQL_MEM_REQ
+    required: true
+    value: 4Gi
+  - description: Minimum amount of memory the Memcached container will need.
+    displayName: Memcached Min RAM Requested
+    name: MEMCACHED_MEM_REQ
+    required: true
+    value: 64Mi
+  - description: Minimum amount of memory the Ansible container will need.
+    displayName: Ansible Min RAM Requested
+    name: ANSIBLE_MEM_REQ
+    required: true
+    value: 2048Mi
+  - description: Maximum amount of memory the Application container can consume.
+    displayName: Application Max RAM Limit
+    name: APPLICATION_MEM_LIMIT
+    required: true
+    value: 16384Mi
+  - description: Maximum amount of memory the PostgreSQL container can consume.
+    displayName: PostgreSQL Max RAM Limit
+    name: POSTGRESQL_MEM_LIMIT
+    required: true
+    value: 8Gi
+  - description: Maximum amount of memory the Memcached container can consume.
+    displayName: Memcached Max RAM Limit
+    name: MEMCACHED_MEM_LIMIT
+    required: true
+    value: 256Mi
+  - description: Maximum amount of memory the Ansible container can consume.
+    displayName: Ansible Max RAM Limit
+    name: ANSIBLE_MEM_LIMIT
+    required: true
+    value: 8096Mi
+  - description: This is the PostgreSQL image name requested to deploy.
+    displayName: PostgreSQL Image Name
+    name: POSTGRESQL_IMG_NAME
+    value: docker.io/manageiq/postgresql
+  - description: This is the PostgreSQL image tag/version requested to deploy.
+    displayName: PostgreSQL Image Tag
+    name: POSTGRESQL_IMG_TAG
+    value: latest
+  - description: This is the Memcached image name requested to deploy.
+    displayName: Memcached Image Name
+    name: MEMCACHED_IMG_NAME
+    value: docker.io/manageiq/memcached
+  - description: This is the Memcached image tag/version requested to deploy.
+    displayName: Memcached Image Tag
+    name: MEMCACHED_IMG_TAG
+    value: latest
+  - description: This is the Application image name requested to deploy.
+    displayName: Application Image Name
+    name: APPLICATION_IMG_NAME
+    value: docker.io/manageiq/manageiq-pods
+  - description: This is the ManageIQ Frontend Application image tag/version requested
+      to deploy.
+    displayName: Front end Application Image Tag
+    name: FRONTEND_APPLICATION_IMG_TAG
+    value: frontend-latest
+  - description: This is the ManageIQ Backend Application image tag/version requested
+      to deploy.
+    displayName: Back end Application Image Tag
+    name: BACKEND_APPLICATION_IMG_TAG
+    value: backend-latest
+  - description: This is the Ansible image name requested to deploy.
+    displayName: Ansible Image Name
+    name: ANSIBLE_IMG_NAME
+    value: docker.io/manageiq/embedded-ansible
+  - description: This is the Ansible image tag/version requested to deploy.
+    displayName: Ansible Image Tag
+    name: ANSIBLE_IMG_TAG
+    value: latest
+  - description: The exposed hostname that will route to the application service,
+      if left blank a value will be defaulted.
+    displayName: Application Hostname
+    name: APPLICATION_DOMAIN
+  - description: This is the number of Application replicas requested to deploy.
+    displayName: Application Replica Count
+    name: APPLICATION_REPLICA_COUNT
+    value: "1"
+  - description: Delay in seconds before we attempt to initialize the application.
+    displayName: Application Init Delay
+    name: APPLICATION_INIT_DELAY
+    required: true
+    value: "15"
+  - description: Volume space available for application data.
+    displayName: Application Volume Capacity
+    name: APPLICATION_VOLUME_CAPACITY
+    required: true
+    value: 5Gi
+  - description: Volume space available for database.
+    displayName: Database Volume Capacity
+    name: DATABASE_VOLUME_CAPACITY
+    required: true
+    value: 15Gi
+  - description: The name of the OpenShift Service exposed for the httpd container.
+    displayName: Apache httpd Service Name
+    name: HTTPD_SERVICE_NAME
+    required: true
+    value: httpd
+  - description: The name of httpd dbus api service.
+    displayName: Apache httpd DBus API Service Name
+    name: HTTPD_DBUS_API_SERVICE_NAME
+    required: true
+    value: httpd-dbus-api
+  - description: This is the httpd image name requested to deploy.
+    displayName: Apache httpd Image Name
+    name: HTTPD_IMG_NAME
+    value: docker.io/manageiq/httpd
+  - description: This is the httpd image tag/version requested to deploy.
+    displayName: Apache httpd Image Tag
+    name: HTTPD_IMG_TAG
+    value: latest
+  - description: Directory used to store the Apache configuration files.
+    displayName: Apache Configuration Directory
+    name: HTTPD_CONFIG_DIR
+    value: /etc/httpd/conf.d
+  - description: Directory used to store the external authentication configuration
+      files.
+    displayName: External Authentication Configuration Directory
+    name: HTTPD_AUTH_CONFIG_DIR
+    value: /etc/httpd/auth-conf.d
+  - description: Minimum amount of CPU time the httpd container will need (expressed
+      in millicores).
+    displayName: Apache httpd Min CPU Requested
+    name: HTTPD_CPU_REQ
+    required: true
+    value: 500m
+  - description: Minimum amount of memory the httpd container will need.
+    displayName: Apache httpd Min RAM Requested
+    name: HTTPD_MEM_REQ
+    required: true
+    value: 512Mi
+  - description: Maximum amount of memory the httpd container can consume.
+    displayName: Apache httpd Max RAM Limit
+    name: HTTPD_MEM_LIMIT
+    required: true
+    value: 8192Mi
+- apiVersion: apps/v1beta1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      description: Defines how to deploy the ManageIQ appliance
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    generation: 2
+    labels:
+      app: manageiq
+      template: manageiq
+    name: manageiq
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        name: manageiq
+    serviceName: manageiq
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          name: manageiq
+        name: manageiq
+      spec:
+        containers:
+        - env:
+          - name: MY_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          - name: APPLICATION_INIT_DELAY
+            value: "15"
+          - name: DATABASE_REGION
+            value: "0"
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                key: database-url
+                name: manageiq-secrets
+          - name: V2_KEY
+            valueFrom:
+              secretKeyRef:
+                key: v2-key
+                name: manageiq-secrets
+          - name: ANSIBLE_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: admin-password
+                name: ansible-secrets
+          image: docker.io/manageiq/manageiq-pods:frontend-latest
+          imagePullPolicy: IfNotPresent
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                - /opt/manageiq/container-scripts/sync-pv-data
+          livenessProbe:
+            exec:
+              command:
+              - pidof
+              - MIQ Server
+            failureThreshold: 3
+            initialDelaySeconds: 480
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
+          name: manageiq
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 200
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 80
+            timeoutSeconds: 3
+          resources:
+            limits:
+              memory: 16Gi
+            requests:
+              cpu: "1"
+              memory: 6Gi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /persistent
+            name: manageiq-server
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: miq-orchestrator
+        serviceAccountName: miq-orchestrator
+        terminationGracePeriodSeconds: 90
+    volumeClaimTemplates:
+    - metadata:
+        creationTimestamp: null
+        name: manageiq-server
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
+      status:
+        phase: Pending
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1beta1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      description: Defines how to deploy the ManageIQ appliance
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    generation: 1
+    labels:
+      app: manageiq
+      template: manageiq
+    name: manageiq-backend
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        name: manageiq-backend
+    serviceName: manageiq-backend
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          name: manageiq-backend
+        name: manageiq-backend
+      spec:
+        containers:
+        - env:
+          - name: APPLICATION_INIT_DELAY
+            value: "15"
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                key: database-url
+                name: manageiq-secrets
+          - name: MIQ_SERVER_DEFAULT_ROLES
+            value: database_operations,event,reporting,scheduler,smartstate,ems_operations,ems_inventory,automate
+          - name: FRONTEND_SERVICE_NAME
+            value: manageiq
+          - name: V2_KEY
+            valueFrom:
+              secretKeyRef:
+                key: v2-key
+                name: manageiq-secrets
+          - name: ANSIBLE_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: admin-password
+                name: ansible-secrets
+          image: docker.io/manageiq/manageiq-pods:backend-latest
+          imagePullPolicy: IfNotPresent
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                - /opt/manageiq/container-scripts/sync-pv-data
+          livenessProbe:
+            exec:
+              command:
+              - pidof
+              - MIQ Server
+            failureThreshold: 3
+            initialDelaySeconds: 480
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
+          name: manageiq
+          resources:
+            limits:
+              memory: 16Gi
+            requests:
+              cpu: "1"
+              memory: 6Gi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /persistent
+            name: manageiq-server
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: miq-orchestrator
+        serviceAccountName: miq-orchestrator
+        terminationGracePeriodSeconds: 90
+    volumeClaimTemplates:
+    - metadata:
+        creationTimestamp: null
+        name: manageiq-server
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
+      status:
+        phase: Pending
+  status:
+    observedGeneration: 1
+    replicas: 0
+- apiVersion: v1
+  data:
+    admin-password: VnZWdzUweGxPc0FQc1BPeFQwck5WU1ZDMGpBcFVGeXY=
+    rabbit-password: cVdoRGtOSW9RN2x4VW5kVmU0bTNDZ09nMnVsTmpGbHk=
+    secret-key: NjM4MjU0NWM3NTFiYWRjNTQyMjA1MGI4NGQzZGFhZTI=
+  kind: Secret
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: manageiq
+      template: manageiq
+    name: ansible-secrets
+  type: Opaque
+- apiVersion: v1
+  data:
+    database-url: cG9zdGdyZXNxbDovL3Jvb3Q6cGVKd0RuVkVAcG9zdGdyZXNxbC92bWRiX3Byb2R1Y3Rpb24/ZW5jb2Rpbmc9dXRmOCZwb29sPTUmd2FpdF90aW1lb3V0PTU=
+    pg-password: cGVKd0RuVkU=
+    v2-key: cndCMlNZYTZjNGJSMHcyMm1JMktibjNhMkNJUUFubFZtMmVxN2tOa3RFcQ==
+  kind: Secret
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: manageiq
+      template: manageiq
+    name: manageiq-secrets
+  type: Opaque
+- apiVersion: v1
+  data:
+    auth-configuration.conf: |
+      # External Authentication Configuration File
+      #
+      # For details on usage please see https://github.com/ManageIQ/manageiq-pods/blob/master/README.md#configuring-external-authentication
+    auth-kerberos-realms: undefined
+    auth-type: internal
+  kind: ConfigMap
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: manageiq
+      template: manageiq
+    name: httpd-auth-configs
+- apiVersion: v1
+  data:
+    application.conf: |
+      # Timeout: The number of seconds before receives and sends time out.
+      Timeout 120
+
+      RewriteEngine On
+      Options SymLinksIfOwnerMatch
+
+      <VirtualHost *:80>
+        KeepAlive on
+        # Without ServerName mod_auth_mellon compares against http:// and not https:// from the IdP
+        ServerName https://%{REQUEST_HOST}
+
+        ProxyPreserveHost on
+        ProxyPass        /ws/ ws://manageiq/ws/
+        ProxyPassReverse /ws/ ws://manageiq/ws/
+
+        # For httpd, some ErrorDocuments must by served by the httpd pod
+        RewriteCond %{REQUEST_URI} !^/proxy_pages
+
+        # For SAML /saml2 is only served by mod_auth_mellon in the httpd pod
+        RewriteCond %{REQUEST_URI} !^/saml2
+        RewriteRule ^/ http://manageiq%{REQUEST_URI} [P,QSA,L]
+        ProxyPassReverse / http://manageiq/
+      </VirtualHost>
+    authentication.conf: |
+      # Load appropriate authentication configuration files
+      #
+      Include "conf.d/configuration-${HTTPD_AUTH_TYPE}-auth"
+    configuration-active-directory-auth: |
+      Include "conf.d/external-auth-load-modules-conf"
+
+      <Location /dashboard/kerberos_authenticate>
+        AuthType                   Kerberos
+        AuthName                   "Kerberos Login"
+        KrbMethodNegotiate         On
+        KrbMethodK5Passwd          Off
+        KrbAuthRealms              ${HTTPD_AUTH_KERBEROS_REALMS}
+        Krb5KeyTab                 /etc/krb5.keytab
+        KrbServiceName             Any
+        Require                    pam-account httpd-auth
+
+        ErrorDocument 401 /proxy_pages/invalid_sso_credentials.js
+      </Location>
+
+      Include "conf.d/external-auth-login-form-conf"
+      Include "conf.d/external-auth-application-api-conf"
+      Include "conf.d/external-auth-lookup-user-details-conf"
+      Include "conf.d/external-auth-remote-user-conf"
+    configuration-external-auth: |
+      Include "conf.d/external-auth-load-modules-conf"
+
+      <Location /dashboard/kerberos_authenticate>
+        AuthType                   Kerberos
+        AuthName                   "Kerberos Login"
+        KrbMethodNegotiate         On
+        KrbMethodK5Passwd          Off
+        KrbAuthRealms              ${HTTPD_AUTH_KERBEROS_REALMS}
+        Krb5KeyTab                 /etc/http.keytab
+        KrbServiceName             Any
+        Require                    pam-account httpd-auth
+
+        ErrorDocument 401 /proxy_pages/invalid_sso_credentials.js
+      </Location>
+
+      Include "conf.d/external-auth-login-form-conf"
+      Include "conf.d/external-auth-application-api-conf"
+      Include "conf.d/external-auth-lookup-user-details-conf"
+      Include "conf.d/external-auth-remote-user-conf"
+    configuration-internal-auth: |
+      # Internal authentication
+      #
+    configuration-saml-auth: |
+      LoadModule auth_mellon_module modules/mod_auth_mellon.so
+
+      <Location />
+        MellonEnable               "info"
+
+        MellonIdPMetadataFile      "/etc/httpd/saml2/idp-metadata.xml"
+
+        MellonSPPrivateKeyFile     "/etc/httpd/saml2/sp-key.key"
+        MellonSPCertFile           "/etc/httpd/saml2/sp-cert.cert"
+        MellonSPMetadataFile       "/etc/httpd/saml2/sp-metadata.xml"
+
+        MellonVariable             "sp-cookie"
+        MellonSecureCookie         On
+        MellonCookiePath           "/"
+
+        MellonIdP                  "IDP"
+
+        MellonEndpointPath         "/saml2"
+
+        MellonUser                 username
+        MellonMergeEnvVars         On
+
+        MellonSetEnvNoPrefix       "REMOTE_USER"            username
+        MellonSetEnvNoPrefix       "REMOTE_USER_EMAIL"      email
+        MellonSetEnvNoPrefix       "REMOTE_USER_FIRSTNAME"  firstname
+        MellonSetEnvNoPrefix       "REMOTE_USER_LASTNAME"   lastname
+        MellonSetEnvNoPrefix       "REMOTE_USER_FULLNAME"   fullname
+        MellonSetEnvNoPrefix       "REMOTE_USER_GROUPS"     groups
+      </Location>
+
+      <Location /saml_login>
+        AuthType                   "Mellon"
+        MellonEnable               "auth"
+        Require                    valid-user
+      </Location>
+
+      Include "conf.d/external-auth-remote-user-conf"
+    external-auth-application-api-conf: |
+      <LocationMatch ^/api>
+        SetEnvIf Authorization     '^Basic +YWRtaW46' let_admin_in
+        SetEnvIf X-Auth-Token      '^.+$'             let_api_token_in
+        SetEnvIf X-MIQ-Token       '^.+$'             let_sys_token_in
+
+        AuthType                   Basic
+        AuthName                   "External Authentication (httpd) for API"
+        AuthBasicProvider          PAM
+
+        AuthPAMService             httpd-auth
+        Require                    valid-user
+        Order                      Allow,Deny
+        Allow from                 env=let_admin_in
+        Allow from                 env=let_api_token_in
+        Allow from                 env=let_sys_token_in
+        Satisfy                    Any
+      </LocationMatch>
+    external-auth-load-modules-conf: |
+      LoadModule authnz_pam_module            modules/mod_authnz_pam.so
+      LoadModule intercept_form_submit_module modules/mod_intercept_form_submit.so
+      LoadModule lookup_identity_module       modules/mod_lookup_identity.so
+      LoadModule auth_kerb_module             modules/mod_auth_kerb.so
+    external-auth-login-form-conf: |
+      <Location /dashboard/external_authenticate>
+        InterceptFormPAMService    httpd-auth
+        InterceptFormLogin         user_name
+        InterceptFormPassword      user_password
+        InterceptFormLoginSkip     admin
+        InterceptFormClearRemoteUserForSkipped on
+      </Location>
+    external-auth-lookup-user-details-conf: |
+      <LocationMatch ^/dashboard/external_authenticate$|^/dashboard/kerberos_authenticate$|^/api>
+        LookupUserAttr mail        REMOTE_USER_EMAIL
+        LookupUserAttr givenname   REMOTE_USER_FIRSTNAME
+        LookupUserAttr sn          REMOTE_USER_LASTNAME
+        LookupUserAttr displayname REMOTE_USER_FULLNAME
+        LookupUserAttr domainname  REMOTE_USER_DOMAIN
+
+        LookupUserGroups           REMOTE_USER_GROUPS ":"
+        LookupDbusTimeout          5000
+      </LocationMatch>
+    external-auth-remote-user-conf: |
+      RequestHeader unset X_REMOTE_USER
+
+      RequestHeader set X_REMOTE_USER           %{REMOTE_USER}e           env=REMOTE_USER
+      RequestHeader set X_EXTERNAL_AUTH_ERROR   %{EXTERNAL_AUTH_ERROR}e   env=EXTERNAL_AUTH_ERROR
+      RequestHeader set X_REMOTE_USER_EMAIL     %{REMOTE_USER_EMAIL}e     env=REMOTE_USER_EMAIL
+      RequestHeader set X_REMOTE_USER_FIRSTNAME %{REMOTE_USER_FIRSTNAME}e env=REMOTE_USER_FIRSTNAME
+      RequestHeader set X_REMOTE_USER_LASTNAME  %{REMOTE_USER_LASTNAME}e  env=REMOTE_USER_LASTNAME
+      RequestHeader set X_REMOTE_USER_FULLNAME  %{REMOTE_USER_FULLNAME}e  env=REMOTE_USER_FULLNAME
+      RequestHeader set X_REMOTE_USER_GROUPS    %{REMOTE_USER_GROUPS}e    env=REMOTE_USER_GROUPS
+      RequestHeader set X_REMOTE_USER_DOMAIN    %{REMOTE_USER_DOMAIN}e    env=REMOTE_USER_DOMAIN
+  kind: ConfigMap
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: manageiq
+      template: manageiq
+    name: httpd-configs
+- apiVersion: v1
+  data:
+    01_miq_overrides.conf: |
+      #------------------------------------------------------------------------------
+      # CONNECTIONS AND AUTHENTICATION
+      #------------------------------------------------------------------------------
+
+      tcp_keepalives_count = 9
+      tcp_keepalives_idle = 3
+      tcp_keepalives_interval = 75
+
+      #------------------------------------------------------------------------------
+      # RESOURCE USAGE (except WAL)
+      #------------------------------------------------------------------------------
+
+      shared_preload_libraries = 'pglogical,repmgr_funcs'
+      max_worker_processes = 10
+
+      #------------------------------------------------------------------------------
+      # WRITE AHEAD LOG
+      #------------------------------------------------------------------------------
+
+      wal_level = 'logical'
+      wal_log_hints = on
+      wal_buffers = 16MB
+      checkpoint_completion_target = 0.9
+
+      #------------------------------------------------------------------------------
+      # REPLICATION
+      #------------------------------------------------------------------------------
+
+      max_wal_senders = 10
+      wal_sender_timeout = 0
+      max_replication_slots = 10
+      hot_standby = on
+
+      #------------------------------------------------------------------------------
+      # ERROR REPORTING AND LOGGING
+      #------------------------------------------------------------------------------
+
+      log_filename = 'postgresql.log'
+      log_rotation_age = 0
+      log_min_duration_statement = 5000
+      log_connections = on
+      log_disconnections = on
+      log_line_prefix = '%t:%r:%c:%u@%d:[%p]:'
+      log_lock_waits = on
+
+      #------------------------------------------------------------------------------
+      # AUTOVACUUM PARAMETERS
+      #------------------------------------------------------------------------------
+
+      log_autovacuum_min_duration = 0
+      autovacuum_naptime = 5min
+      autovacuum_vacuum_threshold = 500
+      autovacuum_analyze_threshold = 500
+      autovacuum_vacuum_scale_factor = 0.05
+
+      #------------------------------------------------------------------------------
+      # LOCK MANAGEMENT
+      #------------------------------------------------------------------------------
+
+      deadlock_timeout = 5s
+
+      #------------------------------------------------------------------------------
+      # VERSION/PLATFORM COMPATIBILITY
+      #------------------------------------------------------------------------------
+
+      escape_string_warning = off
+      standard_conforming_strings = off
+  kind: ConfigMap
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: manageiq
+      template: manageiq
+    name: postgresql-configs
+kind: List
+metadata: {}
