@@ -1,3 +1,8 @@
+>  Manual Search
+```sh
+ldapsearch -x -D "CN=xxx,OU=Service-Accounts,OU=DCS,DC=homeoffice,DC=example,DC=com" -W -H ldaps://ldaphost.example.com -b "ou=Users,dc=office,dc=example,DC=com" -s sub 'sAMAccountName=user1'
+```
+
 > In master-config.yaml   
 
 
