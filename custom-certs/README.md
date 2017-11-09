@@ -14,3 +14,8 @@ servingInfo:
     - "*.wildcardhost.com"
   ...
  ```
+
+
+```sh
+openshift_master_named_certificates=[{"certfile": "/path/to/custom1.crt", "keyfile": "/path/to/custom1.key", "names": ["public-master-host.com"]}]
+```
