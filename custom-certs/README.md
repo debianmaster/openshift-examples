@@ -21,6 +21,6 @@ openshift_master_named_certificates=[{"certfile": "/path/to/custom1.crt", "keyfi
 ```
 
 ```sh
-ansible-playbook -i <inventory_file> \
+ansible-playbook 
     /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/redeploy-master-certificates.yml
 ```
