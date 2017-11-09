@@ -14,3 +14,10 @@ ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cl
    -e openshift_metrics_install_metrics=True \
    -e openshift_metrics_hawkular_hostname=hawkular-metrics.example.org
 ```
+
+
+### Clean up 
+```sh
+ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml \
+   -e openshift_metrics_install_metrics=False
+ ```
