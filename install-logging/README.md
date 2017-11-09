@@ -11,7 +11,7 @@ ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cl
 ### Clean up
 
 ```sh
-ansible-playbook [-i </path/to/inventory>] \ /usr/share/ansible/openshift-ansible/playbooks/common/openshift-cluster/openshift_logging.yml \
+ansible-playbook  /usr/share/ansible/openshift-ansible/playbooks/common/openshift-cluster/openshift_logging.yml \
     -e openshift_logging_install_logging=False
 ```
 
