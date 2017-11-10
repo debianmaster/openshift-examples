@@ -1,6 +1,6 @@
 ## UnInstall 
 ```sh
-ansible-playbook  [-i /path/to/inventory] /usr/share/ansible/openshift-ansible/playbooks/adhoc/uninstall.yml 
+ansible-playbook  [-i /path/to/inventory] /usr/share/ansible/openshift-ansible/playbooks/adhoc/uninstall.yml
 ```
 
 
