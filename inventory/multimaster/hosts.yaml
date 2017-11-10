@@ -1,0 +1,98 @@
+[OSEv3:children]
+nodes
+masters
+etcd
+glusterfs
+new_nodes
+
+[OSEv3:vars]
+openshift_master_default_subdomain=ose.unix.example.org
+ansible_ssh_user=root
+openshift_no_proxy=.unix.example.org,10.0.0.0/8,.svc.cluster,.svc.cluster.local,172.30.0.0/16,10.128.0.0/14
+
+
+openshift_http_proxy=http://127.0.0.1:9090
+openshift_https_proxy=https://127.0.0.1:9090
+
+openshift_override_hostname_check=True
+openshift_master_cluster_method=native
+openshift_master_cluster_hostname=snd-master.ose.unix.example.org
+openshift_master_cluster_public_hostname=snd-master.ose.unix.example.org
+deployment_type=openshift-enterprise
+openshift_disable_check=memory_availability,disk_availability,docker_storage,docker_storage_driver,docker_image_availability
+openshift_master_api_port=443
+openshift_master_console_port=443
+os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
+openshift_release=v3.6
+openshift_master_overwrite_named_certificates=True
+
+openshift_master_named_certificates=[{"certfile": "/root/.config/openshift/privatecustomcert.crt", "keyfile": "/root/.config/openshift/privatecustomkey.pem", "names": ["snd-master.ose.unix.example.org"]}]
+
+openshift_master_ldap_ca_file=/root/.config/openshift/rootcabundle.crt
+
+openshift_master_identity_providers=[{'name': 'ldap', 'challenge': 'true', 'login': 'true', 'kind': 'LDAPPasswordIdentityProvider', 'attributes': {'id': ['sAMAccountName'], 'email': ['mail'], 'name': ['cn'], 'preferredUsername': ['name']}, 'bindDN': 'CN=SVC_ACCOUNTNAME,OU=Service Accounts,DC=example,DC=org', 'bindPassword': 'PASSWORD', 'ca': 'rootcabundle.crt', 'insecure': 'false', 'url': 'ldaps://LDAPSERVER.example.org/ou=User Accounts,dc=example,dc=org?sAMAccountName'},{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
+
+#openshift_master_htpasswd_users={'admin': '1a1dc91c907985c69271ddf0c944bc72', 'bert': '1a1d241c907325c69271ddf0c944bc72'}
+openshift_storage_glusterfs_namespace=glusterfs
+openshift_storage_glusterfs_name=storage
+openshift_storage_glusterfs_wipe=True
+
+#LOGGING
+#ADDING COCKPIT FOR VIEWING UTILIZATION
+osm_use_cockpit=True
+#ADDING COCKPIT MULTI NODE CLUSTER VIEW
+osm_cockpit_plugins=['cockpit-kubernetes']
+#ADDING enabling operational logs
+#openshift_logging_use_ops=True
+#ADD LIMIT TO NUMBER OF PROJECTS ETC PER USER 
+openshift_master_admission_plugin_config={"ProjectRequestLimit":{"configuration":{"apiVersion":"v1","kind":"ProjectRequestLimitConfig","limits":[{"selector":{"admin":"true"}},{"maxProjects":"2"}]}},"PodNodeConstraints":{"configuration":{"apiVersion":"v1","kind":"PodNodeConstraintsConfig"}}}
+
+
+openshift_node_kubelet_args={'image-gc-high-threshold': ['85'], 'image-gc-low-threshold': ['75']} #LIMIT #PODS PER NODE & MAX PODS:
+osm_project_request_template='default/projecttemplate'
+#ADD Default role for applications
+osm_default_node_selector="role=app"
+openshift_clock_enabled=True
+#ADD METRICS
+
+openshift_metrics_install_metrics=True
+openshift_metrics_hawkular_hostname=hawkular.ose.unix.example.org
+openshift_metrics_cassandra_storage_type=dynamic
+openshift_metrics_cassandra_pvc_size=10Gi
+
+#ADD LOGGING
+openshift_logging_install_logging=True
+openshift_logging_es_pvc_dynamic=True
+openshift_logging_use_ops=True
+openshift_logging_es_pvc_size=10Gi
+
+[nodes]
+sdn-paas010024  openshift_schedulable=False openshift_node_labels="{'role': 'master', 'rack': 'rack1'}" ansible_connection=local
+sdn-paas020018  openshift_schedulable=False openshift_node_labels="{'role': 'master', 'rack': 'rack2'}"
+sdn-paas030012  openshift_schedulable=False openshift_node_labels="{'role': 'master', 'rack': 'rack3'}"
+sdn-paas010033  openshift_node_labels="{'role': 'infra', 'rack': 'rack1', 'region': 'infra'}"
+sdn-paas020025  openshift_node_labels="{'role': 'infra', 'rack': 'rack2', 'region': 'infra'}"
+sdn-paas030006  openshift_node_labels="{'role': 'infra', 'rack': 'rack3', 'region': 'infra'}"
+sdn-paas010026  openshift_node_labels="{'role': 'app', 'rack': 'rack1'}"
+sdn-paas020022  openshift_node_labels="{'role': 'app', 'rack': 'rack2'}"
+sdn-paas030015  openshift_node_labels="{'role': 'app', 'rack': 'rack3'}"
+sdn-paas010017  openshift_node_labels="{'role': 'app', 'rack': 'rack1'}"
+sdn-paas020009  openshift_node_labels="{'role': 'app', 'rack': 'rack2'}"
+sdn-paas030008  openshift_node_labels="{'role': 'app', 'rack': 'rack3'}"
+
+[masters]
+sdn-paas010024  ansible_connection=local
+sdn-paas020018
+sdn-paas030012
+
+[etcd]
+sdn-paas010024  ansible_connection=local
+sdn-paas020018
+sdn-paas030012
+
+[glusterfs]
+sdn-paas010033  glusterfs_devices='[ "/dev/sdd", "/dev/sde"]'
+sdn-paas020025  glusterfs_devices='[ "/dev/sdd", "/dev/sde"]'
+sdn-paas030006  glusterfs_devices='[ "/dev/sdd", "/dev/sde"]'
+
+[new_nodes]
