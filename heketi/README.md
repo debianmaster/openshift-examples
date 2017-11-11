@@ -6,19 +6,20 @@
 
 ### On OpenShift I grabbed the following info
 ### Heketo route
-oc get routes -n glusterfs -o jsonpath='{.items[*].spec.host}{"\n"}'
+```oc get routes -n glusterfs -o jsonpath='{.items[*].spec.host}{"\n"}'```
 
 ### Token
-
-oc get secret heketi-storage-admin-secret -n glusterfs  -o jsonpath='{.data.key}' | base64 -d
+```oc get secret heketi-storage-admin-secret -n glusterfs  -o jsonpath='{.data.key}' | base64 -d```
 
 ### Username
-The default is admin
+The default is `admin`
 
 ### Now export these
+```
 export HEKETI_CLI_SERVER=http://heketi-storage-glusterfs.apps.172.16.1.10.nip.io
 export HEKETI_CLI_USER=admin
 export HEKETI_CLI_KEY="kiCN5liH2NlENiB3VVZC5xyzfYEkJoRJCW3TZtbDjJY$"
+```
 
 
 ### You should be able to administer now
