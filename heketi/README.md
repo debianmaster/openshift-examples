@@ -1,11 +1,10 @@
 
 
-> I installed heketi-cli from my RH box
+### Install heketi-cli 
 
 ```yum -y install heketi-client```
 
-> On OpenShift I grabbed the following info
-
+### On OpenShift I grabbed the following info
 ### Heketo route
 oc get routes -n glusterfs -o jsonpath='{.items[*].spec.host}{"\n"}'
 
