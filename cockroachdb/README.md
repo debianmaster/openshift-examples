@@ -5,15 +5,32 @@ oc adm policy add-scc-to-user anyuid -z default
 
 ## Deploy statefulset
 ```sh
-kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
+oc apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
+```
+
+## Init cluster
+```sh
+oc apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init.yaml
+```
+
+## Expose UI 
+
+```sh
+oc expose svc  cockroachdb-public --port=8080 --name=r1
 ```
 
 ## Scale statefulset
 ```sh
-kubectl scale statefulset cockroachdb --replicas=4
+oc scale statefulset cockroachdb --replicas=4
 ```
 
-###
+###  Connect to cluster
 ```sh
-kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never     -- sql --insecure --host=cockroachdb-public
+oc run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never     -- sql --insecure --host=cockroachdb-public
+```
+```sh
+create database store;
+use store;
+create table inventory (id int,product_id varchar(30),product_cost int,product_availabilty int,product_subcat int);
+insert into inventory values (1,'cable_1',10,200,1);
 ```
