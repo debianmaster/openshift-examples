@@ -34,3 +34,10 @@ use store;
 create table inventory (id int,product_id varchar(30),product_cost int,product_availabilty int,product_subcat int);
 insert into inventory values (1,'cable_1',10,200,1);
 ```
+
+### Example app
+```sh
+oc new-app debianmaster/store-inventory:cockroach --name=inventory \
+-e sql_string=postgresql://root@cockroachdb-public:26257/store?sslmode=disable
+oc expose svc inventory
+```
