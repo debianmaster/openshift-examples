@@ -49,7 +49,6 @@ I expect all `app=webserver` pods to scheduled on same server where `app=databas
 > Not working for some reason
 
 ```sh
-oc get pods -o wide
 $ oc get pods -o wide
 NAME                         READY     STATUS    RESTARTS   AGE       IP            NODE
 mysqldb-1864802640-1zfjg     1/1       Running   0          36m       10.130.0.67   node1.example.com
