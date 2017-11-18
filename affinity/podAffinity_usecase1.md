@@ -19,29 +19,29 @@ spec:
 I want `3` replicas of another pod with label `app=webserver` with podAffinity constraint of (`app=database` and `requiredDuringSchedulingIgnoredDuringExecution`)   
 
 ```yaml
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1beta1 # for versions before 1.6.0 use extensions/v1beta1
 kind: Deployment
 metadata:
   name: webserver
 spec:
-  affinity:
-    podAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchExpressions:
-          - key: app
-            operator: In
-            values:
-            - database
-        topologyKey: kubernetes.io/hostname
   replicas: 5
   template:
     metadata:
       labels:
         app: webserver
     spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - database
+            topologyKey: "kubernetes.io/hostname"
       containers:
-      - name: name
+      - name: webserver
         image: debianmaster/nodejs-welcome
  ```
 
