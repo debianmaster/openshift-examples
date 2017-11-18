@@ -1,4 +1,4 @@
-#### this is just for my learning.  use with caution.
+#### This is just for my learning.  use with caution.
 
 Consider a use case where
 1) i can call application X is healthy only if certain # of replicas are up.
