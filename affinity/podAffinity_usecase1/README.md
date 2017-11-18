@@ -46,16 +46,6 @@ spec:
  ```
 
 I expect all `app=webserver` pods to scheduled on same server where `app=database` pod is residing.
-> Not working for some reason
 
-```sh
-$ oc get pods -o wide
-NAME                                       READY     STATUS    RESTARTS   AGE       IP           NODE
-mottled-ladybug-jenkins-1837934504-hw5x3   1/1       Running   0          17m       10.28.3.20   gke-book-default-pool-86d13cb0-9bz5
-mysqldb-3285196599-92vnk                   1/1       Running   0          1h        10.28.4.3    gke-book-default-pool-86d13cb0-22vv
-webserver-4127249034-46kg2                 1/1       Running   0          17s       10.28.4.11   gke-book-default-pool-86d13cb0-22vv
-webserver-4127249034-dvfzq                 1/1       Running   0          17s       10.28.4.14   gke-book-default-pool-86d13cb0-22vv
-webserver-4127249034-hh33v                 1/1       Running   0          17s       10.28.4.12   gke-book-default-pool-86d13cb0-22vv
-webserver-4127249034-nsjvp                 1/1       Running   0          17s       10.28.4.10   gke-book-default-pool-86d13cb0-22vv
-webserver-4127249034-qh9j2                 1/1       Running   0          17s       10.28.4.13   gke-book-default-pool-86d13cb0-22vv
-```
+
+
