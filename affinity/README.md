@@ -1,3 +1,7 @@
+## PodAffinity & PodAntiAffinity 
+
+> Pod affinity and pod anti-affinity allow you to specify rules about how pods should be placed relative to other pods
+
 ```sh
 oc get nodes -o wide --show-labels=true
 oc get pods --show-labels=true
