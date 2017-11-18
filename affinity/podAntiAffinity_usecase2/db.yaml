@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mysqldb
+spec:
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+      - name: name
+        image: debianmaster/nodejs-welcome
