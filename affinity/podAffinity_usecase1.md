@@ -50,12 +50,12 @@ I expect all `app=webserver` pods to scheduled on same server where `app=databas
 
 ```sh
 $ oc get pods -o wide
-NAME                         READY     STATUS    RESTARTS   AGE       IP            NODE
-mysqldb-1864802640-1zfjg     1/1       Running   0          36m       10.130.0.67   node1.example.com
-webserver-2351669744-5gqtd   1/1       Running   0          48s       10.131.0.51   node2.example.com
-webserver-2351669744-9f34g   1/1       Running   0          48s       10.130.0.72   node1.example.com
-webserver-2351669744-j4z7x   1/1       Running   0          48s       10.130.0.73   node1.example.com
-webserver-2351669744-lzvx4   1/1       Running   0          48s       10.128.2.50   node3.example.com
-webserver-2351669744-n7f12   1/1       Running   0          48s       10.128.2.51   node3.example.com
-
+NAME                                       READY     STATUS    RESTARTS   AGE       IP           NODE
+mottled-ladybug-jenkins-1837934504-hw5x3   1/1       Running   0          17m       10.28.3.20   gke-book-default-pool-86d13cb0-9bz5
+mysqldb-3285196599-92vnk                   1/1       Running   0          1h        10.28.4.3    gke-book-default-pool-86d13cb0-22vv
+webserver-4127249034-46kg2                 1/1       Running   0          17s       10.28.4.11   gke-book-default-pool-86d13cb0-22vv
+webserver-4127249034-dvfzq                 1/1       Running   0          17s       10.28.4.14   gke-book-default-pool-86d13cb0-22vv
+webserver-4127249034-hh33v                 1/1       Running   0          17s       10.28.4.12   gke-book-default-pool-86d13cb0-22vv
+webserver-4127249034-nsjvp                 1/1       Running   0          17s       10.28.4.10   gke-book-default-pool-86d13cb0-22vv
+webserver-4127249034-qh9j2                 1/1       Running   0          17s       10.28.4.13   gke-book-default-pool-86d13cb0-22vv
 ```
