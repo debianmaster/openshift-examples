@@ -39,5 +39,5 @@ The –expand-size is how much you want to ADD to the existing storage. For exam
 ```sh
 export HEKETI_CLI_SERVER=$(oc get routes -n glusterfs -o jsonpath='{.items[*].spec.host}{"\n"}')
 export HEKETI_CLI_USER=admin
-export HEKETI_CLI_KEY=$(oc get secret heketi-storage-admin-secret -n glusterfs  -o jsonpath='{.data.key}' | base64 -d)
+export HEKETI_CLI_KEY=http://$(oc get secret heketi-storage-admin-secret -n glusterfs  -o jsonpath='{.data.key}' | base64 -d)
 ```
