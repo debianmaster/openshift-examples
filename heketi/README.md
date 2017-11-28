@@ -33,3 +33,11 @@ I expanded a volume using:
 heketi-cli volume expand --volume=a533436be2ced2b46f2d48238c7b46f3 --expand-size=5
 The –expand-size is how much you want to ADD to the existing storage. For example; if the volume was 10GB and you passwd –expand-size=5, it'll now be 15GB.
 ```
+
+
+### TL;DR
+```sh
+export HEKETI_CLI_SERVER=$(oc get routes -n glusterfs -o jsonpath='{.items[*].spec.host}{"\n"}')
+export HEKETI_CLI_USER=admin
+export HEKETI_CLI_KEY=$(oc get secret heketi-storage-admin-secret -n glusterfs  -o jsonpath='{.data.key}' | base64 -d)
+```
