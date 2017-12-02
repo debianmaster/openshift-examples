@@ -29,8 +29,7 @@ Or
 ```sh
 # Terminal 1
 docker run -p 443:443 -p 80:80 --rm -v /etc/letsencrypt/:/tmp --entrypoint "/bin/sh" -it certbot/certbot
-certbot certonly --standalone -d ck.osecloud.com  --email 9chak
-ri@gmail.com --agree-tos
+certbot certonly --standalone -d ck.osecloud.com  --email 9chakri@gmail.com --agree-tos
 
 # Terminal 2
 docker cp e8f87af1e420:/etc/letsencrypt/archive /etc/letsencrypt/
