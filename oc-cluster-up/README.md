@@ -11,3 +11,12 @@ oc login -u system:admin
 oc adm policy add-cluster-role-to-user cluster-admin admin
 oc new-build https://github.com/debianmaster/java-welcome.git#ocp-java-welcome --context-dir=dockerfiles --name=tomcat-base3
 ```
+
+
+
+
+Ex:-
+
+```sh
+oc cluster up --public-hostname=aws.ck.osecloud.com --routing-suffix='aws.ck.osecloud.com'  --use-existing-config=true
+```
