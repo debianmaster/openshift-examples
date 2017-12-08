@@ -8,3 +8,20 @@ mvn fabric8:deploy
 mvn fabric8:run
 mvn fabric8:debug
 ```        
+
+
+## vscode
+```sh
+# Ctrl + P
+ext install vscode-java-debug
+```
+> launch.json
+```json
+{
+            "type": "java",
+            "name": "Debug (Attach)",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": "5005"
+        }
+```
