@@ -9,6 +9,15 @@ mvn fabric8:run
 mvn fabric8:debug
 ```        
 
+```sh
+
+curl https://raw.githubusercontent.com/debianmaster/spring-sample-app/master/schema.sql > schema.sql
+mysql -u mysql -p sampledb < schema.sql
+oc policy add-role-to-user edit system:serviceaccount:cicd:jenkins -n dev
+oc policy add-role-to-user edit system:serviceaccount:cicd:jenkins -n qa
+
+```
+
 
 ## vscode
 ```sh
