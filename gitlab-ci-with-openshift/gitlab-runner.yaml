@@ -1,0 +1,161 @@
+---
+kind: Template
+apiVersion: v1
+metadata:
+  name: "gitlab-runner"
+  annotations:
+    iconClass: "fa fa-git"
+    description: "GitLab Runner, requires being run as a privileged user."
+    tags: "gitlab,CI"
+labels:
+  createdBy: "gitlab-runner-template"
+parameters:
+- description: "The name for the application. The service will be named like the application."
+  displayName: "Application name."
+  name: APPLICATION_NAME
+  value: "gitlab-runner"
+  required: true
+- description: "URL that GitLab can be reached at"
+  displayName: "GitLab URL"
+  name: GITLAB_URL
+  required: true
+- description: "Runner Registration Token from the GitLab app"
+  displayName: "Registration Token."
+  name: REGISTRATION_TOKEN
+  required: true
+objects:
+- kind: ImageStream
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+  spec:
+    tags:
+    - name: 9.0.2
+      from:
+        kind: DockerImage
+        name: gitlab/gitlab-runner:alpine-v9.0.2
+- kind: ConfigMap
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}-scripts
+  data:
+    entrypoint: |
+      #!/bin/bash
+      set -xe
+      cp /scripts/config.toml /etc/gitlab-runner/
+      # Register the runner
+      /entrypoint register --non-interactive \
+        --url $GITLAB_URL \
+        --executor kubernetes
+      # Start the runner
+      /entrypoint run --user=gitlab-runner \
+        --working-directory=/home/gitlab-runner
+    config.toml: |
+      concurrent = 10
+      check_interval = 10
+- kind: ServiceAccount
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}-user
+- kind: RoleBinding
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}_edit
+  subjects:
+  - kind: ServiceAccount
+    name: ${APPLICATION_NAME}-user
+  roleRef:
+    name: edit
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - gitlab-runner
+        from:
+          kind: ImageStreamTag
+          name: ${APPLICATION_NAME}:9.0.2
+    replicas: 1
+    test: false
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+    template:
+      metadata:
+        labels:
+          app: ${APPLICATION_NAME}
+          deploymentconfig: ${APPLICATION_NAME}
+      spec:
+        volumes:
+        - name: scripts
+          configMap:
+            name: ${APPLICATION_NAME}-scripts
+        containers:
+        - name: gitlab-runner
+          image: gitlab-runner
+          command: ["/bin/bash", "/scripts/entrypoint"]
+          ports:
+            - containerPort: 22
+              protocol: TCP
+            - containerPort: 80
+              protocol: TCP
+          env:
+          - name: GITLAB_URL
+            value: ${GITLAB_URL}
+          - name: REGISTRATION_TOKEN
+            value: ${REGISTRATION_TOKEN}
+          - name: KUBERNETES_PRIVILEGED
+            value: "true"
+          - name: KUBERNETES_IMAGE
+            value: "ubuntu:16.04"
+          - name: KUBERNETES_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: "metadata.namespace"
+          resources:
+            limits:
+              cpu: "600m"
+              memory: "600Mi"
+            requests:
+              cpu: "100m"
+              memory: "300Mi"
+          volumeMounts:
+          - name: scripts
+            mountPath: /scripts
+          livenessProbe:
+            exec:
+              command: ["/usr/bin/pgrep","gitlab-ci-multi"]
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command: ["/usr/bin/pgrep","gitlab-ci-multi"]
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          terminationMessagePath: "/dev/termination-log"
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+            runAsUser: 0
+        restartPolicy: Always
+        terminationGracePeriodSeconds: 30
+        dnsPolicy: ClusterFirst
+        serviceAccount: ${APPLICATION_NAME}-user
