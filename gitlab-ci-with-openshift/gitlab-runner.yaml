@@ -48,6 +48,7 @@ objects:
       # Register the runner
       /entrypoint register --non-interactive \
         --url $GITLAB_URL \
+        --name "k8s_runner" \
         --executor kubernetes
       # Start the runner
       /entrypoint run --user=gitlab-runner \
@@ -57,6 +58,7 @@ objects:
       check_interval = 10
       [[runners]]
         # usual configuration
+        name = "k8s_runner"
         executor = "kubernetes"
         [runners.kubernetes]
           [[runners.kubernetes.volumes.host_path]]
