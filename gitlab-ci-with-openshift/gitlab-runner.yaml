@@ -55,6 +55,22 @@ objects:
     config.toml: |
       concurrent = 10
       check_interval = 10
+      [[runners]]
+        # usual configuration
+        executor = "kubernetes"
+        [runners.kubernetes]
+          [[runners.kubernetes.volumes.host_path]]
+            name = "hostpath-1"
+            mount_path = "/path/to/mount/point"
+            read_only = true
+            host_path = "/path/on/host"
+          [[runners.kubernetes.volumes.secret]]
+            name = "secrets"
+            mount_path = "/path/to/directory1"
+            read_only = true
+            [runners.kubernetes.volumes.secret.items]
+              "secret_1" = "relative/path/to/secret_1_file"
+
 - kind: ServiceAccount
   apiVersion: v1
   metadata:
