@@ -48,6 +48,9 @@ objects:
       # Register the runner
       /entrypoint register --non-interactive \
         --url $GITLAB_URL \
+        --run-untagged \
+        --kubernetes-privileged \
+        --registration-token xsVncwLBKLrzQxQ9X1_T \
         --name "k8s_runner" \
         --executor kubernetes
       # Start the runner
