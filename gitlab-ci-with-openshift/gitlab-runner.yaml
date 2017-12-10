@@ -60,17 +60,16 @@ objects:
         executor = "kubernetes"
         [runners.kubernetes]
           [[runners.kubernetes.volumes.host_path]]
-            name = "hostpath-1"
-            mount_path = "/path/to/mount/point"
-            read_only = true
-            host_path = "/path/on/host"
+            name = "docker-socket"
+            mount_path = "/var/run/docker.sock"
+            read_only = false
+            host_path = "/var/run/docker.sock"
           [[runners.kubernetes.volumes.secret]]
             name = "secrets"
-            mount_path = "/path/to/directory1"
+            mount_path = "/tmp"
             read_only = true
             [runners.kubernetes.volumes.secret.items]
-              "secret_1" = "relative/path/to/secret_1_file"
-
+              "hub" = "hubsecret"
 - kind: ServiceAccount
   apiVersion: v1
   metadata:
