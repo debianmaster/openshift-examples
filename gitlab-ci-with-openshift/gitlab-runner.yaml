@@ -53,17 +53,15 @@ objects:
         --registration-token xsVncwLBKLrzQxQ9X1_T \
         --name "k8s_runner" \
         --executor kubernetes
+      # Add extra config  
+      cat  /scripts/extraconfig.yaml >> /etc/gitlab-runner/config.toml  
       # Start the runner
       /entrypoint run --user=gitlab-runner \
         --working-directory=/home/gitlab-runner
     config.toml: |
       concurrent = 10
       check_interval = 10
-      [[runners]]
-        # usual configuration
-        name = "k8s_runner"
-        executor = "kubernetes"
-        [runners.kubernetes]
+    extraconfig.yaml: |2-
           [[runners.kubernetes.volumes.host_path]]
             name = "docker-socket"
             mount_path = "/var/run/docker.sock"
