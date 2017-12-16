@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: welcome
+  name: welcome
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: welcome
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: welcome
+    spec:
+      containers:
+      - image: debianmaster/go-welcome
+        name: welcome
+        resources: {}
+status: {}
