@@ -14,5 +14,5 @@ spec:
             args:
             - /bin/sh
             - -c
-            - kubectl set image deployments,rc store-inventory=debianmaster/store-inventory:latest --all 
+            - kubectl apply -f https://raw.githubusercontent.com/debianmaster/openshift-examples/master/deployments/example1.yaml 
           restartPolicy: Never
