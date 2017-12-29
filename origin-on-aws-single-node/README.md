@@ -16,12 +16,12 @@ systemctl restart docker
 
 docker ps
 
-wget https://github.com/openshift/origin/releases/download/v3.6.0/openshift-origin-client-tools-v3.6.0-c4dd4cf-linux-64bit.tar.gz
+wget https://github.com/openshift/origin/releases/download/v3.7.0/openshift-origin-client-tools-v3.7.0-7ed6862-linux-64bit.tar.gz
 
-tar -xvf openshift-origin-client-tools-v3.6.0-c4dd4cf-linux-64bit.tar.gz
-mv openshift-origin-client-tools-v3.6.0-c4dd4cf-linux-64bit/oc /usr/bin/
+tar -xvf tar -xvf openshift-origin-client-tools-v3.7.0-7ed6862-linux-64bit.tar.gz
+mv openshift-origin-client-tools-v3.7.0-7ed6862-linux-64bit/oc /usr/bin/
 
-oc cluster up --public-hostname='34.209.8.118.nip.io' --routing-suffix='34.209.8.118.nip.io'
+oc cluster up --public-hostname='aws.ck.osecloud.com' --routing-suffix='aws.ck.osecloud.com'
 OR
 openshift start --public-master='https://34.209.8.118.nip.io:8443' --master='https://172.31.35.206:8443' --listen='https://0.0.0.0:8443'
 ```
