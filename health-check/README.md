@@ -1,3 +1,8 @@
+Command line
+```sh
+oc set probe dc/mapit --liveness --get-url=http://:8080/health --initial-delay-seconds=30
+```
+
 Add this section in DeploymentConfig
 
 ```yml
