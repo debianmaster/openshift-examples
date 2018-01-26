@@ -3,7 +3,21 @@
 ```sh
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
 ```
-> 
+> master-config
+
+```yaml
+oauthConfig:
+  ...
+  identityProviders:
+  - name: my_htpasswd_provider 
+    challenge: true 
+    login: true 
+    mappingMethod: claim 
+    provider:
+      apiVersion: v1
+      kind: HTPasswdPasswordIdentityProvider
+      file: /path/to/users.htpasswd 
+```
 
 
 ### Git Auth provider
