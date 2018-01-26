@@ -1,3 +1,11 @@
+### Htpasswd Auth providers
+> Openshift vars
+```sh
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
+```
+> 
+
+
 ### Git Auth provider
 > In master-config.yml    
 
