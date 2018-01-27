@@ -30,7 +30,9 @@ ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
 
 ### Gotchas:-
 > If you like to use infra or master vm make sure you have right labels on them, For Ex:-  make sure you have label `type=app` on the nodes where you want to install gluster
-```ocp-node-0 openshift_node_labels="{'type': 'app', 'zone': 'default'}" openshift_hostname=ocp-node-0```
+```sh
+ocp-node-0 openshift_node_labels="{'type': 'app', 'zone': 'default'}" openshift_hostname=ocp-node-0
+```      
 > To list cluster id inside heketi pod
 ```sh
 heketi-cli cluster list  --user=admin -s http://localhost:8080  --secret=$HEKETI_ADMIN_KEY
