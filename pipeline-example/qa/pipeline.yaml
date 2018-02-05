@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  name: welcome-qa-pipeline
+  labels:
+    app: welcome-qa-pipeline
+    name: welcome-qa-pipeline
+spec:
+  runPolicy: Serial
+  strategy:
+    type: JenkinsPipeline
+    jenkinsPipelineStrategy:
+      jenkinsfile: |-
+        node('') {
+          stage 'Deploy in QA'
+            openshiftBuild(namespace:'qa',buildConfig: 'welcome', showBuildLogs: 'true')
+          stage 'Run Tests'
+            sh 'echo testing.....'
+          stage 'Promote in PROD'
+            input 'Proceeed ?'
+            openshiftTag(namespace: 'qa', sourceStream: 'welcome',  sourceTag: 'latest', destinationStream: 'welcome', destinationTag: 'promoteToPROD')
+        }
+  output:
+  resources:
+  postCommit:
