@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  name: welcome-dev-pipeline
+  labels:
+    app: welcome-dev-pipeline
+    name: welcome-dev-pipeline
+spec:
+  runPolicy: Serial
+  strategy:
+    type: JenkinsPipeline
+    jenkinsPipelineStrategy:
+      jenkinsfile: |-
+        node('') {
+          stage 'Build'
+            openshiftBuild(namespace:'dev',buildConfig: 'welcome', showBuildLogs: 'true')
+          stage 'Deploy'
+            openshiftDeploy(namespace:'dev',deploymentConfig: 'welcome')
+            openshiftScale(namespace:'dev',deploymentConfig: 'welcome',replicaCount: '3')
+          stage 'Promote in QA'
+            input 'Proceeed ?'
+            openshiftTag(namespace: 'dev', sourceStream: 'welcome',  sourceTag: 'latest', destinationStream: 'welcome', destinationTag: 'promoteToQA')
+        }
+  output:
+  resources:
+  postCommit:
