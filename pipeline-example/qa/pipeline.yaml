@@ -13,8 +13,8 @@ spec:
       jenkinsfile: |-
         node('') {
           stage 'Deploy in QA'
-            openshiftTag(namespace: 'dev', sourceStream: 'welcome',  sourceTag: 'latest',destinationNamespace: 'qa', destinationStream: 'welcome', destinationTag: 'promoteToQA')
-            openshiftDeploy(namespace:'dev',deploymentConfig: 'welcome')
+            openshiftTag(namespace: 'qa', sourceStream: 'welcome',  sourceTag: 'promoteToQA',destinationNamespace: 'qa', destinationStream: 'welcome', destinationTag: 'promoteToQA')
+            openshiftDeploy(namespace:'qa',deploymentConfig: 'welcome')
           stage 'Run Tests'
             sh 'echo testing.....'
           stage 'Promote in PROD'
