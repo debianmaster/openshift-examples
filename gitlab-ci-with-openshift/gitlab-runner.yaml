@@ -32,10 +32,10 @@ objects:
       app: ${APPLICATION_NAME}
   spec:
     tags:
-    - name: 9.0.2
+    - name: latest
       from:
         kind: DockerImage
-        name: gitlab/gitlab-runner:alpine-v9.0.2
+        name: gitlab/gitlab-runner:latest
 - kind: ConfigMap
   apiVersion: v1
   metadata:
@@ -50,7 +50,7 @@ objects:
         --url $GITLAB_URL \
         --run-untagged \
         --kubernetes-privileged \
-        --registration-token xsVncwLBKLrzQxQ9X1_T \
+        --registration-token $REGISTRATION_TOKEN \
         --name "k8s_runner" \
         --executor kubernetes
       # Add extra config  
@@ -104,7 +104,7 @@ objects:
           - gitlab-runner
         from:
           kind: ImageStreamTag
-          name: ${APPLICATION_NAME}:9.0.2
+          name: ${APPLICATION_NAME}:latest
     replicas: 1
     test: false
     selector:
