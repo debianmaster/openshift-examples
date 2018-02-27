@@ -35,3 +35,8 @@ parameters:
     description: The URL of the repository with your application source code 
     value: https://github.com/debianmaster/nodejs-welcome.git 
     required: true
+  - name: APPLICATION_NAME 
+    displayName: Application Name 
+    description: Application Name 
+    value: appname 
+    required: true
