@@ -20,7 +20,7 @@ objects:
         type: Source
         sourceStrategy:
           from:
-            kind: "ImageStreamTag",
+            kind: ImageStreamTag,
             namespace": "openshift",
             name": nodejs:4
   - kind: DeploymentConfig
