@@ -6,7 +6,7 @@ objects:
   - kind: BuildConfig
     apiVersion: v1
     metadata:
-      name: custom-nodejs
+      name: "${APPLICATION_NAME}"
       annotations:
         description: Defines how to build the application
     spec:
@@ -26,7 +26,7 @@ objects:
   - kind: DeploymentConfig
     apiVersion: v1
     metadata:
-      name: custom-nodejs
+      name: "${APPLICATION_NAME}" 
     spec:
       replicas: 1
 parameters:
