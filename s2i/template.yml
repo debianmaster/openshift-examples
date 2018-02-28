@@ -1,7 +1,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: custom-nodejs
+  name: custom-build
 objects:
   - kind: BuildConfig
     apiVersion: v1
@@ -10,8 +10,12 @@ objects:
       annotations:
         description: Defines how to build the application
     spec:
+      output:
+        to:
+          kind: ImageStreamTag
+          name: "${APPLICATION_NAME}:latest"
       source:
-        type: Git
+        type: Binary
         git:
           uri: "${SOURCE_REPOSITORY_URL}" 
           ref: "master"
@@ -21,8 +25,8 @@ objects:
         sourceStrategy:
           from:
             kind: "ImageStreamTag"
-            namespace: "openshift"
-            name: nodejs:4
+            namespace: "ci"
+            name: 'tomcat-base1:latest'
   - kind: DeploymentConfig
     apiVersion: v1
     metadata:
@@ -43,10 +47,10 @@ objects:
             - containerPort: 8080
               protocol: TCP
 parameters:
-  - name: SOURCE_REPOSITORY_URL 
-    displayName: Source Repository URL 
-    description: The URL of the repository with your application source code 
-    value: https://github.com/debianmaster/nodejs-welcome.git 
+  - name: NEXUS_URL 
+    displayName: NEXUS url
+    description: The URL of the repository with your war
+    value: nexus_url 
     required: true
   - name: APPLICATION_NAME 
     displayName: Application Name 
