@@ -16,6 +16,7 @@ objects:
           name: "${APPLICATION_NAME}:latest"
       source:
         type: Binary
+        binary: {}
         git:
           uri: "${SOURCE_REPOSITORY_URL}" 
           ref: "master"
