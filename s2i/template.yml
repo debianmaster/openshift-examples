@@ -15,8 +15,7 @@ objects:
           kind: ImageStreamTag
           name: "${APPLICATION_NAME}:latest"
       source:
-        type: Binary
-        binary: {}
+        type: Source
         git:
           uri: "${SOURCE_REPOSITORY_URL}" 
           ref: "master"
