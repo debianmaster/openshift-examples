@@ -29,6 +29,8 @@ objects:
       name: "${APPLICATION_NAME}" 
     spec:
       replicas: 1
+      selector:
+        name: "${APPLICATION_NAME}" 
 parameters:
   - name: SOURCE_REPOSITORY_URL 
     displayName: Source Repository URL 
