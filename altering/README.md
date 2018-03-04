@@ -16,3 +16,23 @@ receivers:
   - channel: '#testchannel'
     text: 'https://internal.myorg.net/wiki/alerts'
  ```
+> alerting.rules
+```yaml
+	 groups:
+- name: example-rules
+  interval: 5s # defaults to global interval
+  rules:
+  - alert: Node Down
+    expr: up{job="kubernetes-nodes"} == 0
+    annotations:
+      miqTarget: "ContainerNode"
+      severity: "HIGH"
+      message: "{{$labels.instance}} is down"
+  - alert: "Too Many Pods"
+    annotations: 
+      message: "Too many running pods"
+      miqTarget: ExtManagementSystem
+      severity: ERROR
+      url: "https://xyz"
+    expr: "sum(kubelet_running_pod_count) > 15"
+ ```
