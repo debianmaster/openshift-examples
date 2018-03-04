@@ -1,4 +1,5 @@
 ## WIP
+> Alert via slack when total number of pods inside openshift > 15 across all namespaces
 > alertmanager.yml
 ```yaml
 global:
@@ -36,3 +37,4 @@ groups:
       url: "https://xyz"
     expr: "sum(kubelet_running_pod_count) > 15"
  ```
+> kill prometheus pod to reload configmap
