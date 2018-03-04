@@ -1,5 +1,10 @@
 ## WIP
-> Alert via slack when total number of pods inside openshift > 15 across all namespaces
+### Deploying prometheus
+> In `kube-system` namespace look for prometheus template from catalog and deploy.
+
+### Alert via slack when total number of pods inside openshift > 15 across all namespaces
+> modify configmaps as followd in `kube-system` namesapce after prometheus is deployed from step above.
+
 > alertmanager.yml
 ```yaml
 global:
@@ -17,6 +22,7 @@ receivers:
   - channel: '#testchannel'
     text: 'https://internal.myorg.net/wiki/alerts'
  ```
+ 
 > alerting.rules
 ```yaml
 groups:
@@ -37,4 +43,5 @@ groups:
       url: "https://xyz"
     expr: "sum(kubelet_running_pod_count) > 15"
  ```
-> kill prometheus pod to reload configmap
+ 
+> kill prometheus pod to reload configmap and scale pods so as to make total number of pods > 15 across all namespaces, this should trigger an alert
