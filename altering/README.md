@@ -1,4 +1,4 @@
-## WIP
+
 ### Deploying prometheus
 > In `kube-system` namespace look for prometheus template from catalog and deploy.
 
