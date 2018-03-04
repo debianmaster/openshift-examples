@@ -18,7 +18,7 @@ receivers:
  ```
 > alerting.rules
 ```yaml
-	 groups:
+groups:
 - name: example-rules
   interval: 5s # defaults to global interval
   rules:
