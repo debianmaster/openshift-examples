@@ -18,5 +18,9 @@ oc tag --source=docker docker-registry-default.cloud.expertsfactory.com/lab/gote
 
 ```
 
-
 Note:-  you need to add exceptions to docker-daemon  in case of insecure external registries
+
+#### refreshing deployed image (external registry)
+```sh
+oc import-image debianmaster/test --confirm
+```
