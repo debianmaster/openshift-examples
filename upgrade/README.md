@@ -26,3 +26,9 @@ ansible-playbook  \
     /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/upgrades/v3_9/upgrade_nodes.yml \
     -e openshift_upgrade_nodes_serial="20%" 
 ```    
+
+#### Webconsole
+```
+ansible-playbook  \
+    /usr/share/ansible/openshift-ansible/playbooks/openshift-web-console/config.yml
+```
