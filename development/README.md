@@ -6,7 +6,7 @@
  git clone https://github.com/openshift/origin-web-console.git
 
  cd ~/
- git git clone https://github.com/openshift/origin-web-common.git
+ git clone https://github.com/openshift/origin-web-common.git
 
  cd ~/
  git clone git clone https://github.com/openshift/origin-web-catalog.git
