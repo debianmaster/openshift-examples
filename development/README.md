@@ -20,6 +20,8 @@
  bower link origin-web-common
  bower link origin-web-catalog
  
+ 
+ oc cluster up # make sure origin is running on 127.0.0.1:8443
  grunt serve
  ```
  
