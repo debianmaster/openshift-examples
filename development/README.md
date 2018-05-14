@@ -9,7 +9,7 @@
  git clone https://github.com/openshift/origin-web-common.git
 
  cd ~/
- git clone git clone https://github.com/openshift/origin-web-catalog.git
+ git clone https://github.com/openshift/origin-web-catalog.git
 
 
  cd ~/origin-web-common
@@ -18,6 +18,7 @@
  bower link
  cd ~/origin-web-console
  bower link origin-web-common
+  bower link origin-web-catalog
  ```
  
  ### Build on MAC
