@@ -18,7 +18,9 @@
  bower link
  cd ~/origin-web-console
  bower link origin-web-common
-  bower link origin-web-catalog
+ bower link origin-web-catalog
+ 
+ grunt serve
  ```
  
  ### Build on MAC
