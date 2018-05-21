@@ -1,5 +1,5 @@
 
-###  unable to resolve external domains
+###  Unable to resolve external domains
 ```
 Cloning "https://github.com/openshift/nodejs-ex.git " ...
 error: fatal: unable to access 'https://github.com/openshift/nodejs-ex.git/':  Could not resolve host: github.com; Unknown error
