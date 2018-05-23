@@ -1,4 +1,4 @@
-# Not working
+# Custom Wildcard Certificates for the OpenShift Router
 
 > letsencrypt gives you following certs /keys after successful domain verficiation
 
@@ -6,11 +6,18 @@
 cert1.pem  chain1.pem  fullchain1.pem  privkey1.pem
 ```
 
+> OpenShift expect the private key in the certificate file. Thus we have to...
+
+```
+cp fullchain1.pem tls.crt
+cat privkey1.pem >> tls.crt
+```
+
 ```sh
 date=`date +%y%m%d%H%M`
 oc export secret router-certs -o yaml -n default> router-certs.backup.$date.yaml
 oc delete secret router-certs -n default
-oc secrets new router-certs tls.crt=fullchain1.pem tls.key=privkey1.pem --type='kubernetes.io/tls' --confirm -n default
+oc secrets new router-certs tls.crt=tls.crt tls.key=privkey1.pem --type='kubernetes.io/tls' --confirm -n default
 oc deploy dc/router --latest -n default
 ```
 
