@@ -4,7 +4,7 @@
 mkdir -p /exports/nfs
 chown -R nfsnobody:nfsnobody /exports/nfs
 chmod 777 -R /exports/nfs
-
+```
 
 ```sh
 git clone https://github.com/kubernetes-incubator/external-storage
