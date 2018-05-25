@@ -1,8 +1,5 @@
 
 
-```sh
-oc scale dc/router --replicas=0 -n default
-```
 
 > Update inventory file
 ```
@@ -16,6 +13,10 @@ ansible-playbook /root/openshift-ansible/playbooks/openshift-master/config.yml
 
 
 ### To obtain certs
+
+```sh
+oc scale dc/router --replicas=0 -n default
+```
 
 
 ```sh
@@ -32,6 +33,8 @@ cd certbot/
 ```sh
 cert1.pem  chain1.pem  fullchain1.pem  privkey1.pem
 ```
+
+
 
 ```sh
 date=`date +%y%m%d%H%M`
