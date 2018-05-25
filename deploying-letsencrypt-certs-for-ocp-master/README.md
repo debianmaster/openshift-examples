@@ -1,4 +1,31 @@
-# Not working
+
+
+```sh
+oc scale dc/router --replicas=0 -n default
+```
+
+> Update inventory file
+```
+openshift_master_named_certificates=[{"certfile":"/etc/letsencrypt/archive/cloud.run9.io/fullchain1.pem","keyfile":"/etc/letsencrypt/archive/cloud.run9.io/privkey1.pem","cafile":"/etc/origin/master/ca-bundle.crt","names": ["cloud.run9.io"]}]
+```
+> Update master-config by running 
+```
+ansible-playbook /root/openshift-ansible/playbooks/openshift-master/config.yml
+```
+
+
+
+### To obtain certs
+
+
+```sh
+git clone https://github.com/certbot/certbot
+cd certbot/
+./certbot-auto certonly -d cloud.run9.io --standalone -m 9chakri@gmail.com -n --agree-tos
+```
+
+
+# For router
 
 > letsencrypt gives you following certs /keys after successful domain verficiation
 
@@ -12,25 +39,4 @@ oc export secret router-certs -o yaml -n default> router-certs.backup.$date.yaml
 oc delete secret router-certs -n default
 oc secrets new router-certs tls.crt=fullchain1.pem tls.key=privkey1.pem --type='kubernetes.io/tls' --confirm -n default
 oc deploy dc/router --latest -n default
-```
-
-
-### To obtain certs
-
-
-```sh
-https://community.letsencrypt.org/t/installing-postfix-with-lets-encrypt-certificate-using-certbot-rhel7/20445
-certonly
-certbot certonly --standalone -d ck.osecloud.com  --email myemail@gmail.com or 
-certbot certonly --standalone --webroot -w /var/www/html/ck.osecloud.com -d ck.osecloud.com  --email myemail@gmail.com -n
-```
-Or
-
-```sh
-# Terminal 1
-docker run -p 443:443 -p 80:80 --rm -v /etc/letsencrypt/:/tmp --entrypoint "/bin/sh" -it certbot/certbot
-certbot certonly --standalone -d ck.osecloud.com  --email 9chakri@gmail.com --agree-tos -n
-
-# Terminal 2
-docker cp e8f87af1e420:/etc/letsencrypt/archive /etc/letsencrypt/
 ```
