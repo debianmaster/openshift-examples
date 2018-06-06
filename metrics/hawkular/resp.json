@@ -1,0 +1,56 @@
+{
+  "gauge": {
+    "pod/19019669-6709-11e8-b30f-0007cb0b3bc7/network/tx_rate": [
+      {
+        "start": 1528272778178,
+        "end": 1528272838178,
+        "min": 0,
+        "avg": 0,
+        "median": 0,
+        "max": 0,
+        "sum": 0,
+        "samples": 2,
+        "empty": false
+      }
+    ],
+    "pod/19019669-6709-11e8-b30f-0007cb0b3bc7/memory/usage": [
+      {
+        "start": 1528272778178,
+        "end": 1528272838178,
+        "min": 49397760,
+        "avg": 49397760,
+        "median": 49397760,
+        "max": 49397760,
+        "sum": 98795520,
+        "samples": 2,
+        "empty": false
+      }
+    ],
+    "pod/19019669-6709-11e8-b30f-0007cb0b3bc7/cpu/usage_rate": [
+      {
+        "start": 1528272778178,
+        "end": 1528272838178,
+        "min": 0,
+        "avg": 0,
+        "median": 0,
+        "max": 0,
+        "sum": 0,
+        "samples": 2,
+        "empty": false
+      }
+    ],
+    "pod/19019669-6709-11e8-b30f-0007cb0b3bc7/network/rx_rate": [
+      {
+        "start": 1528272778178,
+        "end": 1528272838178,
+        "min": 0,
+        "avg": 0,
+        "median": 0,
+        "max": 0,
+        "sum": 0,
+        "samples": 2,
+        "empty": false
+      }
+    ]
+  }
+}
