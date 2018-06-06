@@ -1,0 +1,5 @@
+{
+  "tags": "descriptor_name:network/tx_rate|network/rx_rate|memory/usage|cpu/usage_rate,type:pod,pod_id:19019669-6709-11e8-b30f-0007cb0b3bc7",
+  "bucketDuration": "1mn",
+  "start": "-1mn"
+}
