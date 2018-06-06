@@ -3,3 +3,5 @@
   "bucketDuration": "1mn",
   "start": "-1mn"
 }
+
+//https://hawkular-metrics.apps.run9.io/hawkular/metrics/m/stats/query
