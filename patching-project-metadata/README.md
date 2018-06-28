@@ -25,4 +25,8 @@ OR
 oc create clusterrole project-annotator --verb=patch --resource=namespaces
 ```
 
+> now you can do
 
+```
+oc annotate namespace <targetns> openshift.io/requester=some-otherowner --overwrite
+```
