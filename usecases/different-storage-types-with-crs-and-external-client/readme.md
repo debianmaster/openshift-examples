@@ -4,4 +4,8 @@
 | CRS      | container ready storage |
 
 
-> As a OCP cluster-admin i would like to integrate ocp with an (external) CRS cluster which has two tiers of storages . (fast and slow) which needs to be part of CRS clusters.
+> I have two tiers of storages (fast and slow) that need to part of CRS
+> ^ CRS cluster needs to be integrated with OCP
+> ^ OCP needs to have two storage classes (fast and slow which reflect two storage tiers discussed above)
+
+how can this be acheived?
