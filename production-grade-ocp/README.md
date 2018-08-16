@@ -24,7 +24,8 @@
 
 
 
-
+> From compliance point of view are indexes in EFK seperated by Namespace?   
+Search gaurd plugin in kibana is used for multitenancy and also indexes created w.r.t namespaces/projects!
 
 
 
