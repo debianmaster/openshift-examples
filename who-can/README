@@ -1,0 +1,5 @@
+> To see who has view access to namespaces?
+
+```sh
+oc adm policy who-can view namespaces
+```
