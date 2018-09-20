@@ -1,8 +1,10 @@
 ## Syncing image on openshift
 ```sh
+oc create project my-proj
 wget https://raw.githubusercontent.com/3scale/3scale-amp-openshift-templates/master/amp/amp.yml 
-oc create ns rhscl
-oc create ns 3scale-amp22
+oc create project rhscl
+oc create project 3scale-amp22
+oc project my-proj
 export rh_reg=registry.access.redhat.com
 export my_reg=docker-registry-default.apps.sgp109.openshiftworkshop.com
 cat amp.yml | grep -A1  DockerImage | grep name |  sed 's/        name://g' | xargs -n 1 docker pull
