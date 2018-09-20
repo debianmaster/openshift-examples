@@ -4,6 +4,7 @@
 
 export rh_reg=registry.access.redhat.com
 export my_reg=docker-registry-default.13.251.251.251.nip.io
+export wildcard_domain=13.251.251.251.nip.io
 
 oc new-project my-proj
 wget https://raw.githubusercontent.com/3scale/3scale-amp-openshift-templates/master/amp/amp.yml 
@@ -22,7 +23,7 @@ get_image_names | xargs -I '{}' docker tag  $rh_reg/'{}' $my_reg/'{}'
 get_image_names | xargs -I '{}' docker push $my_reg/'{}'
 
 export reg_ip=$(oc get svc docker-registry -n default --no-headers | awk '{ print $3}')
-cat amp.yml  | sed 's/'"$rh_reg"'/'"$reg_ip"':5000/g'  | oc process -p WILDCARD_DOMAIN=13.251.251.251.nip.io -f amp.yml | oc apply -f-
+cat amp.yml  | sed 's/'"$rh_reg"'/'"$reg_ip"':5000/g'  | oc process -p WILDCARD_DOMAIN=$wildcard_domain -f amp.yml | oc apply -f-
 
 ```
 
