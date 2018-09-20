@@ -1,4 +1,4 @@
-## syncing image on openshift
+## Syncing image on openshift
 ```sh
 wget https://raw.githubusercontent.com/3scale/3scale-amp-openshift-templates/master/amp/amp.yml 
 oc create ns rhscl
