@@ -7,10 +7,10 @@ export rh_reg=registry.access.redhat.com
 export my_reg=docker-registry-default.apps.sgp109.openshiftworkshop.com
 
 
-oc create project my-proj
+oc new-project my-proj
 wget https://raw.githubusercontent.com/3scale/3scale-amp-openshift-templates/master/amp/amp.yml 
-oc create project rhscl
-oc create project 3scale-amp22
+oc new-project  rhscl
+oc new-project  3scale-amp22
 oc project my-proj
 
 cat amp.yml | grep -A1  DockerImage | grep name |  sed 's/        name://g' | xargs -n 1 docker pull
