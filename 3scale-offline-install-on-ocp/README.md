@@ -16,11 +16,13 @@ oc project my-proj
 cat amp.yml | grep -A1  DockerImage | grep name |  sed 's/        name://g' | xargs -n 1 docker pull
 cat amp.yml| grep -A1  DockerImage | grep name |  sed 's/        name: registry.access.redhat.com//g' | xargs -I '{}' docker tag  $rh_reg'{}' $my_reg'{}'
 cat amp.yml | grep -A1  DockerImage | grep name |  sed 's/        name: registry.access.redhat.com//g' | xargs -I '{}' docker push $my_reg'{}'
-cat amp.yml | grep -A1  DockerImage | grep name |  sed 's/        name://g' | xargs -I '{}' echo registry.access.redhat.com/3scale-amp2'{}'  '{}'
 ```
 
 ## Deploying 3scale
 ```sh
 export reg_ip=$(oc get svc docker-registry -n default --no-headers | awk '{ print $3}')
+oc policy add-role-to-user system:image-puller system:serviceaccount:my-proj:default -n 3scale-amp22
+oc policy add-role-to-user system:image-puller system:serviceaccount:my-proj:default -n rhscl
+docker login -u $(oc whoami) -p $(oc whoami -t) $my_reg
 cat amp.yml  | sed 's/registry.access.redhat.com/'"$reg_ip"':5000/g'  | oc apply -f-
 ```
