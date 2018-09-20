@@ -1,4 +1,6 @@
-## Syncing image on openshift
+## Syncing image to openshift
+> Do this activity from a laptop which has access to internet  and also openshift.
+
 ```sh
 oc create project my-proj
 wget https://raw.githubusercontent.com/3scale/3scale-amp-openshift-templates/master/amp/amp.yml 
