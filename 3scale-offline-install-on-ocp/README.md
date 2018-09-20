@@ -1,6 +1,5 @@
 > Do this activity from a laptop which has access to internet  and also openshift.
 
-## Syncing images to openshift
 ```sh
 
 export rh_reg=registry.access.redhat.com
