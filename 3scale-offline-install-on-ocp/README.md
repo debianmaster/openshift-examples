@@ -6,6 +6,22 @@ export my_reg=docker-registry-default.13.251.251.251.nip.io
 export wildcard_domain=13.251.251.251.nip.io
 ```
 
+## Edit the docker registry :
+
+### 1. OCP master node add following in /etc/sysconfig/docker file 
+```
+added : --insecure-registry docker-registry-default.13.251.251.251.nip.io --insecure-registry docker-registry.default.svc:5000 --insecure-registry 172.30.1.1:5000'
+example :
+----
+OPTIONS='--selinux-enabled --log-driver=journald --signature-verification=false --insecure-registry 172.30.0.0/16 --insecure-registry docker-registry-default.13.251.251.251.nip.io --insecure-registry docker-registry.default.svc:5000 --insecure-registry 172.30.1.1:5000'
+---
+```
+### 2. add registries in /etc/containers/registries.conf
+```
+example : registries = ['docker-registry.default.svc:5000']
+```
+
+
 ##  Sync docker images to disconnected openshift
 ```sh
 oc new-project my-proj
