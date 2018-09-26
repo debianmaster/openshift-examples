@@ -6,7 +6,7 @@ sudo -i
 ## Clean up old
 ```sh
 rm -rf /root/.minishift
-``
+```
 
 
 ## install / start docker
