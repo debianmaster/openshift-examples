@@ -16,10 +16,7 @@ example :
 OPTIONS='--selinux-enabled --log-driver=journald --signature-verification=false --insecure-registry 172.30.0.0/16 --insecure-registry docker-registry-default.13.251.251.251.nip.io --insecure-registry docker-registry.default.svc:5000 --insecure-registry 172.30.1.1:5000'
 ---
 ```
-### 2. add registries in /etc/containers/registries.conf
-```
-example : registries = ['docker-registry.default.svc:5000']
-```
+
 
 
 ##  Sync docker images to disconnected openshift
@@ -30,7 +27,7 @@ oc new-project  rhscl
 oc new-project  3scale-amp22
 oc project my-proj
 oc policy add-role-to-user system:image-puller system:serviceaccount:my-proj:default -n 3scale-amp22
-oc policy add-role-to-user system:image-puller system:serviceaccount:my-proj:default -n rhcsl
+oc policy add-role-to-user system:image-puller system:serviceaccount:my-proj:default -n rhscl
 docker login -u $(oc whoami) -p $(oc whoami -t) $my_reg
 
 alias get_rh_img_list="cat amp.yml | grep  -o 'registry.access[^ ]*' | sed -e 's/\"//'"
