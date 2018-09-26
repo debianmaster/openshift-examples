@@ -8,6 +8,10 @@ sudo -i
 rm -rf /root/.minishift
 ```
 
+## if you are living in dark ages
+```sh
+yum-config-manager --enable rhel-7-server-extras-rpms
+```
 
 ## install / start docker
 ```sh
