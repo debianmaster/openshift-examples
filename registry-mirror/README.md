@@ -1,4 +1,4 @@
->  install docker
+>  On registry server
 
 ```sh
 mkdir docker-mirror
@@ -19,4 +19,13 @@ EOF
 mkdir certs
 openssl req  -newkey rsa:4096 -nodes -sha256 -keyout certs/domain.key -x509 -days 365 -out certs/domain.crt
 docker run -d   --restart=always   --name registry   -v `pwd`/certs:/certs   -v `pwd`/config.yml:/etc/docker/registry/config.yml   -e REGISTRY_HTTP_ADDR=0.0.0.0:5000   -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt   -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key   -p 5000:5000   registry:2
+```
+
+
+> Onclient add insecure registry and restart docker
+```sh
+cat /etc/sysconfig/docker
+...
+OPTIONS='--selinux-enabled --log-driver=journald --signature-verification=false --insecure-registry=dev.run9.io:5000'
+...
 ```
