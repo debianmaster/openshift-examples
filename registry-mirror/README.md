@@ -1,4 +1,4 @@
->  On registry server
+>  On registry server dev.run9.io
 
 ```sh
 mkdir docker-mirror
@@ -28,4 +28,9 @@ cat /etc/sysconfig/docker
 ...
 OPTIONS='--selinux-enabled --log-driver=journald --signature-verification=false --insecure-registry=dev.run9.io:5000'
 ...
+```
+
+> Pull image using mirror
+```sh
+docker pull dev.run9.io:5000/debianmaster/nodejs-welcome
 ```
