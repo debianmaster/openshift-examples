@@ -34,4 +34,4 @@ OPTIONS='--selinux-enabled --log-driver=journald --signature-verification=false 
 ```sh
 docker pull dev.run9.io:5000/debianmaster/nodejs-welcome
 ```
-where debianmaster/nodejs-welcome   is docker.io hub repo  that is mirrored via dev.run9.io:5000/debianmaster/nodejs-welcome
+> where debianmaster/nodejs-welcome   is docker.io hub repo  that is mirrored via dev.run9.io:5000/debianmaster/nodejs-welcome
