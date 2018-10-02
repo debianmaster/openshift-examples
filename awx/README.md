@@ -4,6 +4,7 @@
 ```sh
 git clone https://github.com/ansible/awx.git
 cd awx
+cd installer
 oc new-project awx
 ```
 
