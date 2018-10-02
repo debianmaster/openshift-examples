@@ -15,5 +15,6 @@ ansible-playbook -i inventory install.yml -e openshift_host=$openshift_host -e o
 
 
 ```sh
+remove resource limits from DC if you see nodes not available message
 try 2-3 times if you see failures
 ```
