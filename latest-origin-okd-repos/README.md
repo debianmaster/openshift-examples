@@ -3,5 +3,6 @@
 
 
 ```sh
-https://rpms.svc.ci.openshift.org/openshift-origin-v3.11/
+- https://rpms.svc.ci.openshift.org/openshift-origin-v3.11/
+- https://rpms.svc.ci.openshift.org/openshift-origin-v4.0/
 ```
