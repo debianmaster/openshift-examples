@@ -10,3 +10,6 @@ initContainers:
     - name: <your nexus volume>
       mountPath: /nexus
 ```  
+
+
+https://kubernetes.io/docs/tasks/configure-pod-container/security-context/  
