@@ -21,7 +21,8 @@ https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 
 
 
-> Some fancy hacks which i did not like , notice runAsUser,privileged, for init container and runAsNonRoot: false
+> Some fancy hacks which i did not like , notice runAsUser,privileged, for init container and runAsNonRoot: false to make 
+/hadoop/dfs/data    owned by user 1002 (hadoop)   
 
 ```yml
 apiVersion: apps/v1
