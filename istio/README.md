@@ -1,6 +1,8 @@
 
 ## Run as cluster administrator
 
+>  http://www.maistra.io/istiodocs/install/
+
 ### Install operator
 ```
 oc new-project istio-opreator
