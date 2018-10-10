@@ -20,25 +20,15 @@ kind: "Installation"
 metadata:
   name: "istio-installation"
 spec:
-  deployment_type: openshift
   istio:
     authentication: true
-    community: false
-    prefix: openshift-istio-tech-preview/
-    version: 0.1.0
+    community: true
+    version: 0.2.0
   jaeger:
-    prefix: distributed-tracing-tech-preview/
-    version: 1.6.0
+    version: 1.7.0
     elasticsearch_memory: 1Gi
-  launcher:
-    openshift:
-      user: user
-      password: password
-    github:
-      username: username
-      token: token
-    catalog:
-      filter: filter
-      branch: branch
-      repo: repo
+  kiali:
+    version: 0.8.0
+    username: username
+    password: password
  ```
