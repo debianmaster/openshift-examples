@@ -1,6 +1,10 @@
 ### Odoo on openshift
 
 ```sh
+oc new-project erp
+oc adm policy add-scc-to-user anyuid -z default
+oc adm policy add-scc-to-user privileged -z default
+
 oc new-app \
     -e POSTGRES_USER=odoo     \
     -e POSTGRES_PASSWORD=odoo  \
