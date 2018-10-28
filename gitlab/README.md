@@ -8,3 +8,9 @@ $ helm install \
         --set gitlabUrl=http://gitlab.your-domain.com,runnerRegistrationToken=your-registration-token \
         gitlab/gitlab-runner
 ```
+
+
+
+```sh
+https://gitlab.com/yourorg/yourrepo/settings/ci_cd
+```
