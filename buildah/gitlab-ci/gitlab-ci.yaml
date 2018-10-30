@@ -1,0 +1,15 @@
+image: debianmaster/openshift-gitlab-tools
+
+cache:
+  paths:
+  - node_modules/
+
+stages:
+  - build
+  - deploy
+
+build_src:
+  stage: build
+  script:
+   - buildah bud -t $CI_PROJECT_NAME:$CI_JOB_ID  .
+   - skopeo copy --dest-creds=$CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD containers-storage:localhost/$CI_PROJECT_NAME:$CI_JOB_ID docker://$CI_REGISTRY_IMAGE:$CI_JOB_ID
