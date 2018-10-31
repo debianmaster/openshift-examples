@@ -1,0 +1,23 @@
+image: widerin/openshift-cli
+
+stages:
+  - build
+  - deploy
+
+build_src:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]  
+  script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+
+deploy_dev:
+  stage: deploy
+  script:
+    - printenv
+    - oc login $k8s_cluster --token=$k8s_token --insecure-skip-tls-verify=true
+    - oc project app1
+    - oc delete all -l run=app1 --wait
+    - oc run --image=$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME app1
