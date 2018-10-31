@@ -1,10 +1,11 @@
+#https://gitlab.cern.ch/paas-tools/rundeck-openshift/blob/master/.gitlab-ci.yml
 image: widerin/openshift-cli
 
 stages:
   - build
   - deploy
 
-build_src:
+.build_src:
   stage: build
   image:
     name: gcr.io/kaniko-project/executor:debug
@@ -16,8 +17,10 @@ build_src:
 deploy_dev:
   stage: deploy
   script:
-    - printenv
-    - oc login $k8s_cluster --token=$k8s_token --insecure-skip-tls-verify=true
-    - oc project app1
-    - oc delete all -l run=app1 --wait
-    - oc run --image=$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME app1
+    - oc login $k8s_cluster --token=$k8s_token --insecure-skip-tls-verify=true  
+    - oc project $CI_PROJECT_NAME    
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > config.json
+    - oc create secret generic git-reg --from-file=.dockerconfigjson=config.json --type=kubernetes.io/dockerconfigjson
+    - oc secret link default git-reg --for=pull
+    - oc delete all -l run=$CI_PROJECT_NAME --wait
+    - oc run --image=$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $CI_PROJECT_NAME
