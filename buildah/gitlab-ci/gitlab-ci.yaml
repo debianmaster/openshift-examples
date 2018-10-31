@@ -5,11 +5,27 @@ cache:
   - node_modules/
 
 stages:
+  - setup
   - build
   - deploy
+
 
 build_src:
   stage: build
   script:
-   - buildah bud -t $CI_PROJECT_NAME:$CI_JOB_ID  .
-   - skopeo copy --dest-creds=$CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD containers-storage:localhost/$CI_PROJECT_NAME:$CI_JOB_ID docker://$CI_REGISTRY_IMAGE:$CI_JOB_ID
+   - buildah bud -t $CI_PROJECT_NAME:$CI_PIPELINE_ID  .
+   - skopeo copy --dest-creds=$CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD containers-storage:localhost/$CI_PROJECT_NAME:$CI_PIPELINE_ID docker://$CI_REGISTRY_IMAGE:$CI_PIPELINE_ID
+
+deploy_app:
+  stage: deploy
+  dependencies:
+    - build_src
+  before_script:
+    - oc login $k8s_cluster --token=$k8s_token --insecure-skip-tls-verify=true
+    - oc project app1
+    - oc delete secret gitlab-auth --ignore-not-found=true
+    - oc create secret docker-registry gitlab-auth --docker-server=$CI_REGISTRY --docker-username=$CI_REGISTRY_USER --docker-password=$CI_REGISTRY_PASSWORD --docker-email=serviceaccount@example.org -o yaml --dry-run | sed 's/dockercfg/dockerconfigjson/g' | oc apply -f-
+    - oc secret link default gitlab-auth --for=pull
+  script:
+   - oc delete all --all --wait=true
+   - oc new-app $CI_REGISTRY_IMAGE:$CI_PIPELINE_ID --name=app1
