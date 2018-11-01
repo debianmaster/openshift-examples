@@ -13,7 +13,7 @@ odk new odoo-operator --type=ansible --kind=Odoo --api-version=odoo.test.io/v1al
 cd odoo-operator
 oc apply -f deploy/crd.yaml
 ```
-> replace `/opt/ansible/roles/Odoo`  with ` /Users/jjonagam/odk/odoo-operator/roles/Odoo`  in watches.yml
+> replace `/opt/ansible/roles/Odoo`  with ` /Users/jjonagam/odk/odoo-operator/roles/Odoo`  in watches.yml    
 > update following file `roles/Odoo/tasks/main.yml`
 
 ```yml
