@@ -54,5 +54,6 @@ oc apply -f deploy/crd.yaml
 
 ```sh
 odk up local -n odk
+oc apply -f deploy/cr.yaml
 ```
 
