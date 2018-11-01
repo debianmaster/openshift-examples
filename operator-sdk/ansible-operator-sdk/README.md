@@ -18,7 +18,7 @@ oc apply -f deploy/crd.yaml
 
 ```yml
 ---
-- name: start memcached
+- name: start Odoo
   k8s:
     definition:
       apiVersion: extensions/v1beta1
