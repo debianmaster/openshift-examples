@@ -7,6 +7,7 @@ oc new-project target-proj
 oc patch scc/privileged --patch {\"allowedCapabilities\":[\"NET_ADMIN\"]}
 oc adm policy add-scc-to-user privileged -z default
 
+knctl domain create --domain apps.sing2-6f37.openshiftworkshop.com --default
 ```
 
 > serving.yml
