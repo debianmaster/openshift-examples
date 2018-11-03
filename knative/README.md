@@ -31,3 +31,20 @@ spec:
 ```
 oc apply -f serving.yml
 ```
+
+```sh
+oc set env dc/router ROUTER_ALLOW_WILDCARD_ROUTES=true -n default
+```
+
+```yml
+apiVersion: v1
+kind: Route
+metadata:
+  name: wildcard-route
+spec:
+  host: knative-test.apps.sing2-6f37.openshiftworkshop.com
+  to:
+    kind: Service
+    name: knative-istio-ingressgateway
+  wildcardPolicy: Subdomain
+```  
