@@ -37,14 +37,18 @@ oc set env dc/router ROUTER_ALLOW_WILDCARD_ROUTES=true -n default
 ```
 
 ```yml
-apiVersion: v1
+apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: wildcard-route
+  namespace: istio-system
 spec:
-  host: knative-test.apps.sing2-6f37.openshiftworkshop.com
+  host: wildcard.knative-test.apps.sing2-6f37.openshiftworkshop.com
+  port:
+    targetPort: 80  
   to:
     kind: Service
-    name: knative-istio-ingressgateway
+    name: knative-ingressgateway
+    weight: 100
   wildcardPolicy: Subdomain
 ```  
