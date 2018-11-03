@@ -4,6 +4,7 @@
 ### Allow router to allow wildcards
 ```
 oc env dc/router ROUTER_ALLOW_WILDCARD_ROUTES=true -n default
+oc set env dc/router ROUTER_ALLOW_WILDCARD_ROUTES=true -n default  #ocp 3.11
 ```
 
 ### Let openshift know that you want wildcard route
