@@ -33,7 +33,7 @@ knctl domain create --domain apps.kndemo-0280.openshiftworkshop.com --default
 apiVersion: serving.knative.dev/v1alpha1 # Current version of Knative
 kind: Service
 metadata:
-  name: helloworld-go1 # The name of the app
+  name: helloworld-go # The name of the app
 spec:
   runLatest:
     configuration:
