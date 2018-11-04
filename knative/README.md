@@ -25,6 +25,9 @@ oc patch scc/privileged --patch {\"allowedCapabilities\":[\"NET_ADMIN\"]}
 oc adm policy add-scc-to-user privileged -z default
 
 knctl domain create --domain apps.kndemo-0280.openshiftworkshop.com --default
+or
+kubectl edit cm config-domain --namespace knative-serving
+kubectl edit ksvc helloworld-go1
 ```
 
 > serving.yml
