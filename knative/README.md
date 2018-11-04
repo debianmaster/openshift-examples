@@ -20,14 +20,14 @@ curl -L https://storage.googleapis.com/knative-releases/serving/latest/release-l
 > Deploy sample application
 
 ```
-oc new-project target-proj
+oc new-project knative-test
 oc patch scc/privileged --patch {\"allowedCapabilities\":[\"NET_ADMIN\"]}
 oc adm policy add-scc-to-user privileged -z default
 
 knctl domain create --domain apps.kndemo-0280.openshiftworkshop.com --default
 or
 kubectl edit cm config-domain --namespace knative-serving
-kubectl edit ksvc helloworld-go1
+kubectl edit ksvc helloworld-go
 ```
 
 > serving.yml
