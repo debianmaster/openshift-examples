@@ -73,3 +73,10 @@ spec:
     weight: 100
   wildcardPolicy: Subdomain
 ```  
+
+## Delete everything
+
+```sh
+curl -L https://storage.googleapis.com/knative-releases/serving/latest/release-lite.yaml   | sed 's/LoadBalancer/NodePort/'   | oc delete -f -
+oc delete project knative-test --grace-period=0 --force
+```
