@@ -50,6 +50,7 @@ spec:
 ```
 
 ```
+oc delete limits --all -n knative-test  #temp fix
 oc apply -f serving.yml
 ```
 
