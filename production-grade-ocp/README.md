@@ -38,4 +38,20 @@ Search gaurd plugin in kibana is used for multitenancy and also indexes created 
 Compare . `ip link show eth0` .  vs . `/etc/origin/node/node-config.yaml` .  mtu size
 
 
+```sh
+$ cat /etc/sysconfig/docker-storage-setup
+STORAGE_DRIVER=overlay2
+DEVS=/dev/sdc
+CONTAINER_ROOT_LV_NAME=dockerlv
+CONTAINER_ROOT_LV_SIZE=40%FREE
+CONTAINER_ROOT_LV_MOUNT_PATH=/var/lib/docker
+VG=dockervg
+```
+
+```sh
+sudo docker-storage-setup
+```
+
+
+
 
