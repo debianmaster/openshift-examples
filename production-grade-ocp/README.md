@@ -52,6 +52,6 @@ VG=dockervg
 sudo docker-storage-setup
 ```
 
-
+>  one LVM pointing to /var/lib/origin and another pointing to  /var/lib/docker
 
 
