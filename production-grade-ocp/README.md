@@ -1,6 +1,7 @@
 ### WIP  do your own research
 
 1. use xfs filesytem with ftype=1 not ftype=0
+    or  Ext4 on 7.1
 2. Docker storage driver = overlay2 .   
 3. Verifying correct Maximum Transmission Unit (MTU) size
 
