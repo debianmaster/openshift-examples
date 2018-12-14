@@ -40,3 +40,8 @@ openshift_hosted_registry_storage_s3_regionendpoint=http://s3.example.io/
 openshift_hosted_registry_storage_s3_bucket=registry
 openshift_hosted_registry_storage_s3_rootdirectory=/registry
 ```
+
+## re-install registry
+```sh
+ansible-playbook playbooks/openshift-hosted/deploy_registry.yml
+```
