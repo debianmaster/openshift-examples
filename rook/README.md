@@ -17,6 +17,13 @@ kubectl -n rook-ceph get secret rook-ceph-object-user-my-store-my-user -o yaml |
 kubectl -n rook-ceph get secret rook-ceph-object-user-my-store-my-user -o yaml | grep SecretKey | awk '{print $2}' | base64 --decode
 ```
 
+## expose s3 url
+```sh
+#8080 port change from 80
+oc expose svc rook-ceph-rgw-my-store --hostname=obj.example.io --name=t1
+```
+
+
 ## registry storage
 ```
 brew install minio/stable/mc
@@ -43,5 +50,9 @@ openshift_hosted_registry_storage_s3_rootdirectory=/registry
 
 ## re-install registry
 ```sh
+oc delete dc,route,svc docker-registry
 ansible-playbook playbooks/openshift-hosted/deploy_registry.yml
 ```
+
+
+https://rook.io/docs/rook/master/openshift.html
