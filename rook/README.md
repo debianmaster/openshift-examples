@@ -15,6 +15,7 @@ oc patch storageclass rook-ceph-block -p '{"metadata":{"annotations":{"storagecl
 oc -n rook-ceph describe secret rook-ceph-object-user-my-store-my-user
 kubectl -n rook-ceph get secret rook-ceph-object-user-my-store-my-user -o yaml | grep AccessKey | awk '{print $2}' | base64 --decode
 kubectl -n rook-ceph get secret rook-ceph-object-user-my-store-my-user -o yaml | grep SecretKey | awk '{print $2}' | base64 --decode
+oc adm policy add-scc-to-user anyuid -z default -n rook-ceph
 ```
 
 ## expose s3 url
