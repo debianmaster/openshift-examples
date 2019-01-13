@@ -43,3 +43,9 @@ oc delete secret router-certs -n default
 oc secrets new router-certs tls.crt=fullchain1.pem tls.key=privkey1.pem --type='kubernetes.io/tls' --confirm -n default
 oc deploy dc/router --latest -n default
 ```
+
+
+## latest
+```sh
+https://github.com/Neilpang/acme.sh/wiki/dns-manual-mode
+```
