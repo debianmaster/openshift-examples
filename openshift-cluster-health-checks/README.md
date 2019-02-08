@@ -3,9 +3,12 @@
 ```
 ansible all -a "df -hT"  
 ```
-> verify storage driver, Logging Driver and filesyste for docker
+> verify storage driver, Logging Driver , Root Dir and filesystem for docker
 ```sh
- ansible all -a "docker info"
+ ansible all -a "docker info" | grep Storage
+ ansible all -a "docker info" | grep Logging
+ ansible all -a "docker info" | grep Root
+ ansible all -a "docker info" | grep Filesystem
  ```
 
 ```sh  
