@@ -3,7 +3,7 @@
 ```
 ansible all -a "df -hT"  
 ```
-> verify storage driver and filesyste for docker
+> verify storage driver, Logging Driver and filesyste for docker
 ```sh
  ansible all -a "docker info"
  ```
