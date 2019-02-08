@@ -12,7 +12,8 @@ ansible all -a "df -hT"
  ```
 > kubelet args
 ```sh
- ansible all -a "cat /etc/origin/node/node-config.yaml"
+ ansible all -a "cat /etc/origin/node/node-config.yaml" grep -A 15  kubeletArguments
+
  ```
 
 
