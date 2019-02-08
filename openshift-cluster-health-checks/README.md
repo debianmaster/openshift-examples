@@ -46,10 +46,12 @@ oc get pods -n default -o wide
 > On all nodes
 ```sh
 ansible all -a "dig +short docker-registry.default.svc.cluster.local"
-
+ansible all -a "dig +short docker-registry.default.svc"
 ansible all -a "ping -c 1 redhat.com"
 ansible all -a "ping -c 1 apps.example.com"
 ansible all -a "ip link show eth0"
+ansible all -a "curl -kv https://docker-registry.default.svc.cluster.local:5000/healthz"
+ansible all -a "curl -kv https://docker-registry.default.svc:5000/healthz"
 ```
 
 # Host
@@ -62,4 +64,9 @@ ansible all -a "timedatectl"
 ansible all -m shell -a "/usr/bin/needs-restarting -r"
 ```
 
-# proxy
+# POD checks
+```sh
+oc new-app centos/httpd-24-centos7~https://github.com/sclorg/httpd-ex
+oc rsh <pod>
+curl -kv https://docker-registry.default.svc.cluster.local:5000/healthz  #from inside pod
+```
