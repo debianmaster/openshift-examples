@@ -10,6 +10,11 @@ ansible all -a "df -hT"
  ansible all -a "docker info" | grep Root
  ansible all -a "docker info" | grep Filesystem
  ```
+> kubelet args
+```sh
+ ansible all -a "cat /etc/origin/node/node-config.yaml"
+ ```
+
 
 ```sh  
 ansible all -a "cat /proc/sys/net/ipv4/ip_forward"  #should be 1
