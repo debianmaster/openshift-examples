@@ -19,8 +19,8 @@ ansible all -a "df -hT"
 
 ```sh  
 ansible all -a "cat /proc/sys/net/ipv4/ip_forward"  #should be 1
-ansible all -a "cat /etc/sysconfig/network-scripts/ifcfg-eth0 | grep NM_CONTROLLED"  #should be YES
-ansible all -a "cat /etc/sysconfig/network-scripts/ifcfg-eth0 | grep PEERDNS"  #shuold be NO
+ansible all -a "cat /etc/sysconfig/network-scripts/ifcfg-eth0" | grep NM_CONTROLLED  #should be YES
+ansible all -a "cat /etc/sysconfig/network-scripts/ifcfg-eth0" | grep PEERDNS  #shuold be NO
 ansible all -a "sysctl net.ipv4.ip_forward"
 ansible all -a "sysctl net.ipv6.conf.all.disable_ipv6"  #should be disabled
 ansible all -a "cat /proc/sys/kernel/random/entropy_avail"  #should be > 2683
