@@ -1,8 +1,12 @@
 # Host checks
-> # verify enough storage on  /var/lib/docker  &  /var/lib/origin/openshift.local.volumes
+> verify enough storage on  /var/lib/docker  &  /var/lib/origin/openshift.local.volumes
 ```
 ansible all -a "df -hT"  
 ```
+> verify storage driver and filesyste for docker
+```sh
+ ansible all -a "docker info"
+ ```
 
 ```sh  
 ansible all -a "cat /proc/sys/net/ipv4/ip_forward"  #should be 1
