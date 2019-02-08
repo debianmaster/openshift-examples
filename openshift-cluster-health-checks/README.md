@@ -68,8 +68,8 @@ ansible all -a "dig +short docker-registry.default.svc"
 ansible all -a "ping -c 1 redhat.com"
 ansible all -a "ping -c 1 apps.example.com"
 ansible all -a "ip link show eth0"
-ansible all -a "curl -kv https://docker-registry.default.svc.cluster.local:5000/healthz"
-ansible all -a "curl -kv https://docker-registry.default.svc:5000/healthz"
+ansible all -a "curl -ks https://docker-registry.default.svc.cluster.local:5000/healthz"
+ansible all -a "curl -ks https://docker-registry.default.svc:5000/healthz"
 ```
 
 # Host
