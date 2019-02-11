@@ -1,4 +1,12 @@
 ```sh
+export TOKEN=$(oc whoami -t)
+export PROJECT=kubevirt
+oc export ns $PROJECT -o yaml > tmp.json
+curl -k -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -X PUT --data-binary @tmp.json https://kubernetes-cluster-ip/api/v1/namespaces/$PROJECT/finalize
+```
+
+
+```sh
 
 There is a work around for this
 
