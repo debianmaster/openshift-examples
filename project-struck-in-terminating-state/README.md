@@ -1,4 +1,6 @@
 ```sh
+oc api-resources --verbs=list --namespaced -o name | xargs -n 1 oc get --show-kind --ignore-not-found -n <Project-Name>
+
 export TOKEN=$(oc whoami -t)
 export PROJECT=kubevirt
 oc export ns $PROJECT -o yaml > tmp.json
