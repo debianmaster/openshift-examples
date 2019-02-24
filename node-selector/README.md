@@ -21,5 +21,5 @@ Find the annotations section and add a node selector annotation as under. This i
 ```
 > For Project
 ```sh
-oc annotate project <target-proj> openshift.io/node-selector='kubernetes.io/hostname=app1.ap.ex.io'
+oc annotate ns <target-proj> openshift.io/node-selector='kubernetes.io/hostname=app1.ap.ex.io'
 ```
