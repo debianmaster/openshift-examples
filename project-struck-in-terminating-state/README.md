@@ -1,4 +1,8 @@
 ```sh
+kubectl -n rook-ceph patch ns rook-ceph -p '{"metadata":{"finalizers": []}}' --type=merge
+```
+
+```sh
 oc api-resources --verbs=list --namespaced -o name | xargs -n 1 oc get --show-kind --ignore-not-found -n <Project-Name>
 
 export TOKEN=$(oc whoami -t)
