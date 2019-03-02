@@ -1,4 +1,5 @@
 ```sh
+> not working
 kubectl -n rook-ceph patch ns rook-ceph -p '{"metadata":{"finalizers": []}}' --type=merge
 ```
 
