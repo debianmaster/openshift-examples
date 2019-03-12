@@ -26,3 +26,12 @@ then delete the namespace .
 ````
 
 credits:  https://github.com/Azure/AKS/issues/733#issuecomment-442919644
+
+
+>  cleanup.sh <targetns>
+```sh
+kubectl get namespace $1 -o json | jq .spec.finalizers=[] > tmp.json
+export TOKEN=$(oc whoami -t)
+echo $TOKEN
+curl -k -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -X PUT --data-binary @tmp.json https://cloud.run9.io/api/v1/namespaces/$1/finalize
+```
