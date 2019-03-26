@@ -1,6 +1,9 @@
 ```sh
 oc new-project jm
 oc adm policy add-scc-to-user anyuid -z default -n jm
+oc adm policy add-role-to-user admin system:serviceaccount:kube-system:default -n jm
+oc adm policy add-role-to-user admin system:serviceaccount:kube-system:default -n kube-system
+
 helm install --name jmeter stable/distributed-jmeter
 export MASTER_NAME=$(kubectl get pods -l app.kubernetes.io/component=master -o jsonpath='{.items[*].metadata.name}')
 export SERVER_IPS=$(kubectl get pods -l app.kubernetes.io/component=server -o jsonpath='{.items[*].status.podIP}' | tr ' ' ',')
