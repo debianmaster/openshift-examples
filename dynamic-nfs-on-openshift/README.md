@@ -14,6 +14,7 @@ cd external-storage/nfs
 kubectl create -f deploy/kubernetes/deployment.yaml
 kubectl create -f deploy/kubernetes/class.yaml
 oc adm policy add-scc-to-user privileged -z nfs-provisioner -n nfs
+oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:nfs:nfs-provisioner
 
 oc patch storageclass example-nfs -p '{"metadata":{"annotations":{"storageclass.beta.kubernetes.io/is-default-class":"true"}}}'
 ```
