@@ -26,3 +26,6 @@ oc patch storageclass rook-ceph-block -p '{"metadata":{"annotations":{"storagecl
 /var/lib/rook/mon-a/data/keyring.
 ```
 
+```sh
+oc create route reencrypt rook-ceph-mgr-dashboard --service=rook-ceph-mgr-dashboard --hostname=rook.example..io -n rook-ceph --ca-cert='/etc/cloud.example..io/certs/wildcard.example..io/*.example..io/*.example..io.cer' --cert='/etc/cloud.example..io/certs/wildcard.example..io/*.example..io/fullchain.cer' --key='/etc/cloud.example..io/certs/wildcard.example..io/*.example..io/*.example..io.key'
+```
