@@ -1,0 +1,24 @@
+---
+- name: "Empty directory"
+  hosts: all
+  tasks:
+    - name: "Create an empty directory (locally)"
+      local_action:
+        module: file
+        state: directory
+        path: "/tmp/empty"
+        
+    - name: Empty remote directory
+      synchronize:
+        src: /tmp/empty/
+        dest: /mnt/apps
+        delete: yes
+        recursive: yes
+
+    - name: Empty remote directory
+      synchronize:
+        src: /tmp/empty/
+        dest: /var/lib/rook
+        delete: yes
+        recursive: yes
+
