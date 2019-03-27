@@ -18,6 +18,7 @@ oc create -f storageclass.yaml
 oc create route passthrough rook --service=rook-ceph-mgr-dashboard --hostname=rook.run9.io
 
 oc patch storageclass rook-ceph-block -p '{"metadata":{"annotations":{"storageclass.beta.kubernetes.io/is-default-class":"true"}}}'
+oc apply -f pool.yaml
 ```
 
 
