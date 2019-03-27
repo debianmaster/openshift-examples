@@ -23,7 +23,7 @@ oc patch storageclass rook-ceph-block -p '{"metadata":{"annotations":{"storagecl
 
 > cleanup
 ```
-/var/lib/rook/mon-a/data/keyring.
+ansible-playbook rook-cleanup.yaml
 ```
 
 ```sh
