@@ -23,6 +23,9 @@ oc patch storageclass rook-ceph-block -p '{"metadata":{"annotations":{"storagecl
 
 > cleanup
 ```
+cd ~/rook/cluster/examples/kubernetes/ceph
+oc delete -f cluster.yaml
+oc delete -f operator.yaml
 ansible-playbook rook-cleanup.yaml
 ```
 
