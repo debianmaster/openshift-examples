@@ -29,12 +29,14 @@ oc delete -f operator.yaml
 ansible-playbook rook-cleanup.yaml
 ```
 
+```sh
+cat cluster.yaml | grep hostNetwork
+    hostNetwork: false
+```    
+
 > not working
 ```sh
 oc create route reencrypt rook-ceph-mgr-dashboard --service=rook-ceph-mgr-dashboard --hostname=rook.example..io -n rook-ceph --ca-cert='/etc/cloud.example..io/certs/wildcard.example..io/*.example..io/*.example..io.cer' --cert='/etc/cloud.example..io/certs/wildcard.example..io/*.example..io/fullchain.cer' --key='/etc/cloud.example..io/certs/wildcard.example..io/*.example..io/*.example..io.key'
 ```
 
-```sh
-cat cluster.yaml | grep hostNetwork
-    hostNetwork: false
-```    
+
