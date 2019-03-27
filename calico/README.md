@@ -12,3 +12,10 @@ curl -O -L  https://github.com/projectcalico/calicoctl/releases/download/v3.5.1/
 ```sh
 oc set env ds calico-node --list | grep IP_AUTODETECTION_METHOD
 ```
+
+### calicoctl
+```
+export DATASTORE_TYPE=kubernetes
+export KUBECONFIG=~/.kube/config
+calicoctl get workloadendpoints
+```
