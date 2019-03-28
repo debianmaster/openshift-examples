@@ -29,3 +29,7 @@ export DATASTORE_TYPE=kubernetes
 export KUBECONFIG=~/.kube/config
 calicoctl get workloadendpoints
 ```
+
+```sh
+oc delete po -l k8s-app=calico-node
+```
