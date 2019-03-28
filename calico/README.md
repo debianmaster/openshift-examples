@@ -35,7 +35,8 @@ calicoctl get workloadendpoints
 ansible all -a "curl -O -L  https://github.com/projectcalico/calicoctl/releases/download/v3.6.1/calicoctl"
 ansible all -a "chmod +x calicoctl"
 ansible all -a "cp calicoctl /usr/local/bin/calicoctl"
-
+ansible all -m copy -a "src=~/.kube/config dest=/tmp/.kubeconfig"
+ansible all -a "DATASTORE_TYPE=kubernetes KUBECONFIG=/tmp/.kubeconfig calicoctl node status"
 ```
 
 ```sh
