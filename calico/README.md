@@ -31,6 +31,11 @@ oc set env ds calico-node --list | grep IP_AUTODETECTION_METHOD
 export DATASTORE_TYPE=kubernetes
 export KUBECONFIG=~/.kube/config
 calicoctl get workloadendpoints
+
+ansible all -a "curl -O -L  https://github.com/projectcalico/calicoctl/releases/download/v3.6.1/calicoctl"
+ansible all -a "chmod +x calicoctl"
+ansible all -a "cp calicoctl /usr/local/bin/calicoctl"
+
 ```
 
 ```sh
