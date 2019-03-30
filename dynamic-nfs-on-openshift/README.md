@@ -19,3 +19,7 @@ oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:nfs:n
 oc patch storageclass example-nfs -p '{"metadata":{"annotations":{"storageclass.beta.kubernetes.io/is-default-class":"true"}}}'
 ```
 
+
+```sh
+oc annotate ns nfs openshift.io/node-selector="nfs=blr"
+```
