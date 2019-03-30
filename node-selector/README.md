@@ -23,3 +23,8 @@ Find the annotations section and add a node selector annotation as under. This i
 ```sh
 oc annotate ns <target-proj> openshift.io/node-selector='kubernetes.io/hostname=app1.ap.ex.io'
 ```
+
+
+```sh
+oc annotate ns nfs openshift.io/node-selector="nfs=blr"
+```
