@@ -1,14 +1,10 @@
-> Should have a existing nfs
 
-```sh
-mkdir -p /exports/nfs
-chown -R nfsnobody:nfsnobody /exports/nfs
-chmod 777 -R /exports/nfs
-```
+
+> dynamic prov
 
 ```sh
 oc new-project nfs
-
+mkdir -p /srv  #on target server
 git clone https://github.com/kubernetes-incubator/external-storage.git
 cd external-storage/nfs
 kubectl create -f deploy/kubernetes/deployment.yaml
@@ -22,4 +18,13 @@ oc patch storageclass example-nfs -p '{"metadata":{"annotations":{"storageclass.
 
 ```sh
 oc annotate ns nfs openshift.io/node-selector="nfs=blr"
+```
+
+
+> Should have a existing nfs
+
+```sh
+mkdir -p /exports/nfs
+chown -R nfsnobody:nfsnobody /exports/nfs
+chmod 777 -R /exports/nfs
 ```
