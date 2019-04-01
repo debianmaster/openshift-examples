@@ -80,7 +80,7 @@ metadata:
   namespace: dev
 subjects:
 - kind: User
-  name: arun
+  name: <user>
   apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: Role
