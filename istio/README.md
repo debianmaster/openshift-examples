@@ -46,3 +46,45 @@ oc get validatingwebhookconfiguration  | grep istio | awk '{print $1}' | xargs o
 oc get clusterroles  | grep istio | awk '{print $1}' | xargs oc delete clusterroles
 oc get clusterrolebindings  | grep istio | awk '{print $1}' | xargs oc delete clusterrolebindings
 ```
+
+## kiali installation
+```sh
+bash <(curl -L http://git.io/getLatestKiali)
+```
+
+### Kiali dashboard view role for a specific project
+
+> role
+```sh
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: dev
+  name: istio-view
+rules:
+- apiGroups: ["networking.istio.io"]
+  resources: ["virtualservices","destinationrules"]
+  verbs: ["get", "watch", "list"]
+- apiGroups: ["authentication.istio.io"]
+  resources: ["policies"]
+  verbs: ["get", "watch", "list"]
+
+```
+> rolebinding
+
+```yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: istio-view-rolebinding
+  namespace: dev
+subjects:
+- kind: User
+  name: arun
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: istio-view 
+  apiGroup: rbac.authorization.k8s.io
+```
+
