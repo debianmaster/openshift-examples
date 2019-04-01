@@ -34,7 +34,15 @@ spec:
  ```
 
 
-> CRD cleanup
+>  cleanup
 ```
-oc delete crd $(oc get crd | grep istio | awk '{print $1}')
+#oc delete crd $(oc get crd | grep istio | awk '{print $1}')
+
+oc delete project istio-system
+oc delete csr istio-sidecar-injector.istio-system
+oc get crd  | grep istio | awk '{print $1}' | xargs oc delete crd
+oc get mutatingwebhookconfigurations  | grep istio | awk '{print $1}' | xargs oc delete mutatingwebhookconfigurations
+oc get validatingwebhookconfiguration  | grep istio | awk '{print $1}' | xargs oc delete validatingwebhookconfiguration
+oc get clusterroles  | grep istio | awk '{print $1}' | xargs oc delete clusterroles
+oc get clusterrolebindings  | grep istio | awk '{print $1}' | xargs oc delete clusterrolebindings
 ```
