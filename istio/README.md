@@ -32,3 +32,9 @@ spec:
     username: username
     password: password
  ```
+
+
+> CRD cleanup
+```
+oc delete crd $(oc get crd | grep istio | awk '{print $1}')
+```
