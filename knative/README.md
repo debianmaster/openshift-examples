@@ -14,7 +14,7 @@ oc adm policy add-scc-to-user anyuid -z prometheus-system -n knative-monitoring
 oc adm policy add-cluster-role-to-user cluster-admin -z build-controller -n knative-build
 oc adm policy add-cluster-role-to-user cluster-admin -z controller -n knative-serving
 
-curl -L https://storage.googleapis.com/knative-releases/serving/latest/release-lite.yaml   | sed 's/LoadBalancer/NodePort/'   | oc apply -f -
+curl -L https://github.com/knative/serving/releases/download/v0.2.3/release-lite.yaml | sed 's/LoadBalancer/NodePort/' | oc apply -f -
 ```
 
 > Deploy sample application
