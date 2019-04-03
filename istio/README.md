@@ -88,3 +88,8 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 ```
 
+> Misc 
+
+```sh
+oc export dc welcome -oyaml | istioctl kube-inject -f- | oc apply -f-
+```
