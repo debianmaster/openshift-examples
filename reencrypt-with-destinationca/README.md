@@ -15,3 +15,4 @@ oc delete route <current_passthroug_route>
 oc create route reencrypt keycloak-auth --service=secure-auth --hostname=auth.example.io -n erp --ca-cert='/etc/cloud.example.io/certs/wildcard.example.io/*.example.io/*.example.io.cer' --cert='/etc/cloud.example.io/certs/wildcard.example.io/*.example.io/fullchain.cer' --key='/etc/cloud.example.io/certs/wildcard.example.io/*.example.io/*.example.io.key'
 ```
 
+> Goto route in GUI and add  destination-ca.crt content in route and save
