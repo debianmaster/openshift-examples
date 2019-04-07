@@ -5,6 +5,19 @@ oc new-app jboss/keycloak --name=auth -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWOR
 oc expose svc/keycloak
 ```
 
+## setup keycloak
+> in keycloak pod
+
+```sh
+
+./kcadm.sh config credentials     --server http://localhost:8080/auth     --realm master     --user adm --password mypass
+./kcadm.sh create realms -s realm=origin-login -s enabled=true -s displayName="origin-login"
+
+wget https://gist.githubusercontent.com/debianmaster/860b022b262dd7d38adf92a6ad35b678/raw/12a0b438418c6ba12012f99d4cab1a08de914aa0/client.json 
+
+./kcadm.sh create clients -f client.json -r origin-login -s secret=mypass -s clientId=origin-login -H
+```
+
 
 ## Keycloak for openshift auth
 
