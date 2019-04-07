@@ -19,6 +19,12 @@ wget https://gist.githubusercontent.com/debianmaster/860b022b262dd7d38adf92a6ad3
 ```
 
 
+## Via Ansible
+```sh
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/htpasswd'},{'name': 'YOUR-OAuth', 'login': 'true', 'challenge': 'false', 'mappingMethod': 'claim', 'kind': 'OpenIDIdentityProvider','clientID': 'openshift-001','clientSecret': '<THE-PASSWORD>', 'claims':{'id':['sub'],'preferredUsername':['preferred_username'],'name':['name'],'email':['email']},'urls':{'authorize':'https://secure-sso<your-domain>/auth/realms/MY-REALM/protocol/openid-connect/auth','token': 'https://secure-sso<your-domain>/auth/realms/MY-REALM/protocol/openid-connect/token','userInfo':'https://secure-sso<your-domain>/auth/realms/MY-REALM/protocol/openid-connect/userinfo'}}]
+```
+
+
 ## Keycloak for openshift auth
 
 ```yaml
