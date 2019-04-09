@@ -7,7 +7,7 @@ oc new-app https://github.com/rackerlabs/s2i-oc-observe --name=observe --build-e
 
 
 ```sh
-oc set env dc/observe RESOURCE=ns  OBSERVE_ARGS="" SCRIPT_PATH="/tmp/obeserve.sh"
+oc set env dc/observe RESOURCE=ns  OBSERVE_ARGS="" SCRIPT_PATH="/tmp/observe.sh"
 ```
 
 
