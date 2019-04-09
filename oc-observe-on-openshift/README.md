@@ -7,7 +7,7 @@ oc new-app https://github.com/rackerlabs/s2i-oc-observe --name=observe --build-e
 > Mount configmap observe.sh from UI to  /tmp/observe.sh
 
 ```sh
-oc set env dc/observe RESOURCE=pvc  OBSERVE_ARGS="" SCRIPT_PATH="/tmp/observe.sh"
+oc set env dc/observe RESOURCE=pvc  OBSERVE_ARGS="" SCRIPT_FILE="/tmp/observe.sh"
 ```
 
 
