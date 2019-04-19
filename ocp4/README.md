@@ -1,6 +1,6 @@
 ```sh
 
-dnf install python3-netaddr python3-lxml python3-lxml git -y
+dnf install python3-netaddr python3-lxml python3-lxml git unzip -y
 
 git clone https://github.com/Jooho/jhouse_openshift
 cd jhouse_openshift/demos/OCP4/Libvirt
