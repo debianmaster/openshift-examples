@@ -13,6 +13,14 @@ do
 done
 ```
 
+
+```sh
+kubectl proxy --port=8080 &
+export NS=biqmind
+kubectl create ns $NS --dry-run -ojson > /tmp/ns.json
+curl -k -H "Content-Type: application/json" -X PUT --data-binary @/tmp/ns.json http://localhost:8080/api/v1/namespaces/$NS/finalize
+```
+
 ```sh
 > not working
 kubectl -n rook-ceph patch ns rook-ceph -p '{"metadata":{"finalizers": []}}' --type=merge
@@ -44,6 +52,7 @@ credits:  https://github.com/Azure/AKS/issues/733#issuecomment-442919644
 
 
 >  cleanup.sh <targetns>
+  
 ```sh
 kubectl get namespace $1 -o json | jq .spec.finalizers=[] > tmp.json
 export TOKEN=$(oc whoami -t)
