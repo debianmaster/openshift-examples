@@ -1,3 +1,18 @@
+> check left over services
+
+```sh
+for ns in `kubectl get ns --field-selector status.phase=Terminating -o name | cut -d/ -f2`; 
+do
+  echo "apiservice under namespace $ns"
+  kubectl get apiservice -o json |jq --arg ns "$ns" '.items[] |select(.spec.service.namespace != null) | select(.spec.service.namespace == $ns) | .metadata.name ' --raw-output
+  echo "api resources under namespace $ns"
+  for resource in `kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 kubectl get -o name -n $ns`; 
+  do 
+    echo $resource
+  done;
+done
+```
+
 ```sh
 > not working
 kubectl -n rook-ceph patch ns rook-ceph -p '{"metadata":{"finalizers": []}}' --type=merge
