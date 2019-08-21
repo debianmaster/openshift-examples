@@ -33,7 +33,7 @@ velero install \
 senenforce 0
 ```
 
-## On openshift 3.11  
+## openshift 3.11  
 ```sh
 oc adm policy add-scc-to-user privileged -z velero -n velero
 ```
