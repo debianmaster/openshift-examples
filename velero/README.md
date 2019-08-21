@@ -29,6 +29,7 @@ velero install \
     --snapshot-location-config region=velero \
     --backup-location-config region=minio,s3ForcePathStyle="true",s3Url=http://minio-velero.apps.example
 ```
+> all worker nodes
 ```
 senenforce 0
 ```
