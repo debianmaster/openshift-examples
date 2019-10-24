@@ -59,3 +59,11 @@ export TOKEN=$(oc whoami -t)
 echo $TOKEN
 curl -k -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -X PUT --data-binary @tmp.json https://cloud.run9.io/api/v1/namespaces/$1/finalize
 ```
+
+
+```
+for backup in `kubectl get backups -o name | cut -d/ -f2`;
+do
+    kubectl -n velero patch backup $backup -p '{"metadata":{"finalizers": []}}' --type=merge
+done
+```
