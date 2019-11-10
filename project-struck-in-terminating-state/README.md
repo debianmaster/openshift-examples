@@ -19,6 +19,17 @@ kubectl proxy --port=8080 &
 export NS=biqmind
 kubectl create ns $NS --dry-run -ojson > /tmp/ns.json
 curl -k -H "Content-Type: application/json" -X PUT --data-binary @/tmp/ns.json http://localhost:8080/api/v1/namespaces/$NS/finalize
+
+
+
+for ns in `kubectl get ns --field-selector status.phase=Terminating -o name | cut -d/ -f2`; 
+do
+    export NS=$ns
+    kubectl create ns $NS --dry-run -ojson > /tmp/ns.json
+    curl -k -H "Content-Type: application/json" -X PUT --data-binary @/tmp/ns.json http://localhost:8080/api/v1/namespaces/$NS/finalize
+done
+
+
 ```
 
 ```sh
