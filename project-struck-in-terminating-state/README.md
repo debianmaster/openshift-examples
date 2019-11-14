@@ -78,3 +78,22 @@ do
     kubectl -n velero patch backup $backup -p '{"metadata":{"finalizers": []}}' --type=merge
 done
 ```
+
+
+```sh
+port="$(python -c 'import socket; s=socket.socket(); s.bind(("", 0)); print(s.getsockname()[1])')";
+echo "Unused Port: $port"
+kubectl proxy --port=$port &
+export NS=demo
+kubectl create ns $NS --dry-run -ojson > /tmp/ns.json
+curl -k -H "Content-Type: application/json" -X PUT --data-binary @/tmp/ns.json http://localhost:$port/api/v1/namespaces/$NS/finalize
+
+
+
+for ns in `kubectl get ns --field-selector status.phase=Terminating -o name | cut -d/ -f2`; 
+do
+    export NS=$ns
+    kubectl create ns $NS --dry-run -ojson > /tmp/ns.json
+    curl -k -H "Content-Type: application/json" -X PUT --data-binary @/tmp/ns.json http://localhost:$port/api/v1/namespaces/$NS/finalize
+done
+```
