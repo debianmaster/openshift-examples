@@ -11,7 +11,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v11
+          tag_name: ${{ github.event.client_payload.tag }}
           prerelease: ${{ github.event.client_payload.prerelease }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
