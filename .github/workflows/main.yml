@@ -1,21 +1,20 @@
-name: Main
-
-on: push
-
+name: ChatOps
+on:
+  issue_comment:
+    types: [ created,updated ] 
+    
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  command:
+    runs-on: ubuntu-latest    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Build
-        run: echo ${{ github.sha }} > Release.txt
-      - name: Test
-        run: cat Release.txt
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: v1
-          prerelease: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: peter-evans/repository-dispatch@v1
+      if: contains(github.event.comment.body, '/clean')
+      with:
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        event-type: release-to-env
+    - uses: peter-evans/repository-dispatch@v1
+      if: contains(github.event.comment.body, '/deploy')
+      with:
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        event-type: release-to-prod
+        client-payload: '{ "env": "qa" }'
