@@ -12,10 +12,10 @@ jobs:
       with:
         token: ${{ secrets.REPO_ACCESS_TOKEN }}
         event-type: release-to-env
-        client-payload: '{ "env": "qa","prerelease": true }'
+        client-payload: '{ "tag": "v11","prerelease": true }'
     - uses: peter-evans/repository-dispatch@v1
       if: contains(github.event.comment.body, '/deploy-prod')
       with:
         token: ${{ secrets.REPO_ACCESS_TOKEN }}
         event-type: release-to-env
-        client-payload: '{ "env": "prod","prerelease": false }'
+        client-payload: '{ "tag": "v11","prerelease": false }'
