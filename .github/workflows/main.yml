@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest    
     steps:
     - run: |
-        echo {{toJSON(github.event.comment)}}
+        echo ${{ toJson(github.event.comment) }}
     - uses: peter-evans/repository-dispatch@v1
       if: contains(github.event.comment.body, '/deploy')
       with:
