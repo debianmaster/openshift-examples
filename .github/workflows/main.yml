@@ -16,7 +16,7 @@ jobs:
       with:
         token: ${{ secrets.REPO_ACCESS_TOKEN }}
         event-type: release-to-env
-        client-payload: '{ "tag": ${{steps.split.outputs._1}} ,"prerelease": true }'
+        client-payload: '{ "tag": "${{steps.split.outputs._1}}" ,"prerelease": true }'
     - uses: peter-evans/repository-dispatch@v1
       if: steps.split.outputs._0 == '/release' && steps.split.outputs._2 == 'prod'
       with:
