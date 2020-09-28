@@ -16,5 +16,5 @@ jobs:
       if: contains(github.event.comment.body, '/deploy')
       with:
         token: ${{ secrets.REPO_ACCESS_TOKEN }}
-        event-type: release-to-prod
+        event-type: release-to-qa
         client-payload: '{ "env": "qa" }'
