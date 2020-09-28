@@ -7,15 +7,19 @@ jobs:
   command:
     runs-on: ubuntu-latest    
     steps:
+    - uses: jungwinter/split@v1
+      id: split
+      with:
+        msg: ${{ github.event.comment.body }} 
     - uses: peter-evans/repository-dispatch@v1
-      if: contains(github.event.comment.body, '/deploy-qa')
+      if: steps.split.outputs._0 == '/release' && steps.split.outputs._2 == 'qa'
       with:
         token: ${{ secrets.REPO_ACCESS_TOKEN }}
         event-type: release-to-env
-        client-payload: '{ "tag": "v11","prerelease": true }'
+        client-payload: '{ "tag": ${{steps.split.outputs._1}} ,"prerelease": true }'
     - uses: peter-evans/repository-dispatch@v1
-      if: contains(github.event.comment.body, '/deploy-prod')
+      if: steps.split.outputs._0 == '/release' && steps.split.outputs._2 == 'prod'
       with:
         token: ${{ secrets.REPO_ACCESS_TOKEN }}
         event-type: release-to-env
-        client-payload: '{ "tag": "v11","prerelease": false }'
+        client-payload: '{ "tag": ${{steps.split.outputs._1}} ,"prerelease": false }'
