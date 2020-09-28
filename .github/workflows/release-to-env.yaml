@@ -1,0 +1,17 @@
+name: Release to env
+on:
+  repository_dispatch:
+    types: [release-to-env]
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v11
+          prerelease: ${{ github.event.client_payload.prerelease }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
