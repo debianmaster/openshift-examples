@@ -7,11 +7,8 @@ jobs:
   command:
     runs-on: ubuntu-latest    
     steps:
-    - uses: peter-evans/repository-dispatch@v1
-      if: contains(github.event.comment.body, '/clean')
-      with:
-        token: ${{ secrets.REPO_ACCESS_TOKEN }}
-        event-type: release-to-env
+    - run: |
+        echo {{toJSON(github.event.comment)}}
     - uses: peter-evans/repository-dispatch@v1
       if: contains(github.event.comment.body, '/deploy')
       with:
