@@ -22,4 +22,4 @@ jobs:
       with:
         token: ${{ secrets.REPO_ACCESS_TOKEN }}
         event-type: release-to-env
-        client-payload: '{ "tag": ${{steps.split.outputs._1}} ,"prerelease": false }'
+        client-payload: '{ "tag": "${{steps.split.outputs._1}}" ,"prerelease": false }'
