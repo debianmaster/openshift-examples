@@ -9,8 +9,7 @@ on:
 jobs:
         
   build:
-    name: Build
-    if: github.event.action != 'released'
+    name: Build    
     runs-on: ubuntu-latest
     steps:
     - run: |
