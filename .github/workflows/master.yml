@@ -1,0 +1,20 @@
+name: Build and Deploy in Staging
+on:
+  push:
+    branches: [ master ]
+
+  release:
+    types:
+      - edited
+      - prereleased
+      - released
+
+jobs:
+        
+  build:
+    name: Build
+    if: github.event.action != 'released'
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "test"
