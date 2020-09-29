@@ -8,8 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - run: |
-          echo ${{ toJSON(github.event) }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
