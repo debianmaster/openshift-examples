@@ -24,3 +24,7 @@ Find the annotations section and add a node selector annotation as under. This i
 oc annotate ns <target-proj> openshift.io/node-selector='kubernetes.io/hostname=app1.ap.ex.io'
 ```
 
+
+```
+kubectl -n ingress-nginx  patch deployments ingress-nginx-controller -p '{"spec": {"template": {"spec": {"nodeSelector": {"node-role.kubernetes.io/master": "true"}}}}}'
+```
