@@ -10,17 +10,22 @@ metadata:
 labels:
   createdBy: "gitlab-runner-template"
 parameters:
-- description: "The name for the application. The service will be named like the application."
-  displayName: "Application name."
+- description: The name for the application. The service will be named like the application.
+  displayName: Application name.
   name: APPLICATION_NAME
-  value: "gitlab-runner"
   required: true
-- description: "URL that GitLab can be reached at"
-  displayName: "GitLab URL"
+  value: gitlab-runner
+- description: The tags that will be applied to the runner (comma separated value list).
+  displayName: Runner tags.
+  name: RUNNER_TAGS
+  required: false
+  value: kubernetes,test
+- description: URL that GitLab can be reached at
+  displayName: GitLab URL
   name: GITLAB_URL
   required: true
-- description: "Runner Registration Token from the GitLab app"
-  displayName: "Registration Token."
+- description: Runner Registration Token from the GitLab app
+  displayName: Registration Token.
   name: REGISTRATION_TOKEN
   required: true
 objects:
@@ -32,10 +37,10 @@ objects:
       app: ${APPLICATION_NAME}
   spec:
     tags:
-    - name: latest
+    - name: alpine
       from:
         kind: DockerImage
-        name: gitlab/gitlab-runner:latest
+        name: gitlab/gitlab-runner:alpine
 - kind: ConfigMap
   apiVersion: v1
   metadata:
@@ -46,13 +51,24 @@ objects:
       set -xe
       cp /scripts/config.toml /etc/gitlab-runner/
       # Register the runner
-      /entrypoint register --non-interactive \
-        --url $GITLAB_URL \
-        --run-untagged \
-        --kubernetes-privileged \
-        --registration-token $REGISTRATION_TOKEN \
-        --name "k8s_runner" \
-        --executor kubernetes
+      if [ -z "$RUNNER_TAGS" ]; then
+        /entrypoint register --non-interactive \
+          --url $GITLAB_URL \
+          --run-untagged \
+          --kubernetes-privileged \
+          --registration-token $REGISTRATION_TOKEN \
+          --name "k8s_runner" \
+          --executor kubernetes
+      else
+        /entrypoint register --non-interactive \
+          --url $GITLAB_URL \
+          --tag-list $RUNNER_TAGS \
+          --kubernetes-privileged \
+          --registration-token $REGISTRATION_TOKEN \
+          --name "k8s_runner" \
+          --executor kubernetes
+      fi
+        
       # Add extra config  
       cat  /scripts/extraconfig.yaml >> /etc/gitlab-runner/config.toml  
       # Start the runner
@@ -61,18 +77,18 @@ objects:
     config.toml: |
       concurrent = 10
       check_interval = 10
-    extraconfig.yaml: |2-
-          [[runners.kubernetes.volumes.host_path]]
-            name = "docker-socket"
-            mount_path = "/var/run/docker.sock"
-            read_only = false
-            host_path = "/var/run/docker.sock"
-          [[runners.kubernetes.volumes.secret]]
-            name = "secrets"
-            mount_path = "/tmp"
-            read_only = true
-            [runners.kubernetes.volumes.secret.items]
-              "hub" = "hubsecret"
+    extraconfig.yaml: |
+      [[runners.kubernetes.volumes.host_path]]
+        name = "docker-socket"
+        mount_path = "/var/run/docker.sock"
+        read_only = false
+        host_path = "/var/run/docker.sock"
+      [[runners.kubernetes.volumes.secret]]
+        name = "secrets"
+        mount_path = "/tmp"
+        read_only = true
+        [runners.kubernetes.volumes.secret.items]
+          "hub" = "hubsecret"
 - kind: ServiceAccount
   apiVersion: v1
   metadata:
@@ -104,7 +120,7 @@ objects:
           - gitlab-runner
         from:
           kind: ImageStreamTag
-          name: ${APPLICATION_NAME}:latest
+          name: ${APPLICATION_NAME}:alpine
     replicas: 1
     test: false
     selector:
@@ -132,12 +148,14 @@ objects:
           env:
           - name: GITLAB_URL
             value: ${GITLAB_URL}
+          - name: RUNNER_TAGS
+            value: ${RUNNER_TAGS}
           - name: REGISTRATION_TOKEN
             value: ${REGISTRATION_TOKEN}
           - name: KUBERNETES_PRIVILEGED
             value: "true"
           - name: KUBERNETES_IMAGE
-            value: "ubuntu:16.04"
+            value: "alpine:3.8.1"
           - name: KUBERNETES_NAMESPACE
             valueFrom:
               fieldRef:
